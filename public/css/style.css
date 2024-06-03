@@ -1,0 +1,419 @@
+body {
+  padding-top: 60px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #f8f9fa;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.dropdown-menu {
+  min-width: 250px;
+}
+
+/* CSS cho input message */
+.message-input-container {
+  position: relative;
+}
+
+.message-input {
+  height: 150px;
+  width: 100%;
+  resize: none;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
+
+.logo-text {
+  margin-left: 10px;
+  color: black;
+}
+
+.notification {
+  background: url(https://lf16-web-buz.capcut.com/obj/capcut-web-buz-us/vipBackgroundImage.png);
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 8px 20px;
+  position: relative;
+  display: inline-block;
+  border-radius: 6px;
+}
+
+.notification .badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+}
+
+  /* Dropdown Button */
+.dropbtn {
+  background: url(https://lf16-web-buz.capcut.com/obj/capcut-web-buz-us/vipBackgroundImage.png);
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 8px 20px;
+  position: relative;
+  display: inline-block;
+  border-radius: 6px;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+  background: url(https://lf16-web-buz.capcut.com/obj/capcut-web-buz-us/vipBackgroundImage.png);
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: fixed;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+#userInfoDropdown {
+    width: 300px; /* Độ rộng */
+    overflow: auto; /* Hiển thị thanh cuộn nếu nội dung vượt quá kích thước */
+  }
+  
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 10px 10px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+
+.sidenav {
+  display: block;
+  justify-content: center;
+}
+
+/* CSS cho hiệu ứng khi hover */
+.sidenav a:hover {
+  background-color: #f8f9fa; /* Đổi màu nền khi hover */
+}
+
+.sidenav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  width: 100%; /* Sử dụng toàn bộ chiều rộng của .sidenav */
+  height: auto; /* Chiều cao tự động để phù hợp với nội dung bên trong */
+  padding: 10px; /* Đảm bảo phần padding giữa các phần tử */
+}
+
+.sidenav a img {
+  max-width: 50%; /* Kích thước tối đa của biểu tượng là 50% của phần tử a */
+  height: auto; /* Đảm bảo tỷ lệ khung hình được giữ nguyên */
+}
+
+.sidenav a span {
+  margin-top: 5px; /* Khoảng cách giữa biểu tượng và văn bản */
+}
+
+#mySidenav a {
+  position: relative;
+  transition: 0.3s;
+  padding: 11px;
+  text-decoration: none;
+  font-size: 14px;
+  color: white;
+  border-radius: 15px;
+}
+
+#mySidenav a:hover {
+  transform: translateY(-10px); /* Di chuyển lên 10px khi hover */
+}
+
+/* Màu nền cho các phần tử được chọn */
+#mySidenav a.selected {
+  background-color: #000000; /* Màu nền khi được chọn */
+  color: #fff; /* Màu chữ khi được chọn */
+}
+
+.sidenav a {
+  background-color: #8d8d8d; /* Màu chung cho tất cả các ID */
+}
+
+.content {
+  margin-top: 50px; /* Để trống một khoảng trên phần nội dung */
+}
+
+#packageTimeLink, #filesDownloadedLink {
+    display: flex;
+    align-items: center; /* Canh giữa theo chiều dọc */
+  }
+/* Style cho phần tử chứa icon và text cố định */
+#packageTimeLinkStatic, #filesDownloadedLinkStatic {
+  display: flex;
+  margin-right: 10px; /* Khoảng cách giữa các phần tử */
+  gap: 5px; /* Khoảng cách giữa icon và text */
+  font-weight: bold;
+}
+
+/* Style cho icon */
+#packageTimeLinkStatic svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Style cho phần tử chứa giá trị có thể thay đổi */
+#packageTimeLinkDynamic, #filesDownloadedLinkDynamic {
+    background-color: #cecece; /* Màu nền */
+    border-radius: 10px; /* Độ cong của góc */
+    padding: 5px 10px; /* Khoảng cách giữa nội dung và biên */
+    margin-left: auto; /* Canh lề phải */
+}
+
+.premium-icon {
+    position: absolute; /* Đặt vị trí tuyệt đối để nằm trên phần tử cha */
+    top: -30%; /* Cách lề trên của phần tử cha */
+    right: -7%; /* Cách lề phải của phần tử cha */
+    transform: rotate(45deg); /* Xoay icon 45 độ */
+    background-color: transparent; /* Màu nền trong suốt */
+    cursor: pointer; /* Hiển thị icon như một nút */
+    z-index: 1; /* Đảm bảo icon hiển thị trên phần tử cha */
+  }
+  
+  /* Tạo hiệu ứng mờ cho blockquote */
+      blockquote {
+        font-style: italic; /* In nghiêng văn bản trong blockquote */
+        padding: 10px; /* Tạo khoảng trắng xung quanh nội dung */
+        border-left: 5px solid #ccc; /* Định dạng đường viền của blockquote */
+        background-color: #f9f9f9; /* Màu nền */
+      }
+
+#mySidenav {
+    position: absolute; /* Cố định vị trí */
+    top: 100%; /* Đặt top là bottom của header */
+    left: 0;
+    width: 100%; /* Chiếm toàn bộ chiều rộng của phần tử cha */
+        }
+        
+        
+.badge {
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            background-color: red;
+            color: white;
+            padding: 3px 6px;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 999; /* Đảm bảo badge hiển thị trên các phần tử khác */
+        }
+
+.badge.new {
+            background-color: green;
+        }
+        
+.highlight {
+            text-decoration: underline;
+            color: #007bfe;
+        }
+
+        /* Định dạng cho từ "tự động tải xuống" */
+.bold {
+            font-style: italic;
+            text-decoration: underline;
+        }
+        
+            body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .header {
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        cursor: pointer;
+    }
+
+    .login-btn {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .login-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fffbea;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        display: none;
+        text-align: center;
+        z-index: 9999; /* Giá trị z-index lớn hơn lớp main-content */
+    }
+
+    .login-modal.active {
+        display: block;
+    }
+
+    .user-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #007bff;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        margin: 0 auto 10px;
+    }
+
+    .user-input {
+        padding: 5%;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #e4e3e2;
+    }
+
+    .login-btn-modal {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .option-switcher {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap; /* Tự động xuống dòng khi không còn đủ không gian */
+    }
+    .option {
+        margin: 0 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .option div {
+        padding: 10px 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .option div:hover {
+        background-color: #f0f0f0;
+    }
+
+    .option div.active {
+        background-color: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
+
+    .option div img {
+        margin-right: 10px; /* Khoảng cách giữa biểu tượng và văn bản */
+    }
+    /* Placeholder styles for main content */
+    .main-content {
+        margin: 20px auto;
+        width: 80%;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+    }
+    
+    .separator {
+        width: 100%;
+        margin: 20px 0;
+        border-top: 1px solid #ccc;
+    }
+    
+    .title {
+        font-size: 14px;
+        text-align: center;
+        margin-bottom: 20px;
+        margin-top: 130px;
+        color: #0451a2 !important;
+        font-weight: 700;
+    }
+      /* Tạo hiệu ứng mờ cho blockquote */
+      blockquote {
+        font-style: italic; /* In nghiêng văn bản trong blockquote */
+        padding: 10px; /* Tạo khoảng trắng xung quanh nội dung */
+        border-left: 5px solid #ccc; /* Định dạng đường viền của blockquote */
+        background-color: #f9f9f9; /* Màu nền */
+      }
+      
+      .badge {
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            background-color: red;
+            color: white;
+            padding: 3px 6px;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 999; /* Đảm bảo badge hiển thị trên các phần tử khác */
+        }
+
+.badge.new {
+            background-color: green;
+        }
+        
+.highlight {
+            text-decoration: underline;
+            color: #007bfe;
+        }
+
+        /* Định dạng cho từ "tự động tải xuống" */
+.bold {
+            font-style: italic;
+            text-decoration: underline;
+        }
