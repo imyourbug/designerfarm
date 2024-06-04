@@ -16,10 +16,11 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
     <style>
-        .toast-success{
+        .toast-success {
             background-color: rgb(49, 171, 81) !important;
         }
-        .toast-error{
+
+        .toast-error {
             background-color: rgb(211, 65, 65) !important;
         }
     </style>
@@ -30,7 +31,7 @@
     @include('layout.header')
     @yield('content')
     @include('layout.footer')
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <div class="Toastify"></div>
     <script src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
@@ -39,6 +40,54 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     {{-- common --}}
     @stack('scripts')
+    <script>
+        $(document).ready(function() {
+            var user = JSON.parse(localStorage.getItem('user'));
+            if (user) {
+                $('.btn-open-login').css('display', 'none');
+                $('.btn-logout').css('display', 'block');
+            }
+        });
+
+        $(document).on('click', '.btn-logout', function() {
+            localStorage.removeItem('user');
+            $('.btn-open-login').css('display', 'block');
+            $('.btn-logout').css('display', 'none');
+        });
+
+        function showLoginModal() {
+            var modal = document.getElementById('loginModal');
+            modal.classList.toggle('active');
+        }
+
+        $(document).on('click', '.btn-login', function() {
+            $.ajax({
+                type: "POST",
+                data: {
+                    email: $('#email').val(),
+                    password: $('#password').val(),
+                },
+                url: "/api/auth/login",
+                success: function(response) {
+                    if (response.status == 0) {
+                        toastr.success(response.message, "Thông báo");
+                        closeModal('modalLogin');
+                        localStorage.setItem('user', JSON.stringify(response.user));
+                        $('.btn-open-login').css('display', 'none');
+                        $('.btn-logout').css('display', 'block');
+                    } else {
+                        toastr.error(response.message, "Thông báo");
+                    }
+                },
+            });
+        });
+
+        function closeModal(id) {
+            $("#" + id).css("display", "none");
+            $("body").removeClass("modal-open");
+            $(".modal-backdrop").remove();
+        }
+    </script>
 </body>
 
 </html>

@@ -219,11 +219,6 @@ function logout() {
   }, 1000);
 }
 
-function resetForm() {
-  document.getElementById('messageInput').value = '';
-  document.getElementById('notification').style.display = 'none';
-}
-
 // Hàm JavaScript mới để kiểm tra sự tồn tại của người dùng
 function Login() {
   // Lấy ID của người dùng từ input

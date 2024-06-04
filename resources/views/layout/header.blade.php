@@ -17,9 +17,12 @@
             <ul class="navbar-nav ml-auto">
                 <!-- Dropdown cho đăng nhập -->
                 <li class="nav-item dropdown" id="userDropdownLi">
-                    <button class="nav-link dropdown-toggle btn btn-primary" type="button" id="userDropdown"
+                    <button class="btn-open-login btn btn-primary" type="button" id="userDropdown"
                         data-toggle="modal" data-target="#modalLogin" aria-haspopup="true" aria-expanded="false">
                         ĐĂNG NHẬP
+                    </button>
+                    <button class="btn-logout btn btn-primary" style="display: none">
+                        ĐĂNG XUẤT
                     </button>
                 </li>
                 <!-- Dropdown hiển thị thông tin người dùng -->

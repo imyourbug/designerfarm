@@ -26,10 +26,16 @@ class BotController extends Controller
             $data = $request->validate([
                 'id' => 'required|integer',
                 'text' => 'required|string',
+                'typeDownload' => 'nullable|in:' . implode(',', GlobalConstant::DOWNLOAD_TYPE) .
+                    '|required_if:typeWeb,' . implode(',', GlobalConstant::DOWNLOAD_TYPE),
+                'typeWeb' => 'required|in:' . implode(',', GlobalConstant::WEB_TYPE),
             ]);
+            $newText = $this->getIdFromText($data['text'], $data['typeDownload'] ?? '', $data['typeWeb']);
+
+            $id = $data['id'];
             $dataSend = [
                 'chat_id' => $this->groupTelegramId,
-                'text' =>  $data['text'],
+                'text' =>  "$id|$newText",
             ];
             $client = new Client();
             $client->post("https://api.telegram.org/bot$this->botKey/sendMessage", [
@@ -45,5 +51,57 @@ class BotController extends Controller
         return response()->json([
             'status' => GlobalConstant::STATUS_OK,
         ]);
+    }
+
+    public function getIdFromText(string $url, mixed $typeDownload, int|string $typeWeb)
+    {
+        $result = '';
+        switch (true) {
+                // freepik
+            case $typeWeb == GlobalConstant::WEB_FREEPIK:
+                // pattern
+                $pattern = '/(_\d+)/';
+                preg_match($pattern, $url, $matches);
+                // get id
+                $id = str_replace(['_', '/'], '', $matches[0] ?? '');
+                // set result
+                $typeDownload = $typeDownload == GlobalConstant::DOWNLOAD_VIDEO ? 'video' : 'file';
+                $result = "$id|taifile|tai$typeDownload" . "Freepik";
+                break;
+                // envato
+            case $typeWeb == GlobalConstant::WEB_ENVATO:
+                $tmpArr = explode('-', $url);
+                // get id
+                $id = $tmpArr[count($tmpArr) - 1] ?? '';
+                // set result
+                $typeDownload = $typeDownload == GlobalConstant::DOWNLOAD_LICENSE ? 'getlicense' : 'taifile';
+                $result = "$id|$typeDownload|taiEnvato";
+                break;
+                // motion
+            case $typeWeb == GlobalConstant::WEB_MOTION:
+                $tmpArr = explode('-', $url);
+                // get id
+                $id = str_replace(['_', '/'], '', $tmpArr[count($tmpArr) - 1] ?? '');
+                // set result
+                $typeDownload = $typeDownload == GlobalConstant::DOWNLOAD_LICENSE ? 'getlicense' : 'taifile';
+                $result = "$id|$typeDownload|taifileMotion";
+                break;
+                // lovepik
+            case $typeWeb == GlobalConstant::WEB_LOVEPIK:
+                // pattern
+                $pattern = '/(image-|video-)\d+/';
+                preg_match($pattern, $url, $matches);
+                $tmpArr = explode('-', $matches[0] ?? '');
+                // get id
+                $typeFile = str_replace(['_', '/'], '', $tmpArr[0] ?? '');
+                $id = str_replace(['_', '/'], '', $tmpArr[1] ?? '');
+                // set result
+                $result = "$id|taifile|tai$typeFile" . "Lovepik";
+                break;
+            default:
+                break;
+        }
+
+        return $result;
     }
 }

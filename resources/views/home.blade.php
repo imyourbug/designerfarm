@@ -36,38 +36,16 @@
             window.location.href = '/';
         }
 
-        function showLoginModal() {
-            var modal = document.getElementById('loginModal');
-            modal.classList.toggle('active');
-        }
-
-        $(document).on('click', '.btn-login', function() {
-            $.ajax({
-                type: "POST",
-                data: {
-                    email: $('#email').val(),
-                    password: $('#password').val(),
-                },
-                url: "/api/auth/login",
-                success: function(response) {
-                    if (response.status == 0) {
-                        toastr.success(response.message, "Thông báo");
-                        closeModal('modalLogin');
-                        localStorage.setItem('user', JSON.stringify(response.user));
-                    } else {
-                        toastr.error(response.message, "Thông báo");
-                    }
-                },
-            });
-        });
-
-        function closeModal(id) {
-            $("#" + id).css("display", "none");
-            $("body").removeClass("modal-open");
-            $(".modal-backdrop").remove();
-        }
         $(document).ready(function() {
+            var intervalGetUrl = null;
+            // default
+            $('#Freepik').click();
+            //
             $('#getlink_btn').click(function() {
+                if (intervalGetUrl) {
+                    intervalGetUrl = null;
+                    clearInterval(intervalGetUrl);
+                }
                 // Kiểm tra xem userID đã đăng nhập chưa
                 let user = localStorage.getItem('user');
                 if (!user) {
@@ -155,7 +133,7 @@
                 }
 
                 // Kiểm tra xem link có chứa idFile không
-                var idFile;
+                var idFile = '';
                 console.log(website);
                 switch (website) {
                     case 'AdobeStock':
@@ -178,14 +156,31 @@
                     case 'Freepik':
                         if (link.length == 0 || link.indexOf(
                                 'https://www.freepik.com/') == -1) {
-                            return showNotification('Vui lòng nhập link freepik', 'alert-warning')
+                            return showNotification('Vui lòng nhập link Freepik', 'alert-warning')
                         }
                         if (link.indexOf('premium-video') != -1 && $(
                                 "input[name=typeDownload]:checked").val() != 'video') {
                             return showNotification('Vui lòng chọn video', 'alert-warning')
                         }
                         break;
-
+                    case 'Envato':
+                        if (link.length == 0 || link.indexOf(
+                                'https://elements.envato.com/') == -1) {
+                            return showNotification('Vui lòng nhập link Envato', 'alert-warning')
+                        }
+                        break;
+                    case 'MotionArray':
+                        if (link.length == 0 || link.indexOf(
+                                'https://motionarray.com/') == -1) {
+                            return showNotification('Vui lòng nhập link Motion Array', 'alert-warning')
+                        }
+                        break;
+                    case 'Lovepik':
+                        if (link.length == 0 || link.indexOf(
+                                'https://lovepik.com/') == -1) {
+                            return showNotification('Vui lòng nhập link Lovepik', 'alert-warning')
+                        }
+                        break;
                     default:
                         // Điều chỉnh cách lấy idFile cho các website khác ở đây
                         showNotification('Chức năng tải file từ ' + website + ' chưa được hỗ trợ.',
@@ -194,12 +189,16 @@
                 }
 
                 // Gửi request đến API để tải file
-                var intervalGetUrl = null;
+                let typeDownload = '';
+                let typeWeb = '';
+
                 $.ajax({
                     type: "POST",
                     data: {
                         id: user.id,
                         text: link,
+                        typeDownload: $('input[name="typeDownload"]:checked').val(),
+                        typeWeb: website,
                     },
                     url: "/api/sendMessage",
                     success: function(response) {
@@ -296,7 +295,7 @@
                         alt="Artlist Icon">Artlist</div>
             </div>
             <div class="option">
-                <div id="Storyblock" onclick="selectOption('Storyblock', event)"><img src="/asset/storyblocks.png"
+                <div id="Storyblocks" onclick="selectOption('Storyblocks', event)"><img src="/asset/storyblocks.png"
                         alt="Storyblocks Icon">Storyblocks</div>
             </div>
             <div class="option">
@@ -410,7 +409,7 @@
                             </div>
                         </div>
 
-                        <div id="motionContent" style="display: none;">
+                        <div id="motionarrayContent" style="display: none;">
                             <div class="form-group">
                                 <h6 for="motionLink">HƯỚNG DẪN TẢI MOTION ARRAY:</h6>
                                 <p>
