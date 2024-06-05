@@ -230,6 +230,10 @@
                 let typeDownload = '';
                 let typeWeb = '';
 
+                const loading = $('#submit-code-loading');
+                const text = $('#submit-code-text');
+                text.addClass('d-none');
+                loading.removeClass('d-none');
                 $.ajax({
                     type: "POST",
                     data: {
@@ -241,7 +245,7 @@
                     url: "/api/sendMessage",
                     success: function(response) {
                         if (response.status == 0) {
-                            toastr.success('Tải thành công', "Thông báo");
+                            // toastr.success('Tải thành công', "Thông báo");
                             intervalGetUrl = setInterval(async () => {
                                 let result = await getCacheById(user.id);
                                 if (result.status == 0) {
@@ -251,16 +255,22 @@
                                         $('.btn-open-modal-result').click();
                                         $('.url').text(url);
                                         // stop call get ur
+                                        text.removeClass('d-none');
+                                        loading.addClass('d-none');
                                         clearInterval(intervalGetUrl);
                                     }
                                 } else {
                                     // return error
                                     toastr.error(response.message, "Thông báo");
                                     // stop call get ur
+                                    text.removeClass('d-none');
+                                    loading.addClass('d-none');
                                     clearInterval(intervalGetUrl);
                                 }
                             }, 4000);
                         } else {
+                            text.removeClass('d-none');
+                            loading.addClass('d-none');
                             toastr.error(response.message, "Thông báo");
                         }
                     },
@@ -365,7 +375,9 @@
                         <div class="form-group" style="text-align: center;">
                             <button class="btn btn-lg btn-outline-info btn-getlink" id="getlink_btn"
                                 data-dashlane-rid="4f12969a7bd7df33" data-dashlane-label="true" data-form-type="">
-                                <span class="text">DOWNLOAD</span>
+                                <span id="submit-code-loading"
+                                    class="d-none spinner-border spinner-border-sm spinner"></span>
+                                <span id="submit-code-text" class="text">DOWNLOAD</span>
                             </button>
                             <button data-dashlane-rid="7df0e654d6340e33" id="reset_btn" onclick="resetForm()"
                                 class="btn btn-lg btn-outline-warning btn-getlink" data-dashlane-label="true"
