@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DownloadHistory;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
@@ -69,6 +70,11 @@ class Controller extends BaseController
                 'id' => $id,
                 'url' => $url,
             ]));
+
+            DownloadHistory::create([
+                'user_id' => $id,
+                'url' => $url,
+            ]);
 
             return response()->json([
                 'status' => 0,

@@ -45,14 +45,15 @@
             var user = JSON.parse(localStorage.getItem('user'));
             if (user) {
                 $('.btn-open-login').css('display', 'none');
-                $('.btn-logout').css('display', 'block');
+                $('.block-account').css('display', 'block');
+                $('.txt-user-name').text(user.email);
             }
         });
 
         $(document).on('click', '.btn-logout', function() {
             localStorage.removeItem('user');
             $('.btn-open-login').css('display', 'block');
-            $('.btn-logout').css('display', 'none');
+            $('.block-account').css('display', 'none');
         });
 
         function showLoginModal() {
@@ -74,7 +75,8 @@
                         closeModal('modalLogin');
                         localStorage.setItem('user', JSON.stringify(response.user));
                         $('.btn-open-login').css('display', 'none');
-                        $('.btn-logout').css('display', 'block');
+                        $('.block-account').css('display', 'block');
+                        $('.txt-user-name').text(user.email);
                     } else {
                         toastr.error(response.message, "Thông báo");
                     }

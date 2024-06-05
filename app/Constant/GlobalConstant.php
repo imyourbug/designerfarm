@@ -29,12 +29,22 @@ class GlobalConstant
     public const WEB_ENVATO = 'Envato';
     public const WEB_MOTION = 'MotionArray';
     public const WEB_LOVEPIK = 'Lovepik';
+    public const WEB_PNGTREE = 'Pngtree';
+    public const WEB_FLATICON = 'Flaticon';
+    public const WEB_PIKBEST = 'Pikbest';
+    public const WEB_STORYBLOCKS = 'Storyblocks';
+    public const WEB_VECTEEZY = 'Vecteezy';
 
     public const WEB_TYPE = [
         self::WEB_FREEPIK,
         self::WEB_ENVATO,
         self::WEB_MOTION,
         self::WEB_LOVEPIK,
+        self::WEB_PNGTREE,
+        self::WEB_FLATICON,
+        self::WEB_PIKBEST,
+        self::WEB_STORYBLOCKS,
+        self::WEB_VECTEEZY,
     ];
 
     public const WEB_REQUIRED_TYPE_DOWNLOAD = [

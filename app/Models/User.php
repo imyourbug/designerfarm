@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'balance',
     ];
 
     /**
@@ -42,4 +43,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function downloadHistories()
+    {
+        return $this->hasMany(DownloadHistory::class, 'user_id', 'id');
+    }
+
+    public function chargeHistories()
+    {
+        return $this->hasMany(ChargeHistory::class, 'user_id', 'id');
+    }
+
+    public function userPakages()
+    {
+        return $this->hasMany(UserPackage::class, 'user_id', 'id');
+    }
 }

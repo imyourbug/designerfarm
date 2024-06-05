@@ -9,7 +9,7 @@
     {{-- <script src="/js/jquery-3.5.1.slim.min.js"></script> --}}
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/index.js"></script>
+    {{-- <script src="/js/index.js"></script> --}}
     <script src="/js/content.js"></script>
     <script>
         function selectOption(id, event) {
@@ -78,7 +78,7 @@
                 var fragment = currentUrl.split('#')[1];
                 if (fragment === 'Freepik' || fragment === 'Envato' || fragment === 'AdobeStock' ||
                     fragment === 'Pikbest' || fragment === 'Pngtree' || fragment === 'MotionArray' ||
-                    fragment === 'Lovepik' || fragment === 'Artlist' || fragment === 'Storyblock' ||
+                    fragment === 'Lovepik' || fragment === 'Artlist' || fragment === 'Storyblocks' ||
                     fragment === 'Vecteezy' || fragment === 'Flaticon') {
                     website = fragment;
                 } else {
@@ -113,7 +113,7 @@
                     case 'Artlist':
                         urlPattern = /artlist\.io\/.*/;
                         break;
-                    case 'Storyblock':
+                    case 'Storyblocks':
                         urlPattern = /storyblocks\.com\/.*/;
                         break;
                     case 'Vecteezy':
@@ -134,8 +134,40 @@
 
                 // Kiểm tra xem link có chứa idFile không
                 var idFile = '';
-                console.log(website);
                 switch (website) {
+                    case 'Vecteezy':
+                        if (link.length == 0 || link.indexOf(
+                                'https://www.vecteezy.com/') == -1) {
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning');
+                        }
+                        if (!/\/vector-art\//.test(link)) {
+                            return showNotification('Không tải được file không hỗ trợ!', 'alert-warning');
+                        }
+                        break;
+                    case 'Storyblocks':
+                        if (link.length == 0 || link.indexOf(
+                                'https://www.storyblocks.com/') == -1) {
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning');
+                        }
+                        if (!/\/video\/|\/audio\/|\/images\//.test(link)) {
+                            return showNotification('Không tải được file không hỗ trợ!', 'alert-warning');
+                        }
+                        break;
+                    case 'Pikbest':
+                        if (link.length == 0 || link.indexOf(
+                                'https://pikbest.com/') == -1) {
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning');
+                        }
+                        break;
+                    case 'Flaticon':
+                        if (link.length == 0 || link.indexOf(
+                                'https://www.flaticon.com/') == -1) {
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning');
+                        }
+                        if (/\/pack|stickers-pack/.test(link)) {
+                            return showNotification('Không tải được file không hỗ trợ', 'alert-warning');
+                        }
+                        break;
                     case 'AdobeStock':
                         var idFilePatternOption1 = /asset_id=(\d+)/g; // Option 1
                         var idFilePatternOption2 = /\/(\d+)(?:\?|$)/; // Option 2
@@ -156,7 +188,7 @@
                     case 'Freepik':
                         if (link.length == 0 || link.indexOf(
                                 'https://www.freepik.com/') == -1) {
-                            return showNotification('Vui lòng nhập link Freepik', 'alert-warning')
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
                         }
                         if (link.indexOf('premium-video') != -1 && $(
                                 "input[name=typeDownload]:checked").val() != 'video') {
@@ -166,19 +198,25 @@
                     case 'Envato':
                         if (link.length == 0 || link.indexOf(
                                 'https://elements.envato.com/') == -1) {
-                            return showNotification('Vui lòng nhập link Envato', 'alert-warning')
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
                         }
                         break;
                     case 'MotionArray':
                         if (link.length == 0 || link.indexOf(
                                 'https://motionarray.com/') == -1) {
-                            return showNotification('Vui lòng nhập link Motion Array', 'alert-warning')
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
                         }
                         break;
                     case 'Lovepik':
                         if (link.length == 0 || link.indexOf(
                                 'https://lovepik.com/') == -1) {
-                            return showNotification('Vui lòng nhập link Lovepik', 'alert-warning')
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
+                        }
+                        break;
+                    case 'Pngtree':
+                        if (link.length == 0 || link.indexOf(
+                                'https://pngtree.com/') == -1) {
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
                         }
                         break;
                     default:

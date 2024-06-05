@@ -57,6 +57,56 @@ class BotController extends Controller
     {
         $result = '';
         switch (true) {
+             // vecteezy
+             case $typeWeb == GlobalConstant::WEB_VECTEEZY;
+                // pattern
+                $pattern = '/vector-art\/+.*/';
+                preg_match($pattern, $url, $matches);
+                // get id
+                $id = $matches[0] ?? '';
+                // set result
+                $result = "$id|taifile|taiVecteezy";
+                break;
+                // storyblocks
+            case $typeWeb == GlobalConstant::WEB_STORYBLOCKS:
+                // pattern
+                $pattern = '/(video|audio|images)\/stock\/+.*/';
+                preg_match($pattern, $url, $matches);
+                // get id
+                $id = $matches[0] ?? '';
+                // set result
+                $result = "$id|taifile|taiStoryblocks";
+                break;
+                // pikbest
+            case $typeWeb == GlobalConstant::WEB_PIKBEST:
+                // pattern
+                $pattern = '/(_\d+)/';
+                preg_match($pattern, $url, $matches);
+                // get id
+                $id = str_replace(['_', '/'], '', $matches[0] ?? '');
+                // set result
+                $result = "$id|taifile|taiPikbest";
+                break;
+                // flaticon
+            case $typeWeb == GlobalConstant::WEB_FLATICON:
+                // pattern
+                $pattern = '/(_\d+)/';
+                preg_match($pattern, $url, $matches);
+                // get id
+                $id = str_replace(['_', '/'], '', $matches[0] ?? '');
+                // set result
+                $result = "$id|taifile|taiFlaticon";
+                break;
+                // pngtree
+            case $typeWeb == GlobalConstant::WEB_PNGTREE:
+                // pattern
+                $pattern = '/(_\d+)/';
+                preg_match($pattern, $url, $matches);
+                // get id
+                $id = str_replace(['_', '/'], '', $matches[0] ?? '');
+                // set result
+                $result = "$id|taifile|taiPngtree";
+                break;
                 // freepik
             case $typeWeb == GlobalConstant::WEB_FREEPIK:
                 // pattern

@@ -34,10 +34,8 @@ Route::get('/migrate', function () {
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::get('/', 'HomeController@index')->name('home');
 
-    #task
-    // Route::group(['prefix' => 'tasks', 'as' => 'tasks.', 'middleware' => 'auth'], function () {
-    //     Route::get('/', 'TaskController@index')->name('index');
-    //     Route::get('/today', 'TaskController@taskToday')->name('taskToday');
-    //     Route::get('/{id}', 'TaskController@show')->name('show');
-    // });
+    #charge
+    Route::group(['prefix' => 'charge', 'as' => 'charge.'], function () {
+        Route::get('/', 'ChargeController@index')->name('index');
+    });
 });
