@@ -41,8 +41,10 @@
     {{-- common --}}
     @stack('scripts')
     <script>
+        var user = null;
+
         $(document).ready(function() {
-            var user = JSON.parse(localStorage.getItem('user'));
+            user = JSON.parse(localStorage.getItem('user'));
             if (user) {
                 $('.btn-open-login').css('display', 'none');
                 $('.block-account').css('display', 'block');
