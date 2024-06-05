@@ -81,7 +81,7 @@
                         localStorage.setItem('user', JSON.stringify(response.user));
                         $('.btn-open-login').css('display', 'none');
                         $('.block-account').css('display', 'block');
-                        $('.txt-user-name').text(user.email);
+                        $('.txt-user-name').text(useresponse.user.email);
                     } else {
                         toastr.error(response.message, "Thông báo");
                     }
