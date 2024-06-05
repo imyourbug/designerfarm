@@ -49,6 +49,9 @@
                 $('.btn-open-login').css('display', 'none');
                 $('.block-account').css('display', 'block');
                 $('.txt-user-name').text(user.email);
+            } else {
+                $('.btn-open-login').css('display', 'block');
+                $('.block-account').css('display', 'none');
             }
         });
 
