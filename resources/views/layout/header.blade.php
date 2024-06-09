@@ -1,34 +1,31 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
     <div class="container">
-        <!-- Logo và tiêu đề -->
         <div class="navbar-brand">
             <div class="d-flex align-items-center" href="/">
                 <img src="logo.png" alt="Designer Farm" style="max-height: 60px; width: auto;">
-                <div class="logo-text ml-2">DESIGNER FARM</div>
+                <a href="/" class="logo-text ml-2">DESIGNER FARM</a>
             </div>
         </div>
-        <!-- Nút toggle cho responsive navbar -->
+        <div class="navbar-brand">
+            <div class="d-flex align-items-center" href="/">
+                <a href="{{route('packages.index')}}" class="logo-text ml-2">PACKAGES</a>
+            </div>
+        </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Danh sách các liên kết -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <!-- Dropdown hiển thị thông tin người dùng -->
                 <li class="nav-item dropdown" id="userInfoLi" style="display: none;">
-                    <!-- Nút dropup hiển thị User ID -->
-                    <!-- Dropdown -->
                     <div class="dropdown">
-                        <!-- Thêm icon premium vào góc trên bên phải -->
                         <div class="premium-icon">
                             <img alt="" loading="lazy" width="16" height="16" decoding="async"
                                 data-nimg="1" class="_24ydrq0 _1286nb11m _1286nb12ql"
                                 src="https://static.cdnpk.net/_next/static/media/crown.44cceef2.svg"
                                 style="color: transparent;">
                         </div>
-                        <!-- Thay đổi nội dung của nút dropdown thành userID -->
                         <button onclick="toggleDropdown()" class="dropbtn" id="userInfoBtn">User ID</button>
                         <div id="userInfoDropdown" class="dropdown-content">
                             <a id="packageTimeLink"></a>
@@ -90,6 +87,10 @@
 
     </div>
 </nav>
+
+
+
+
 <div class="modal fade" id="modalCharge" style="display: none;" aria-modal="true" role="dialog">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">

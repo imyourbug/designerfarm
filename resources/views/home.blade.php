@@ -258,6 +258,11 @@
                                         text.removeClass('d-none');
                                         loading.addClass('d-none');
                                         clearInterval(intervalGetUrl);
+                                        // set url download
+                                        $('.btn-download').prop('href', url);
+                                        window.open(`${url}`, '_blank').focus();
+                                        // reset
+                                        // $('#reset_btn').click();
                                     }
                                 } else {
                                     // return error
@@ -622,8 +627,8 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="modalResult" style="display: none;" aria-modal="true" role="dialog">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal fade" id="modalResult" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Link tải</h4>
@@ -633,12 +638,13 @@
                 </div>
                 <div class="modal-body">
                     <p class="url" style="font-style:italic;color:orange">Link tải</p>
+                    <a style="float: right;" href="#" target="_blank" download class="btn-download btn btn-sm btn-success"><i class="fa-solid fa-download"></i></a>
                 </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
                 </div>
             </div>
         </div>
     </div>
-    <input type="hidden" class="btn-open-modal-result" data-target="#modalResult" data-toggle="modal" />
+    <input type="hidden" class="btn btn-success btn-open-modal-result" data-target="#modalResult" data-toggle="modal" />
 @endsection

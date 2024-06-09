@@ -23,6 +23,9 @@
         .toast-error {
             background-color: rgb(211, 65, 65) !important;
         }
+        .fixed-top {
+            /* position: unset !important; */
+        }
     </style>
     @stack('styles')
 </head>

@@ -8,8 +8,8 @@ class ChargeController extends Controller
 {
     public function index()
     {
-       return view('charge',[
-           'title' => 'Nạp tiền'
-       ]);
-   }
+        return view('charge.index', [
+            'title' => 'Nạp tiền'
+        ]);
+    }
 }

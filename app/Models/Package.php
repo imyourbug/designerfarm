@@ -14,8 +14,13 @@ class Package extends Model
         'price',
         'number_file',
         'expire',
-        'amount_time',
         'type',
+        'website_id',
+        'avatar',
+        'price_sale',
+        'description',
+        // 'file_per_day',
+        // 'number_download',
     ];
 
     public function userPakages()

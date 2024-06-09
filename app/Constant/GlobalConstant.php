@@ -4,9 +4,11 @@ namespace App\Constant;
 
 class GlobalConstant
 {
+    public const TYPE_BY_NUMBER_FILE = 0;
+    public const TYPE_BY_TIME = 1;
+
     public const ROLE_USER = 0;
     public const ROLE_ADMIN = 1;
-
 
     public const STATUS_OK = 0;
     public const STATUS_ERROR = 1;
@@ -34,6 +36,7 @@ class GlobalConstant
     public const WEB_PIKBEST = 'Pikbest';
     public const WEB_STORYBLOCKS = 'Storyblocks';
     public const WEB_VECTEEZY = 'Vecteezy';
+    public const WEB_ALL = 'ALL';
 
     public const WEB_TYPE = [
         self::WEB_FREEPIK,
@@ -45,6 +48,7 @@ class GlobalConstant
         self::WEB_PIKBEST,
         self::WEB_STORYBLOCKS,
         self::WEB_VECTEEZY,
+        self::WEB_ALL,
     ];
 
     public const WEB_REQUIRED_TYPE_DOWNLOAD = [
