@@ -96,7 +96,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-sm-12 select-website-id">
+                                {{-- <div class="col-lg-6 col-sm-12 select-website-id">
                                     <div class="form-group">
                                         <label for="menu">Website <span class="required">(*)</span></label>
                                         <select name="website_id" id="website_id" class="form-control">
@@ -109,7 +109,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-lg-12 col-sm-12">
                                     <div class="form-group">
                                         <label for="menu">Mô tả</label>

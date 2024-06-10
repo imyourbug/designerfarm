@@ -15,6 +15,8 @@
     <!-- select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
     <style>
         .toast-success {
             background-color: rgb(49, 171, 81) !important;
@@ -23,8 +25,17 @@
         .toast-error {
             background-color: rgb(211, 65, 65) !important;
         }
+
         .fixed-top {
             /* position: unset !important; */
+        }
+
+        .required {
+            color: rgb(239, 81, 81);
+        }
+
+        .modal {
+            overflow-y: auto !important;
         }
     </style>
     @stack('styles')
@@ -84,7 +95,7 @@
                         localStorage.setItem('user', JSON.stringify(response.user));
                         $('.btn-open-login').css('display', 'none');
                         $('.block-account').css('display', 'block');
-                        $('.txt-user-name').text(useresponse.user.email);
+                        $('.txt-user-name').text(response.user.email);
                     } else {
                         toastr.error(response.message, "Thông báo");
                     }

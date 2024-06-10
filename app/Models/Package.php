@@ -23,8 +23,8 @@ class Package extends Model
         // 'number_download',
     ];
 
-    public function userPakages()
+    public function members()
     {
-        return $this->hasMany(UserPackage::class, 'user_id', 'id');
+        return $this->hasMany(Member::class, 'user_id', 'id');
     }
 }

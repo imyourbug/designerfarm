@@ -4,6 +4,16 @@ namespace App\Constant;
 
 class GlobalConstant
 {
+    public const STATUS_PENDING = 0;
+    public const STATUS_ACCEPTED = 1;
+    public const STATUS_CANCELED = 2;
+
+    public const REQUEST_STATUS = [
+        self::STATUS_PENDING,
+        self::STATUS_ACCEPTED,
+        self::STATUS_CANCELED,
+    ];
+
     public const TYPE_BY_NUMBER_FILE = 0;
     public const TYPE_BY_TIME = 1;
 

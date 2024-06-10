@@ -62,7 +62,7 @@ Route::group([
     #admin
     Route::group([
         'middleware' => 'admin'
-        ], function () {
+    ], function () {
         Route::get('/', 'AdminController@index')->name('index');
 
         #accounts
@@ -73,12 +73,26 @@ Route::group([
             Route::post('/update', 'AccountController@update')->name('update');
         });
 
+        #settings
+        Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
+            Route::get('/', 'SettingController@index')->name('index');
+            Route::post('update', 'SettingController@update')->name('update');
+        });
+
         #packages
         Route::group(['prefix' => 'packages', 'as' => 'packages.'], function () {
             Route::get('/', 'PackageController@index')->name('index');
             Route::post('/create', 'PackageController@store')->name('store');
             Route::get('/update/{id}', 'PackageController@show')->name('show');
             Route::post('/update', 'PackageController@update')->name('update');
+        });
+
+        #requests
+        Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
+            Route::get('/', 'RequestController@index')->name('index');
+            Route::post('/create', 'RequestController@store')->name('store');
+            Route::get('/update/{id}', 'RequestController@show')->name('show');
+            Route::post('/update', 'RequestController@update')->name('update');
         });
 
         #members

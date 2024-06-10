@@ -21,17 +21,10 @@ class MemberController extends Controller
         $member_id = $request->member_id;
         $to = $request->to;
         $from = $request->from;
-        $content = $request->content;
-        $user = $request->user;
         $uid = $request->uid;
-        $note = $request->note;
-        $phone = $request->phone;
-        $title = $request->title;
-        $name_facebook = $request->name_facebook;
-        $today = $request->today;
         $limit = $request->limit;
         $ids = $request->ids ?? [];
-        $members = Member::with([])
+        $members = Member::with(['user', 'package'])
             // to
             ->when($to, function ($q) use ($to) {
                 return $q->where('created_at', '<=', $to . ' 23:59:59');
@@ -81,6 +74,65 @@ class MemberController extends Controller
         } catch (Throwable $e) {
             DB::rollBack();
 
+            return response()->json([
+                'status' => 1,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            $data = $request->validate([
+                'user_id' => 'required|string',
+                'package_id' => 'required|string',
+                'total' => 'required|string',
+                'expire' => 'required|numeric',
+                // 'type' => 'required|in:' . GlobalConstant::TYPE_BY_NUMBER_FILE . ',' . GlobalConstant::TYPE_BY_TIME,
+                'website_id' => 'nullable|in:' . implode(',', GlobalConstant::WEB_TYPE),
+            ]);
+            $data['status'] = GlobalConstant::STATUS_PENDING;
+            $data['code'] = 'GD' . time() . $data['user_id'];
+            Member::create($data);
+
+            return response()->json([
+                'status' => 0,
+            ]);
+        } catch (Throwable $e) {
+            return response()->json([
+                'status' => 1,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function update(Request $request)
+    {
+        try {
+            $data = $request->validate([
+                'id' => 'required|integer',
+                'status' => 'required|in:' . implode(',', GlobalConstant::REQUEST_STATUS),
+            ]);
+
+            $requestModel = Member::firstWhere('id', $data['id']);
+            switch (true) {
+                case  $data['status'] == GlobalConstant::STATUS_ACCEPTED:
+                    # code...
+                    $package = Member::firstWhere('id', $requestModel->package_id);
+
+                    break;
+                default:
+                    break;
+            }
+            $requestModel->update([
+                'status' => $data['status'],
+            ]);
+
+            return response()->json([
+                'status' => 0,
+            ]);
+        } catch (Throwable $e) {
             return response()->json([
                 'status' => 1,
                 'message' => $e->getMessage()

@@ -108,7 +108,7 @@
                                         <textarea class="form-control" placeholder="Nhập mô tả" name="description" id="description" cols="30" rows="5">{{ old('description') ?? 'Gói nhiều ưu đãi' }}</textarea>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-sm-12 select-website-id" style="display: none">
+                                {{-- <div class="col-lg-6 col-sm-12 select-website-id" style="display: none">
                                     <div class="form-group">
                                         <label for="menu">Website <span class="required">(*)</span></label>
                                         <select name="website_id" id="website_id" class="form-control">
@@ -119,7 +119,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="form-group">
                                         <label for="file">Ảnh hiển thị</label><br>
@@ -163,7 +163,7 @@
                                 <th>Số file</th>
                                 <th>Thời hạn (tháng)</th>
                                 <th>Loại gói</th>
-                                <th>Website</th>
+                                {{-- <th>Website</th> --}}
                                 <th>Mô tả</th>
                                 <th>Ảnh</th>
                                 <th>Thao tác</th>

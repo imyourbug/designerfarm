@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
 @endpush
 @push('scripts')
-    <script src="/js/admin/member/index.js"></script>
+    <script src="/js/admin/request/index.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
@@ -18,7 +18,7 @@
         <div class="col-lg-12">
             <div class="card direct-chat direct-chat-primary">
                 <div class="card-header ui-sortable-handle header-color" style="cursor: move;">
-                    <h3 class="card-title text-bold">Danh sách thành viên</h3>
+                    <h3 class="card-title text-bold">Danh sách yêu cầu nạp</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -29,16 +29,13 @@
                     <table id="table" class="table display nowrap dataTable dtr-inline collapsed">
                         <thead>
                             <tr>
-                                <th>Tên thành viên</th>
                                 <th>Tài khoản</th>
                                 <th>Tên gói</th>
-                                <th>Giá (VNĐ)</th>
-                                <th>Số lượt tải</th>
-                                <th>Số lượt tải còn lại</th>
+                                <th>Tổng tiền (VNĐ)</th>
                                 <th>Thời hạn (tháng)</th>
-                                <th>Ngày hết hạn</th>
                                 <th>Loại gói</th>
                                 <th>Website</th>
+                                <th>Trạng thái</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>

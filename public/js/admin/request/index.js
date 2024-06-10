@@ -27,8 +27,8 @@ $(document).ready(function () {
             top2Start: 'pageLength',
         },
         ajax: {
-            url: `/api/packages/getAll`,
-            dataSrc: "packages",
+            url: `/api/requests/getAll`,
+            dataSrc: "requests",
         },
         columns: [
             // {
@@ -38,22 +38,17 @@ $(document).ready(function () {
             // },
             {
                 data: function (d) {
-                    return d.name;
+                    return d.user.email;
                 },
             },
             {
                 data: function (d) {
-                    return `${formatCash(d.price)}`;
+                    return d.package.name;
                 },
             },
             {
                 data: function (d) {
-                    return `${formatCash(d.price_sale || 0)}`;
-                },
-            },
-            {
-                data: function (d) {
-                    return `${d.number_file}/${d.type == 0 ? 'năm' : 'ngày'}`;
+                    return `${formatCash(d.total)}`;
                 },
             },
             {
@@ -63,30 +58,22 @@ $(document).ready(function () {
             },
             {
                 data: function (d) {
-                    return d.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
-                },
-            },
-            // {
-            //     data: function (d) {
-            //         return d.type == 0 ? 'Không' : d.website_id;
-            //     },
-            // },
-            {
-                data: function (d) {
-                    return d.description;
+                    return d.package.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
                 },
             },
             {
                 data: function (d) {
-                    return `<img style="width: 50px;height:50px" src="${d.avatar}" alt="image" />`;
+                    return d.package.type == 0 ? 'Không' : d.website_id;
                 },
             },
             {
                 data: function (d) {
-                    return `<a class="btn btn-sm btn-primary btn-edit" target="_blank" href="/admin/packages/update/${d.id}">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <button data-id="${d.id}" class="btn btn-danger btn-sm btn-delete">
+                    return getStatus(d.id, d.status);
+                },
+            },
+            {
+                data: function (d) {
+                    return `<button data-id="${d.id}" class="btn btn-danger btn-sm btn-delete">
                                 <i class="fas fa-trash"></i>
                             </button>`;
                 },
@@ -95,12 +82,63 @@ $(document).ready(function () {
     });
 });
 
+function getStatus(id = '', status = '') {
+    let renderStatus = '';
+    switch (true) {
+        case status == 0:
+            renderStatus = `<div class="btn-group">
+                <span class="btn btn-primary">Đang chờ</span>
+                <button type="button" class="btn btn-primary btn-flat dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="true">
+                <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(67px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
+                <a data-id=${id} data-status=${1} class="dropdown-item btn-change-status" href="#">Đã xác nhận</a>
+                <a data-id=${id} data-status=${2} class="dropdown-item btn-change-status" href="#">Đã hủy</a>
+                </div>
+                </div>`;
+            break;
+        case status == 1:
+            renderStatus = '<span class="btn btn-success">Đã xác nhận</span>';
+            break;
+        case status == 2:
+            renderStatus = '<span class="btn btn-danger">Đã hủy</span>';
+            break;
+        default:
+            break;
+    }
+
+    return renderStatus;
+}
+
+$(document).on("click", ".btn-change-status", function () {
+    if (confirm("Bạn có muốn đổi trạng thái?")) {
+        let id = $(this).data("id");
+        let status = $(this).data("status");
+        $.ajax({
+            type: "POST",
+            url: `/api/requests/update`,
+            data: {
+                id,
+                status
+            },
+            success: function (response) {
+                if (response.status == 0) {
+                    toastr.success("Cập nhật thành công");
+                    dataTable.ajax.reload();
+                } else {
+                    toastr.error(response.message);
+                }
+            },
+        });
+    }
+});
+
 $(document).on("click", ".btn-delete", function () {
     if (confirm("Bạn có muốn xóa?")) {
         let id = $(this).data("id");
         $.ajax({
             type: "DELETE",
-            url: `/api/packages/${id}/destroy`,
+            url: `/api/requests/${id}/destroy`,
             success: function (response) {
                 if (response.status == 0) {
                     toastr.success("Xóa thành công");
@@ -205,16 +243,16 @@ function formatCash(str) {
 //     // reload
 //     // dataTable.clear().rows.add(tempAllRecord).draw();
 //     dataTable.ajax
-//         .url("/api/packages/getAll?" + getQueryUrlWithParams())
+//         .url("/api/requests/getAll?" + getQueryUrlWithParams())
 //         .load();
 
 //     //
 //     await $.ajax({
 //         type: "GET",
-//         url: `/api/packages/getAll?${getQueryUrlWithParams()}`,
+//         url: `/api/requests/getAll?${getQueryUrlWithParams()}`,
 //         success: function (response) {
 //             if (response.status == 0) {
-//                 response.packages.forEach((e) => {
+//                 response.requests.forEach((e) => {
 //                     tempAllRecord.push(e.id);
 //                 });
 //             }
@@ -243,8 +281,8 @@ function formatCash(str) {
 
 //     // reload table
 //     dataTable.ajax
-//         .url(`/api/packages/getAll`)
-//         // .url(`/api/packages/getAll?today=${new Date().toJSON().slice(0, 10)}`)
+//         .url(`/api/requests/getAll`)
+//         // .url(`/api/requests/getAll?today=${new Date().toJSON().slice(0, 10)}`)
 //         .load();
 
 //     // reload count and record
@@ -265,7 +303,7 @@ function formatCash(str) {
 //         if (tempAllRecord.length) {
 //             $.ajax({
 //                 type: "POST",
-//                 url: `/api/packages/deleteAll`,
+//                 url: `/api/requests/deleteAll`,
 //                 data: { ids: tempAllRecord },
 //                 success: function (response) {
 //                     if (response.status == 0) {

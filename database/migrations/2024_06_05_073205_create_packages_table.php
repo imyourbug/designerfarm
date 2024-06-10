@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('price')->default(0);
             $table->string('price_sale')->nullable()->default(0);
             $table->string('number_file')->default(0);
-            $table->integer('expire')->nullable(); // by number of month
             // $table->string('number_download')->default(1);
             // $table->string('file_per_day')->default(1);
             $table->string('type')->nullable(); // day,month,year
+            $table->integer('expire')->nullable(); // by number of month
             $table->string('website_id')->nullable(); // id website
             $table->string('avatar')->nullable();
             $table->string('description')->nullable();

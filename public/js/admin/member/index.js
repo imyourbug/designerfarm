@@ -27,8 +27,8 @@ $(document).ready(function () {
             top2Start: 'pageLength',
         },
         ajax: {
-            url: `/api/packages/getAll`,
-            dataSrc: "packages",
+            url: `/api/members/getAll`,
+            dataSrc: "members",
         },
         columns: [
             // {
@@ -73,7 +73,7 @@ $(document).ready(function () {
             },
             {
                 data: function (d) {
-                    return `<a class="btn btn-sm btn-primary btn-edit" target="_blank" href="/admin/packages/update/${d.id}">
+                    return `<a class="btn btn-sm btn-primary btn-edit" target="_blank" href="/admin/members/update/${d.id}">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <button data-id="${d.id}" class="btn btn-danger btn-sm btn-delete">
@@ -90,7 +90,7 @@ $(document).on("click", ".btn-delete", function () {
         let id = $(this).data("id");
         $.ajax({
             type: "DELETE",
-            url: `/api/packages/${id}/destroy`,
+            url: `/api/members/${id}/destroy`,
             success: function (response) {
                 if (response.status == 0) {
                     toastr.success("Xóa thành công");
@@ -195,16 +195,16 @@ function formatCash(str) {
 //     // reload
 //     // dataTable.clear().rows.add(tempAllRecord).draw();
 //     dataTable.ajax
-//         .url("/api/packages/getAll?" + getQueryUrlWithParams())
+//         .url("/api/members/getAll?" + getQueryUrlWithParams())
 //         .load();
 
 //     //
 //     await $.ajax({
 //         type: "GET",
-//         url: `/api/packages/getAll?${getQueryUrlWithParams()}`,
+//         url: `/api/members/getAll?${getQueryUrlWithParams()}`,
 //         success: function (response) {
 //             if (response.status == 0) {
-//                 response.packages.forEach((e) => {
+//                 response.members.forEach((e) => {
 //                     tempAllRecord.push(e.id);
 //                 });
 //             }
@@ -233,8 +233,8 @@ function formatCash(str) {
 
 //     // reload table
 //     dataTable.ajax
-//         .url(`/api/packages/getAll`)
-//         // .url(`/api/packages/getAll?today=${new Date().toJSON().slice(0, 10)}`)
+//         .url(`/api/members/getAll`)
+//         // .url(`/api/members/getAll?today=${new Date().toJSON().slice(0, 10)}`)
 //         .load();
 
 //     // reload count and record
@@ -255,7 +255,7 @@ function formatCash(str) {
 //         if (tempAllRecord.length) {
 //             $.ajax({
 //                 type: "POST",
-//                 url: `/api/packages/deleteAll`,
+//                 url: `/api/members/deleteAll`,
 //                 data: { ids: tempAllRecord },
 //                 success: function (response) {
 //                     if (response.status == 0) {

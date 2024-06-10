@@ -87,10 +87,6 @@
 
     </div>
 </nav>
-
-
-
-
 <div class="modal fade" id="modalCharge" style="display: none;" aria-modal="true" role="dialog">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">

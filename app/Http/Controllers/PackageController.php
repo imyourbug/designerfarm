@@ -4,15 +4,42 @@ namespace App\Http\Controllers;
 
 use App\Constant\GlobalConstant;
 use App\Models\Package;
+use App\Models\Website;
 use Illuminate\Http\Request;
+use Throwable;
 
 class PackageController extends Controller
 {
+    public function getPackageById(Request $request)
+    {
+        $package = Package::firstWhere('id', $request->id);
+
+        if ($package) {
+            return response()->json([
+                'status' => 0,
+                'package' => $package
+            ]);
+        }
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Gói không tồn tại'
+        ]);
+    }
+
     public function index()
     {
         return view('package.index', [
             'title' => 'Nạp tiền',
-            'packages' => Package::all()
+            'packageTypes' => [
+                GlobalConstant::TYPE_BY_NUMBER_FILE => Package::with(['members'])
+                    ->where('type', GlobalConstant::TYPE_BY_NUMBER_FILE)
+                    ->get(),
+                GlobalConstant::TYPE_BY_TIME => Package::with(['members'])
+                    ->where('type', GlobalConstant::TYPE_BY_TIME)
+                    ->get(),
+            ],
+            'websites' => Website::all()
         ]);
     }
 
@@ -72,14 +99,14 @@ class PackageController extends Controller
     {
         return view('admin.package.edit', [
             'title' => 'Chi tiết bình luận',
-            'package' => package::firstWhere('id', $id)
+            'package' => Package::firstWhere('id', $id)
         ]);
     }
 
     public function destroy($id)
     {
         try {
-            $link = package::firstWhere('id', $id);
+            $link = Package::firstWhere('id', $id);
             $link->delete();
 
             return response()->json([
@@ -98,7 +125,7 @@ class PackageController extends Controller
     {
         try {
             DB::beginTransaction();
-            package::whereIn('id', $request->ids)->delete();
+            Package::whereIn('id', $request->ids)->delete();
             DB::commit();
             return response()->json([
                 'status' => 0,
