@@ -30,6 +30,7 @@
                         <thead>
                             <tr>
                                 <th>Tài khoản</th>
+                                <th>Nội dung CK</th>
                                 <th>Tên gói</th>
                                 <th>Tổng tiền (VNĐ)</th>
                                 <th>Thời hạn (tháng)</th>

@@ -15,7 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('package_id')->nullable();
+            $table->integer('expire')->nullable();
             $table->string('expired_at')->nullable();
+            $table->string('website_id')->nullable();
+            $table->integer('downloaded_number_file')->nullable()->default(0);
+            $table->integer('number_file')->nullable()->default(0);
             $table->timestamps();
         });
     }

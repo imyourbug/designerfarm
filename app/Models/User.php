@@ -54,8 +54,8 @@ class User extends Authenticatable
         return $this->hasMany(ChargeHistory::class, 'user_id', 'id');
     }
 
-    public function userPakages()
+    public function members()
     {
-        return $this->hasMany(UserPackage::class, 'user_id', 'id');
+        return $this->hasMany(Member::class, 'user_id', 'id');
     }
 }

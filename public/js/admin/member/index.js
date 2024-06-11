@@ -38,17 +38,22 @@ $(document).ready(function () {
             // },
             {
                 data: function (d) {
-                    return d.name;
+                    return d.user.email;
                 },
             },
             {
                 data: function (d) {
-                    return `${formatCash(d.price)}`;
+                    return d.package.name;
                 },
             },
             {
                 data: function (d) {
-                    return `${d.number_file}/${d.type == 0 ? 'năm' : 'ngày'}`;
+                    return d.package.number_file;
+                },
+            },
+            {
+                data: function (d) {
+                    return d.package.number_file - d.downloaded_number_file;
                 },
             },
             {
@@ -58,25 +63,22 @@ $(document).ready(function () {
             },
             {
                 data: function (d) {
-                    return d.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
+                    return d.expired_at;
                 },
             },
             {
                 data: function (d) {
-                    return d.type == 0 ? 'Không' : d.website_id;
+                    return d.package.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
                 },
             },
             {
                 data: function (d) {
-                    return `<img style="width: 50px;height:50px" src="${d.avatar}" alt="image" />`;
+                    return d.package.type == 0 ? 'Không' : d.website_id;
                 },
             },
             {
                 data: function (d) {
-                    return `<a class="btn btn-sm btn-primary btn-edit" target="_blank" href="/admin/members/update/${d.id}">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <button data-id="${d.id}" class="btn btn-danger btn-sm btn-delete">
+                    return `<button data-id="${d.id}" class="btn btn-danger btn-sm btn-delete">
                                 <i class="fas fa-trash"></i>
                             </button>`;
                 },

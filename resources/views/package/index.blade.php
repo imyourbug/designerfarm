@@ -1,6 +1,5 @@
 @extends('layout.main')
 @push('styles')
-    <title>TẢI FILE FREEPIK GIÁ RẺ</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="/css/style.css" rel="stylesheet" type="text/css">
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
@@ -77,14 +76,17 @@
                                     `${newPrice}`);
                             }
                             if (package.type == 1) {
-                                $('#type-time-first').val(parseInt(newPrice) * 3);
-                                $('.label-price-first').text(`${formatCash(parseInt(newPrice) * 3)}đ`);
-                                $('#type-time-second').val(parseInt(newPrice) * 6);
-                                $('.label-price-second').text(`${formatCash(parseInt(newPrice) * 6)}đ`);
-                                $('#type-time-third').val(parseInt(newPrice) * 12);
-                                $('.label-price-third').text(`${formatCash(parseInt(newPrice) * 12)}đ`);
+                                $('#type-time-first').val(parseInt(newPrice) * 1);
+                                $('.label-price-first').text(`${formatCash(parseInt(newPrice) * 1)}đ`);
+                                $('#type-time-second').val(parseInt(newPrice) * 3);
+                                $('.label-price-second').text(`${formatCash(parseInt(newPrice) * 3)}đ`);
+                                $('#type-time-third').val(parseInt(newPrice) * 6);
+                                $('.label-price-third').text(`${formatCash(parseInt(newPrice) * 6)}đ`);
+                                $('#type-time-fourth').val(parseInt(newPrice) * 12);
+                                $('.label-price-fourth').text(
+                                    `${formatCash(parseInt(newPrice) * 12)}đ`);
                                 // default click
-                                $('#type-time-third').click();
+                                $('#type-time-fourth').click();
                             }
                             $('.type-number-file').css('display', package.type == 1 ? 'none' : 'block');
                             $('.type-time').css('display', package.type == 0 ? 'none' : 'block');
@@ -107,7 +109,7 @@
             let user = JSON.parse(localStorage.getItem('user'));
             $('.btn-close-modal').click();
             if (user) {
-                $('.user_id').text(user.id);
+                $('.content').text(user.id + 'GD' + Date.parse(new Date()));
             }
         });
 
@@ -116,9 +118,10 @@
             if (user) {
                 let total = $('.total').data('total');
                 let package_id = $('#package_id').val();
-                let website_id = $('#website_id').val();
                 let type = $('#package_type').val();
+                let website_id = type == 0 ? '' : $('#website_id').val();
                 let expire = type == 0 ? 12 : $('input[name="type-time-option"]:checked').data('expire');
+                let content = $('#content').text();
                 $.ajax({
                     method: "POST",
                     url: `/api/requests/create`,
@@ -127,11 +130,13 @@
                         package_id,
                         total,
                         expire,
-                        website_id
+                        website_id,
+                        content
                     },
                     success: function(response) {
                         if (response.status == 0) {
-                            toastr.success('Đăng ký thành công. Vui lòng đợi hệ thống xác nhận trong vài phút');
+                            toastr.success(
+                                'Đăng ký thành công. Vui lòng đợi hệ thống xác nhận trong vài phút');
                         } else {
                             toastr.error(response.message);
                         }
@@ -157,11 +162,11 @@
 @endpush
 @section('content')
     <div class="container" style="margin-top: 100px;">
-        <div class="h-pricing-table__info h-grid" style="text-align: center;"><!--[-->
-            <h2>Chọn gói hoàn hảo cho bạn</h2>
-            <p class="h-pricing-table__description">Get started in complete confidence. Our 30-day money-back guarantee
-                means it's risk-free.</p><!--]--><!---->
+        <div class="h-pricing-table__info h-grid mb-4" style="text-align: center;"><!--[-->
+            <h2 style="font-weight: bold">Chọn gói hoàn hảo cho bạn</h2>
         </div>
+        <br>
+        <br>
         @foreach ($packageTypes as $type => $packages)
             <h3>{{ $type == 0 ? 'Theo số lượt tải' : 'Theo thời gian' }}</h3>
             <div class="row">
@@ -241,24 +246,32 @@
                     <div class="periods type-time row">
                         <label for="menu" style="font-weight: bold">Thời hạn <span class="required">(*)</span></label>
                         <div class="col-lg-12 col-md-12 col-sm-12 option" style="">
-                            <div class=""><input class="rdo-type-time" data-expire="12" id="type-time-third" name="type-time-option"
-                                    type="radio" />
-                                <label for="type-time-third">1 năm</label>
+                            <div class=""><input class="rdo-type-time" data-expire="12" id="type-time-fourth"
+                                    name="type-time-option" type="radio" />
+                                <label for="type-time-fourth">1 năm</label>
+                            </div>
+                            <span class="btn btn-warning label-price-fourth" style="">120000</span>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 option" style="">
+                            <div class=""><input class="rdo-type-time" data-expire="6" id="type-time-third"
+                                    name="type-time-option" type="radio" />
+                                <label for="type-time-third">6 tháng</label>
                             </div>
                             <span class="btn btn-warning label-price-third" style="">120000</span>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 option" style="">
-                            <div class=""><input class="rdo-type-time" data-expire="6" id="type-time-second" name="type-time-option"
-                                    type="radio" />
-                                <label for="type-time-second">6 tháng</label>
+                            <div class="">
+                                <input class="rdo-type-time" id="type-time-second" data-expire="3"
+                                    name="type-time-option" type="radio" />
+                                <label for="type-time-second">3 tháng</label>
                             </div>
                             <span class="btn btn-warning label-price-second" style="">120000</span>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 option" style="">
                             <div class="">
-                                <input class="rdo-type-time" id="type-time-first" data-expire="3" name="type-time-option"
-                                    type="radio" />
-                                <label for="type-time-first">3 tháng</label>
+                                <input class="rdo-type-time" id="type-time-first" data-expire="1"
+                                    name="type-time-option" type="radio" />
+                                <label for="type-time-first">1 tháng</label>
                             </div>
                             <span class="btn btn-warning label-price-first" style="">120000</span>
                         </div>
@@ -360,8 +373,8 @@
                                                     <strong style="line-height: 30px;">Nội dung CK bắt buộc là: <span
                                                             class="orange"
                                                             style="font-size: 30px; line-height: 23px;"><span
-                                                                class="user_id"></span></span></strong><br>
-                                                    <em>(Trong đó <strong class="user_id"></strong> để
+                                                                class="content" id="content"></span></span></strong><br>
+                                                    <em>(Trong đó <strong class="content"></strong> để
                                                         xác định tài
                                                         khoản của bạn, Hệ thống sẽ cộng tiền vào tài khoản này cho bạn)</em>
                                                 </div>

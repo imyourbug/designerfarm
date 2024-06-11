@@ -20,12 +20,12 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     });
     Route::post('/sendMessage', 'BotController@sendMessage')->name('sendMessage');
 
-    Route::post('/setCacheByEmail', 'Controller@setCacheByEmail')->name('setCacheByEmail');
-    Route::post('/getCacheByEmail', 'Controller@getCacheByEmail')->name('getCacheByEmail');
-    Route::post('/setCacheById', 'Controller@setCacheById')->name('setCacheById');
-    Route::post('/getCacheById', 'Controller@getCacheById')->name('getCacheById');
-    Route::post('/getCacheByKey', 'Controller@getCacheByKey')->name('getCacheByKey');
-    Route::post('/deleteAllCache', 'Controller@deleteAllCache')->name('deleteAllCache');
+    Route::post('/setCacheByEmail', 'BotController@setCacheByEmail')->name('setCacheByEmail');
+    Route::post('/getCacheByEmail', 'BotController@getCacheByEmail')->name('getCacheByEmail');
+    Route::post('/setCacheById', 'BotController@setCacheById')->name('setCacheById');
+    Route::post('/getCacheById', 'BotController@getCacheById')->name('getCacheById');
+    Route::post('/getCacheByKey', 'BotController@getCacheByKey')->name('getCacheByKey');
+    Route::post('/deleteAllCache', 'BotController@deleteAllCache')->name('deleteAllCache');
 
     #upload
     Route::post('/upload', 'UploadController@upload')->name('upload');
@@ -50,10 +50,8 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
 
     #members
     Route::group(['prefix' => 'members', 'as' => 'members.'], function () {
-        Route::post('/create', 'MemberController@store')->name('store');
-        Route::post('/update', 'MemberController@update')->name('update');
         Route::get('/getAll', 'MemberController@getAll')->name('getAll');
-        Route::post('/deleteAll', 'MemberController@deleteAll')->name('deleteAll');
+        // Route::post('/deleteAll', 'MemberController@deleteAll')->name('deleteAll');
         Route::delete('/{id}/destroy', 'MemberController@destroy')->name('destroy');
     });
 });

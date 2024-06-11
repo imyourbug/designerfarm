@@ -12,16 +12,25 @@ class Member extends Model
     protected $fillable = [
         'user_id',
         'package_id',
-        'expired_at'
+        'expire',
+        'expired_at',
+        'number_file',
+        'downloaded_number_file',
+        'website_id',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function package()
     {
-        return $this->belongsTo(Package::class, 'id', 'package_id');
+        return $this->belongsTo(Package::class, 'package_id', 'id');
+    }
+
+    public function downloadHistories()
+    {
+        return $this->hasMany(DownloadHistory::class, 'user_id', 'id');
     }
 }

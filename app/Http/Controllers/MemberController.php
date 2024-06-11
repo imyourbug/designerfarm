@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constant\GlobalConstant;
 use App\Http\Controllers\Controller;
+use App\Models\DownloadHistory;
 use App\Models\Member;
 use App\Models\User;
 use App\Models\Website;
@@ -37,10 +38,6 @@ class MemberController extends Controller
                     $from
                 );
             })
-            // uid
-            ->when(strlen($uid), function ($q) use ($uid) {
-                return $q->where('uid', 'like', "%$uid%");
-            })
             // ids
             ->when(count($ids), function ($q) use ($ids) {
                 $q->whereIn('id', $ids);
@@ -52,7 +49,7 @@ class MemberController extends Controller
         if ($limit) {
             $members = $members->limit($limit);
         }
-        $members = $members->get()?->toArray() ?? [];;
+        $members = $members->get()?->toArray() ?? [];
 
         return response()->json([
             'status' => 0,
@@ -74,65 +71,6 @@ class MemberController extends Controller
         } catch (Throwable $e) {
             DB::rollBack();
 
-            return response()->json([
-                'status' => 1,
-                'message' => $e->getMessage()
-            ]);
-        }
-    }
-
-    public function store(Request $request)
-    {
-        try {
-            $data = $request->validate([
-                'user_id' => 'required|string',
-                'package_id' => 'required|string',
-                'total' => 'required|string',
-                'expire' => 'required|numeric',
-                // 'type' => 'required|in:' . GlobalConstant::TYPE_BY_NUMBER_FILE . ',' . GlobalConstant::TYPE_BY_TIME,
-                'website_id' => 'nullable|in:' . implode(',', GlobalConstant::WEB_TYPE),
-            ]);
-            $data['status'] = GlobalConstant::STATUS_PENDING;
-            $data['code'] = 'GD' . time() . $data['user_id'];
-            Member::create($data);
-
-            return response()->json([
-                'status' => 0,
-            ]);
-        } catch (Throwable $e) {
-            return response()->json([
-                'status' => 1,
-                'message' => $e->getMessage()
-            ]);
-        }
-    }
-
-    public function update(Request $request)
-    {
-        try {
-            $data = $request->validate([
-                'id' => 'required|integer',
-                'status' => 'required|in:' . implode(',', GlobalConstant::REQUEST_STATUS),
-            ]);
-
-            $requestModel = Member::firstWhere('id', $data['id']);
-            switch (true) {
-                case  $data['status'] == GlobalConstant::STATUS_ACCEPTED:
-                    # code...
-                    $package = Member::firstWhere('id', $requestModel->package_id);
-
-                    break;
-                default:
-                    break;
-            }
-            $requestModel->update([
-                'status' => $data['status'],
-            ]);
-
-            return response()->json([
-                'status' => 0,
-            ]);
-        } catch (Throwable $e) {
             return response()->json([
                 'status' => 1,
                 'message' => $e->getMessage()

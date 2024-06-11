@@ -29,10 +29,8 @@
                     <table id="table" class="table display nowrap dataTable dtr-inline collapsed">
                         <thead>
                             <tr>
-                                <th>Tên thành viên</th>
                                 <th>Tài khoản</th>
                                 <th>Tên gói</th>
-                                <th>Giá (VNĐ)</th>
                                 <th>Số lượt tải</th>
                                 <th>Số lượt tải còn lại</th>
                                 <th>Thời hạn (tháng)</th>

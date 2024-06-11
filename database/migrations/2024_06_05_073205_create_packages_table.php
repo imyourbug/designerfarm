@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->string('price')->default(0);
-            $table->string('price_sale')->nullable()->default(0);
-            $table->string('number_file')->default(0);
+            $table->integer('price')->default(0);
+            $table->integer('price_sale')->nullable();
+            $table->integer('number_file')->default(0);
             // $table->string('number_download')->default(1);
             // $table->string('file_per_day')->default(1);
             $table->string('type')->nullable(); // day,month,year
