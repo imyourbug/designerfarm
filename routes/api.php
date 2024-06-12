@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'as' => 'auth.'], function () {
         Route::post('/login', 'AuthController@login')->name('login');
+        Route::post('/register', 'AuthController@register')->name('register');
+        Route::post('/changePassword', 'AuthController@changePassword')->name('changePassword');
+        // Route::post('/update', 'AuthController@update')->name('update');
     });
     Route::post('/sendMessage', 'BotController@sendMessage')->name('sendMessage');
 
@@ -39,6 +42,11 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('/deleteAll', 'PackageController@deleteAll')->name('deleteAll');
     });
 
+    #downloadhistories
+    Route::group(['prefix' => 'downloadhistories', 'as' => 'downloadhistories.'], function () {
+        Route::get('/getAll', 'DownloadHistoryController@getAll')->name('getAll');
+    });
+
     #requests
     Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
         Route::post('/create', 'RequestController@store')->name('store');
@@ -54,18 +62,20 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         // Route::post('/deleteAll', 'MemberController@deleteAll')->name('deleteAll');
         Route::delete('/{id}/destroy', 'MemberController@destroy')->name('destroy');
     });
+
+    Route::group(['namespace' => 'Admin'], function () {
+        #accounts
+        Route::group(['prefix' => 'accounts', 'as' => 'accounts.'], function () {
+            Route::delete('/{id}/destroy', 'AccountController@destroy')->name('destroy');
+        });
+    
+        #settings
+        Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
+            Route::post('/create', 'SettingController@store')->name('store');
+            Route::get('/getAll', 'SettingController@getAll')->name('getAll');
+            Route::post('/delete', 'SettingController@delete')->name('delete');
+        });
+    });
 });
 
-Route::group(['namespace' => 'App\Http\Controllers\Admin'], function () {
-    #accounts
-    Route::group(['prefix' => 'accounts', 'as' => 'accounts.'], function () {
-        Route::delete('/{id}/destroy', 'AccountController@destroy')->name('destroy');
-    });
 
-    #settings
-    Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
-        Route::post('/create', 'SettingController@store')->name('store');
-        Route::get('/getAll', 'SettingController@getAll')->name('getAll');
-        Route::post('/delete', 'SettingController@delete')->name('delete');
-    });
-});

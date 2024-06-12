@@ -161,7 +161,7 @@
     </script>
 @endpush
 @section('content')
-    <div class="container" style="margin-top: 100px;">
+    <div class="main-content" style="margin-top: 100px;">
         <div class="h-pricing-table__info h-grid mb-4" style="text-align: center;"><!--[-->
             <h2 style="font-weight: bold">Chọn gói hoàn hảo cho bạn</h2>
         </div>

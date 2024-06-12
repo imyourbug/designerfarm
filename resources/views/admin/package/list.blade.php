@@ -65,7 +65,7 @@
                                             value="{{ old('name') }}" placeholder="Nhập tên gói">
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-sm-12">
+                                {{-- <div class="col-lg-6 col-sm-12">
                                     <div class="form-group">
                                         <label for="menu">Giá (VNĐ)<span class="required">(*)</span></label>
                                         <input type="text" class="form-control" name="price"
@@ -92,7 +92,7 @@
                                         <input type="text" class="form-control" name="expire"
                                             value="{{ old('expire') ?? 12 }}" placeholder="Nhập thời hạn">
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-lg-6 col-sm-12 select-type">
                                     <div class="form-group">
                                         <label for="menu">Loại gói <span class="required">(*)</span></label>
@@ -108,18 +108,18 @@
                                         <textarea class="form-control" placeholder="Nhập mô tả" name="description" id="description" cols="30" rows="5">{{ old('description') ?? 'Gói nhiều ưu đãi' }}</textarea>
                                     </div>
                                 </div>
-                                {{-- <div class="col-lg-6 col-sm-12 select-website-id" style="display: none">
+                                <div class="col-lg-6 col-sm-12 select-website-id" style="display: none">
                                     <div class="form-group">
                                         <label for="menu">Website <span class="required">(*)</span></label>
                                         <select name="website_id" id="website_id" class="form-control">
                                             <option selected value="">--Không--</option>
-                                            <option value="ALL">--ALL--</option>
+                                            {{-- <option value="ALL">--ALL--</option>  --}}
                                             @foreach ($websites as $website)
                                                 <option value="{{ $website->code }}">{{ $website->code }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                </div> --}}
+                                </div>
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="form-group">
                                         <label for="file">Ảnh hiển thị</label><br>
@@ -158,12 +158,12 @@
                         <thead>
                             <tr>
                                 <th>Tên gói</th>
-                                <th>Giá (VNĐ)</th>
+                                {{-- <th>Giá (VNĐ)</th>
                                 <th>Giá sale (VNĐ)</th>
                                 <th>Số file</th>
-                                <th>Thời hạn (tháng)</th>
+                                <th>Thời hạn (tháng)</th> --}}
                                 <th>Loại gói</th>
-                                {{-- <th>Website</th> --}}
+                                <th>Website</th>
                                 <th>Mô tả</th>
                                 <th>Ảnh</th>
                                 <th>Thao tác</th>

@@ -2,15 +2,6 @@ var dataTable = null;
 
 $(document).ready(function () {
     dataTable = $("#table").DataTable({
-        columnDefs: [
-            // { visible: false, targets: 1 },
-            // { visible: false, targets: 2 },
-            // { visible: false, targets: 3 },
-        ],
-        lengthMenu: [
-            // [100, 250, 500],
-            // [100, 250, 500]
-        ],
         layout: {
             topStart: {
                 buttons: [
@@ -31,46 +22,41 @@ $(document).ready(function () {
             dataSrc: "packages",
         },
         columns: [
-            // {
-            //     data: function (d) {
-            //         return `<input class="btn-select" type="checkbox" data-id="${d.id}" />`;
-            //     }
-            // },
             {
                 data: function (d) {
                     return d.name;
                 },
             },
-            {
-                data: function (d) {
-                    return `${formatCash(d.price)}`;
-                },
-            },
-            {
-                data: function (d) {
-                    return `${formatCash(d.price_sale || 0)}`;
-                },
-            },
-            {
-                data: function (d) {
-                    return `${d.number_file}/${d.type == 0 ? 'năm' : 'ngày'}`;
-                },
-            },
-            {
-                data: function (d) {
-                    return d.expire;
-                },
-            },
+            // {
+            //     data: function (d) {
+            //         return `${formatCash(d.price)}`;
+            //     },
+            // },
+            // {
+            //     data: function (d) {
+            //         return `${formatCash(d.price_sale || 0)}`;
+            //     },
+            // },
+            // {
+            //     data: function (d) {
+            //         return `${d.number_file}/${d.type == 0 ? 'năm' : 'ngày'}`;
+            //     },
+            // },
+            // {
+            //     data: function (d) {
+            //         return d.expire;
+            //     },
+            // },
             {
                 data: function (d) {
                     return d.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
                 },
             },
-            // {
-            //     data: function (d) {
-            //         return d.type == 0 ? 'Không' : d.website_id;
-            //     },
-            // },
+            {
+                data: function (d) {
+                    return d.type == 0 ? 'Không' : d.website_id;
+                },
+            },
             {
                 data: function (d) {
                     return d.description;

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Constant\GlobalConstant;
 use App\Models\DownloadHistory;
 use App\Models\Member;
+use App\Models\Package;
+use App\Models\Website;
 use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -45,10 +47,6 @@ class BotController extends Controller
                 ->first();
             DB::beginTransaction();
             if (!$downloadHistory) {
-                DownloadHistory::create([
-                    'user_id' => $id,
-                    'url' => $url,
-                ]);
                 // get priority package 1 - by website 2 - by web all 3 - by number file
                 $members = Member::with('package')
                     ->where(
@@ -64,10 +62,10 @@ class BotController extends Controller
                     ->orderBy('expire')
                     ->get();
 
-                $packageSelected = $members->first();
+                $packageSelected = null;
                 foreach ($members as $member) {
                     // if there is package by website id
-                    if ($member->website_id == $website_id) {
+                    if (strlen($website_id) && $member->website_id == $website_id) {
                         $packageSelected = $member;
                         break;
                     }
@@ -76,10 +74,21 @@ class BotController extends Controller
                         $packageSelected = $member;
                     }
                 }
+
                 // increase downloaded_number_file
+                $packageSelected = $packageSelected ?:
+                    $members->where('website_id', '')
+                    ->orWhereNull('website_id')
+                    ->first();
+
                 if ($packageSelected) {
                     $packageSelected->increment('downloaded_number_file');
                 }
+                // create download history
+                DownloadHistory::create([
+                    'user_id' => $id,
+                    'url' => $url,
+                ]);
             }
             DB::commit();
 
@@ -118,6 +127,10 @@ class BotController extends Controller
                 ->whereHas('package', function ($q) {
                     $q->whereColumn('members.downloaded_number_file', '<', 'packages.number_file');
                 })
+                ->where('website_id', $data['typeWeb'])
+                ->orWhere('website_id', GlobalConstant::WEB_ALL)
+                ->orWhere('website_id', '')
+                ->orWhereNull('website_id')
                 ->first();
 
             if (!$availablePackage) {

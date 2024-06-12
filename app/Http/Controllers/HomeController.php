@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use Toastr;
 
 class HomeController extends Controller
 {
     public function index()
-     {
-        return view('home',[
+    {
+        return view('user.home', [
             'title' => 'Trang chủ'
         ]);
     }

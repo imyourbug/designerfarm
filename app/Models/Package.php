@@ -11,14 +11,14 @@ class Package extends Model
 
     protected $fillable = [
         'name',
-        'price',
-        'number_file',
-        'expire',
         'type',
         'website_id',
         'avatar',
-        'price_sale',
         'description',
+        // 'price',
+        // 'number_file',
+        // 'expire',
+        // 'price_sale',
         // 'file_per_day',
         // 'number_download',
     ];

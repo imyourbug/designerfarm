@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Constant\GlobalConstant;
-use App\Models\Package;
-use App\Models\Website;
+use App\Models\PackageDetail;
 use Illuminate\Http\Request;
-use Throwable;
 
-class PackageController extends Controller
+class PackageDetailController extends Controller
 {
     public function getPackageById(Request $request)
     {
-        $package = Package::firstWhere('id', $request->id);
+        $package = PackageDetail::firstWhere('id', $request->id);
 
         if ($package) {
             return response()->json([
@@ -32,11 +29,11 @@ class PackageController extends Controller
         return view('user.package.index', [
             'title' => 'Gói tải',
             'packageTypes' => [
-                GlobalConstant::TYPE_BY_NUMBER_FILE => Package::with(['members'])
-                    ->where('type', GlobalConstant::TYPE_BY_NUMBER_FILE)
+                GlobalConstant::TYPE_BY_NUMBER_FILE => PackageDetail::with(['members'])
+                ->where('type', GlobalConstant::TYPE_BY_NUMBER_FILE)
                     ->get(),
-                GlobalConstant::TYPE_BY_TIME => Package::with(['members'])
-                    ->where('type', GlobalConstant::TYPE_BY_TIME)
+                GlobalConstant::TYPE_BY_TIME => PackageDetail::with(['members'])
+                ->where('type', GlobalConstant::TYPE_BY_TIME)
                     ->get(),
             ],
             'websites' => Website::all()
@@ -59,7 +56,7 @@ class PackageController extends Controller
         $today = $request->today;
         $limit = $request->limit;
         $ids = $request->ids ?? [];
-        $packages = Package::with([])
+        $packages = PackageDetail::with([])
             // to
             ->when($to, function ($q) use ($to) {
                 return $q->where('created_at', '<=', $to . ' 23:59:59');
@@ -99,14 +96,14 @@ class PackageController extends Controller
     {
         // return view('admin.package.edit', [
         //     'title' => 'Chi tiết bình luận',
-        //     'package' => Package::firstWhere('id', $id)
+        //     'package' => PackageDetail::firstWhere('id', $id)
         // ]);
     }
 
     public function destroy($id)
     {
         try {
-            $link = Package::firstWhere('id', $id);
+            $link = PackageDetail::firstWhere('id', $id);
             $link->delete();
 
             return response()->json([
@@ -125,7 +122,7 @@ class PackageController extends Controller
     {
         try {
             DB::beginTransaction();
-            Package::whereIn('id', $request->ids)->delete();
+            PackageDetail::whereIn('id', $request->ids)->delete();
             DB::commit();
             return response()->json([
                 'status' => 0,

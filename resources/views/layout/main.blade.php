@@ -26,6 +26,7 @@
     <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
     <link href="/css/style.css" rel="stylesheet" type="text/css">
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <style>
         .toast-success {
             background-color: rgb(49, 171, 81) !important;
@@ -48,10 +49,7 @@
         }
 
         @media (min-width: 1000px) {
-
-            body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-wrapper,
-            body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-footer,
-            body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-header {
+            .main-header {
                 margin: 0px 250px !important;
             }
         }
@@ -64,7 +62,6 @@
     @yield('content')
     @include('layout.footer')
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <div class="Toastify"></div>
     <script src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
     {!! Toastr::message() !!}
@@ -78,19 +75,20 @@
         $(document).ready(function() {
             user = JSON.parse(localStorage.getItem('user'));
             if (user) {
-                $('.btn-open-login').css('display', 'none');
+                $('.block-login').css('display', 'none');
                 $('.block-account').css('display', 'block');
-                $('.txt-user-name').text(user.email);
+                $('.txt-user-name').text(user.name);
             } else {
-                $('.btn-open-login').css('display', 'block');
+                $('.block-login').css('display', 'block');
                 $('.block-account').css('display', 'none');
             }
         });
 
         $(document).on('click', '.btn-logout', function() {
             localStorage.removeItem('user');
-            $('.btn-open-login').css('display', 'block');
+            $('.block-login').css('display', 'block');
             $('.block-account').css('display', 'none');
+            $('.txt-user-name').text('Tài khoản')
         });
 
         function showLoginModal() {
@@ -102,7 +100,7 @@
             $.ajax({
                 type: "POST",
                 data: {
-                    email: $('#email').val(),
+                    name: $('#name').val(),
                     password: $('#password').val(),
                 },
                 url: "/api/auth/login",
@@ -111,9 +109,9 @@
                         toastr.success(response.message, "Thông báo");
                         closeModal('modalLogin');
                         localStorage.setItem('user', JSON.stringify(response.user));
-                        $('.btn-open-login').css('display', 'none');
+                        $('.block-login').css('display', 'none');
                         $('.block-account').css('display', 'block');
-                        $('.txt-user-name').text(response.user.email);
+                        $('.txt-user-name').text(response.user.name);
                     } else {
                         toastr.error(response.message, "Thông báo");
                     }
@@ -121,13 +119,59 @@
             });
         });
 
+        $(document).on('click', '.btn-register', function() {
+            $.ajax({
+                type: "POST",
+                data: {
+                    name: $('#name_register').val(),
+                    password: $('#password_register').val(),
+                    re_password: $('#re_password_register').val(),
+                },
+                url: "/api/auth/register",
+                success: function(response) {
+                    if (response.status == 0) {
+                        toastr.success(response.message, "Thông báo");
+                        closeModal('modalRegister');
+                    } else {
+                        toastr.error(response.message, "Thông báo");
+                    }
+                },
+            });
+        });
+
+        $(document).on('click', '.btn-change-password', function() {
+            user = JSON.parse(localStorage.getItem('user'));
+            $('#name_change').val(user.name || '');
+
+            $.ajax({
+                type: "POST",
+                data: {
+                    name: $('#name_change').val(),
+                    password: $('#password_change').val(),
+                    new_password: $('#new_password_change').val(),
+                },
+                url: "/api/auth/changePassword",
+                success: function(response) {
+                    if (response.status == 0) {
+                        toastr.success(response.message, "Thông báo");
+                        closeModal('modalChangePassword');
+                    } else {
+                        toastr.error(response.message, "Thông báo");
+                    }
+                },
+            });
+        });
+
+        $(document).on('click', '.btn-open-change-password', function() {
+            user = JSON.parse(localStorage.getItem('user'));
+            $('#name_change').val(user.name || '');
+        });
+
         function closeModal(id) {
             $("#" + id).css("display", "none");
             $("body").removeClass("modal-open");
             $(".modal-backdrop").remove();
         }
-
-
     </script>
 </body>
 

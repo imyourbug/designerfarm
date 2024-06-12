@@ -43,6 +43,21 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::group(['prefix' => 'packages', 'as' => 'packages.'], function () {
         Route::get('/', 'PackageController@index')->name('index');
     });
+
+    #downloadhistories
+    Route::group(['prefix' => 'downloadhistories', 'as' => 'downloadhistories.'], function () {
+        Route::get('/', 'DownloadHistoryController@index')->name('index');
+    });
+
+    #requests
+    Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
+        Route::get('/', 'RequestController@index')->name('index');
+    });
+
+    #members
+    Route::group(['prefix' => 'members', 'as' => 'members.'], function () {
+        Route::get('/', 'MemberController@index')->name('index');
+    });
 });
 
 #admin
@@ -85,6 +100,14 @@ Route::group([
             Route::post('/create', 'PackageController@store')->name('store');
             Route::get('/update/{id}', 'PackageController@show')->name('show');
             Route::post('/update', 'PackageController@update')->name('update');
+        });
+
+        #packagedetails
+        Route::group(['prefix' => 'packagedetails', 'as' => 'packagedetails.'], function () {
+            Route::get('/', 'PackageDetailController@index')->name('index');
+            Route::post('/create', 'PackageDetailController@store')->name('store');
+            Route::get('/update/{id}', 'PackageDetailController@show')->name('show');
+            Route::post('/update', 'PackageDetailController@update')->name('update');
         });
 
         #requests

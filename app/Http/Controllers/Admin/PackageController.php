@@ -35,12 +35,16 @@ class PackageController extends Controller
         try {
             $data = $request->validate([
                 'name' => 'required|string',
-                'price' => 'required|numeric',
-                'price_sale' => 'nullable|numeric',
-                'number_file' => 'required|numeric',
-                'expire' => 'required|numeric',
+                // 'price' => 'required|numeric',
+                // 'price_sale' => 'nullable|numeric',
+                // 'number_file' => 'required|numeric',
+                // 'expire' => 'required|numeric',
                 'type' => 'required|in:' . GlobalConstant::TYPE_BY_NUMBER_FILE . ',' . GlobalConstant::TYPE_BY_TIME,
-                'website_id' => 'nullable|in:' . implode(',', GlobalConstant::WEB_TYPE),
+                'website_id' => [
+                    'nullable',
+                    'required_if:type,' . GlobalConstant::TYPE_BY_TIME,
+                    'in:' . implode(',', GlobalConstant::WEB_TYPE),
+                ],
                 'avatar' => 'nullable|string',
                 'description' => 'nullable|string',
             ]);
@@ -59,12 +63,16 @@ class PackageController extends Controller
             $data = $request->validate([
                 'id' => 'required|string',
                 'name' => 'required|string',
-                'price' => 'required|numeric',
-                'price_sale' => 'nullable|numeric',
-                'number_file' => 'required|numeric',
-                'expire' => 'required|numeric',
+                // 'price' => 'required|numeric',
+                // 'price_sale' => 'nullable|numeric',
+                // 'number_file' => 'required|numeric',
+                // 'expire' => 'required|numeric',
                 'type' => 'required|in:' . GlobalConstant::TYPE_BY_NUMBER_FILE . ',' . GlobalConstant::TYPE_BY_TIME,
-                'website_id' => 'nullable|in:' . implode(',', GlobalConstant::WEB_TYPE),
+                'website_id' => [
+                    'nullable',
+                    'required_if:type,' . GlobalConstant::TYPE_BY_TIME,
+                    'in:' . implode(',', GlobalConstant::WEB_TYPE),
+                ],
                 'avatar' => 'nullable|string',
                 'description' => 'nullable|string',
             ]);

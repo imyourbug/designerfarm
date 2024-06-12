@@ -2,29 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Constant\GlobalConstant;
 use App\Http\Controllers\Controller;
-use App\Models\DownloadHistory;
 use App\Models\Member;
-use App\Models\User;
-use App\Models\Website;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Throwable;
-use Toastr;
 
 class MemberController extends Controller
 {
+    public function index()
+    {
+        return view('user.member.index', [
+            'title' => 'Gói đã đăng ký',
+        ]);
+    }
+
     public function getAll(Request $request)
     {
         $user_id = $request->user_id;
-        $member_id = $request->member_id;
         $to = $request->to;
         $from = $request->from;
-        $uid = $request->uid;
         $limit = $request->limit;
-        $ids = $request->ids ?? [];
+
         $members = Member::with(['user', 'package'])
             // to
             ->when($to, function ($q) use ($to) {
@@ -38,9 +37,9 @@ class MemberController extends Controller
                     $from
                 );
             })
-            // ids
-            ->when(count($ids), function ($q) use ($ids) {
-                $q->whereIn('id', $ids);
+            // user_id
+            ->when(strlen($user_id), function ($q) use ($user_id) {
+                $q->whereIn('user_id', $user_id);
             })
             // order
             ->orderByDesc('created_at');
@@ -49,7 +48,7 @@ class MemberController extends Controller
         if ($limit) {
             $members = $members->limit($limit);
         }
-        $members = $members->get()?->toArray() ?? [];
+        $members = $members->get();
 
         return response()->json([
             'status' => 0,

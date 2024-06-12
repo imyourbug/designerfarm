@@ -29,16 +29,17 @@ class AccountController extends Controller
     {
         try {
             $data = $request->validate([
-                'email' => 'required|string',
+                'name' => 'required|string',
                 'password' => 'required|string',
                 // 'role' => 'required|in:0,1',
             ]);
-            $check = User::firstWhere('email', $data['email']);
+            $check = User::firstWhere('name', $data['name']);
             if ($check) {
                 throw new Exception('Tài khoản đã có người đăng ký!');
             }
             DB::beginTransaction();
-            $user = User::create($data);
+            User::create($data);
+
             Toastr::success('Tạo tài khoản thành công', 'Thành công');
             DB::commit();
         } catch (Throwable $e) {

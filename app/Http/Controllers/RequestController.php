@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Constant\GlobalConstant;
 use App\Models\Member;
-use App\Models\Package;
 use App\Models\Request as ModelsRequest;
 use Carbon\Carbon;
 use DateTime;
@@ -14,6 +13,13 @@ use Throwable;
 
 class RequestController extends Controller
 {
+    public function index()
+    {
+        return view('user.request.index', [
+            'title' => 'Lịch sử giao dịch',
+        ]);
+    }
+
     public function store(Request $request)
     {
         try {
@@ -165,7 +171,6 @@ class RequestController extends Controller
         $package_id = $request->package_id;
         $to = $request->to;
         $from = $request->from;
-        $uid = $request->uid;
         $today = $request->today;
         $limit = $request->limit;
         $ids = $request->ids ?? [];
@@ -182,13 +187,9 @@ class RequestController extends Controller
                     $from
                 );
             })
-            // uid
-            ->when(strlen($uid), function ($q) use ($uid) {
-                return $q->where('uid', 'like', "%$uid%");
-            })
-            // ids
-            ->when(count($ids), function ($q) use ($ids) {
-                $q->whereIn('id', $ids);
+            // user_id
+            ->when(strlen($user_id), function ($q) use ($user_id) {
+                $q->where('user_id', $user_id);
             })
             // order
             ->orderByDesc('created_at');
@@ -197,7 +198,7 @@ class RequestController extends Controller
         if ($limit) {
             $requests = $requests->limit($limit);
         }
-        $requests = $requests->get()?->toArray() ?? [];;
+        $requests = $requests->get();
 
         return response()->json([
             'status' => 0,
