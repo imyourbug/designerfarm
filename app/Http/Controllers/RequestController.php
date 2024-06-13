@@ -25,7 +25,7 @@ class RequestController extends Controller
         try {
             $data = $request->validate([
                 'user_id' => 'required|string',
-                'package_id' => 'required|string',
+                'packagedetail_id' => 'required|string',
                 'total' => 'required|string',
                 'expire' => 'required|numeric',
                 // 'type' => 'required|in:' . GlobalConstant::TYPE_BY_NUMBER_FILE . ',' . GlobalConstant::TYPE_BY_TIME,
@@ -70,11 +70,10 @@ class RequestController extends Controller
             switch (true) {
                 case  $data['status'] == GlobalConstant::STATUS_ACCEPTED:
                     // create or update memeber
-                    $member = Member::with(['package'])
-                        ->where([
-                            'package_id' => $requestModel->package_id,
-                            'user_id' => $requestModel->user_id,
-                        ])
+                    $member = Member::where([
+                        'packagedetail_id' => $requestModel->packagedetail_id,
+                        'user_id' => $requestModel->user_id,
+                    ])
                         // ->where(function ($query) {
                         //     $query->whereNull('website_id')
                         //         ->orWhere('website_id', '=', '');
@@ -85,7 +84,7 @@ class RequestController extends Controller
                         ->first();
                     if ($member) {
                         // type
-                        $type = $member->package->type ?? '';
+                        $type = $member->packageDetail->package->type ?? '';
                         $expired_at = $member->expired_at ?? '';
                         $expire = $requestModel->expire ?? '';
                         switch (true) {
@@ -93,12 +92,12 @@ class RequestController extends Controller
                                 $downloaded_number_file = 0;
                                 if (
                                     strtotime($expired_at) < strtotime(now()->format('Y-m-d'))
-                                    ||  $member->downloaded_number_file >= $member->package->number_file
+                                    ||  $member->downloaded_number_file >= $member->packageDetail->number_file
                                 ) {
                                     $expired_at = now()->addMonths($requestModel->expire);
                                 } else {
                                     // reset package
-                                    $downloaded_number_file = $member->downloaded_number_file - $member->package->number_file;
+                                    $downloaded_number_file = $member->downloaded_number_file - $member->packageDetail->number_file;
                                     $expired_at = Carbon::parse($expired_at)->addMonths($requestModel->expire);
                                     $expire = $this->getNumberOfMonths($expired_at, now());
                                 }
@@ -139,11 +138,11 @@ class RequestController extends Controller
                     } else {
                         Member::create([
                             'user_id' => $requestModel->user_id,
-                            'package_id' => $requestModel->package_id,
+                            'packagedetail_id' => $requestModel->packagedetail_id,
                             'expire' => $requestModel->expire,
                             'website_id' => $requestModel->website_id,
                             'expired_at' => now()->addMonths($requestModel->expire),
-                            'number_file' => $requestModel->package->number_file ?? 0,
+                            'number_file' => $requestModel->packageDetail->number_file ?? 0,
                         ]);
                     }
                     break;
@@ -168,13 +167,13 @@ class RequestController extends Controller
     public function getAll(Request $request)
     {
         $user_id = $request->user_id;
-        $package_id = $request->package_id;
+        $packagedetail_id = $request->packagedetail_id;
         $to = $request->to;
         $from = $request->from;
         $today = $request->today;
         $limit = $request->limit;
         $ids = $request->ids ?? [];
-        $requests = ModelsRequest::with(['user', 'package'])
+        $requests = ModelsRequest::with(['user', 'packageDetail.package'])
             // to
             ->when($to, function ($q) use ($to) {
                 return $q->where('created_at', '<=', $to . ' 23:59:59');

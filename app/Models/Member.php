@@ -9,9 +9,13 @@ class Member extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'expired_at' => 'datetime:Y-m-d H:i:s',
+    ];
+
     protected $fillable = [
         'user_id',
-        'package_id',
+        'packagedetail_id',
         'expire',
         'expired_at',
         'number_file',
@@ -24,9 +28,9 @@ class Member extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function package()
+    public function packageDetail()
     {
-        return $this->belongsTo(Package::class, 'package_id', 'id');
+        return $this->belongsTo(PackageDetail::class, 'packagedetail_id', 'id');
     }
 
     public function downloadHistories()

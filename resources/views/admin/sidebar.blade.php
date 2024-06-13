@@ -58,6 +58,17 @@
                             </a>
                         </li>
                         <li
+                            class="nav-item {{ in_array(request()->route()->getName(), ['admin.packagedetails.index', 'admin.packagedetails.create'])
+                                ? 'menu-is-opening menu-open'
+                                : '' }}">
+                            <a href="{{ route('admin.packagedetails.index') }}" class="nav-link">
+                                <i class="nav-icon fa-solid fa-circle-info"></i>
+                                <p>
+                                    Chi tiết gói
+                                </p>
+                            </a>
+                        </li>
+                        <li
                             class="nav-item {{ in_array(request()->route()->getName(), ['admin.members.index', 'admin.members.create'])
                                 ? 'menu-is-opening menu-open'
                                 : '' }}">

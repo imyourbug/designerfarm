@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Constant\GlobalConstant;
+use App\Models\Package;
 use App\Models\PackageDetail;
+use App\Models\Website;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class PackageDetailController extends Controller
 {
@@ -30,33 +35,29 @@ class PackageDetailController extends Controller
             'title' => 'Gói tải',
             'packageTypes' => [
                 GlobalConstant::TYPE_BY_NUMBER_FILE => PackageDetail::with(['members'])
-                ->where('type', GlobalConstant::TYPE_BY_NUMBER_FILE)
+                    ->where('type', GlobalConstant::TYPE_BY_NUMBER_FILE)
                     ->get(),
                 GlobalConstant::TYPE_BY_TIME => PackageDetail::with(['members'])
-                ->where('type', GlobalConstant::TYPE_BY_TIME)
+                    ->where('type', GlobalConstant::TYPE_BY_TIME)
                     ->get(),
             ],
-            'websites' => Website::all()
+            'websites' => Website::all(),
+            'packages' => Package::all(),
         ]);
     }
 
-    public function getAll(Request $request)
+    public function searchOne(Request $request)
     {
         $user_id = $request->user_id;
         $package_id = $request->package_id;
+        $quantity = $request->quantity;
+        $time = $request->time;
+        $id = $request->id;
         $to = $request->to;
         $from = $request->from;
-        $content = $request->content;
-        $user = $request->user;
-        $uid = $request->uid;
-        $note = $request->note;
-        $phone = $request->phone;
-        $title = $request->title;
-        $name_facebook = $request->name_facebook;
         $today = $request->today;
-        $limit = $request->limit;
-        $ids = $request->ids ?? [];
-        $packages = PackageDetail::with([])
+
+        $detail = PackageDetail::with(['package'])
             // to
             ->when($to, function ($q) use ($to) {
                 return $q->where('created_at', '<=', $to . ' 23:59:59');
@@ -69,26 +70,83 @@ class PackageDetailController extends Controller
                     $from
                 );
             })
-            // uid
-            ->when(strlen($uid), function ($q) use ($uid) {
-                return $q->where('uid', 'like', "%$uid%");
+            // id
+            ->when(strlen($id), function ($q) use ($id) {
+                $q->where('id', $id);
             })
-            // ids
-            ->when(count($ids), function ($q) use ($ids) {
-                $q->whereIn('id', $ids);
+            // package_id
+            ->when(strlen($package_id), function ($q) use ($package_id) {
+                $q->where('package_id', $package_id);
+            })
+            // quantity
+            ->when(strlen($quantity), function ($q) use ($quantity) {
+                $q->where('number_file', $quantity);
+            })
+            // time
+            ->when(strlen($time), function ($q) use ($time) {
+                $q->where('expire', $time);
+            })
+            ->first();
+
+        return response()->json([
+            'status' => $detail ? GlobalConstant::STATUS_OK : GlobalConstant::STATUS_ERROR,
+            'detail' => $detail
+        ]);
+    }
+
+    public function getAll(Request $request)
+    {
+        $user_id = $request->user_id;
+        $package_id = $request->package_id;
+        $quantity = $request->quantity;
+        $time = $request->time;
+        $id = $request->id;
+        $to = $request->to;
+        $from = $request->from;
+        $today = $request->today;
+        $limit = $request->limit;
+
+        $packageDetails = PackageDetail::with(['package'])
+            // to
+            ->when($to, function ($q) use ($to) {
+                return $q->where('created_at', '<=', $to . ' 23:59:59');
+            })
+            // from
+            ->when($from, function ($q) use ($from) {
+                return $q->where(
+                    'created_at',
+                    '>=',
+                    $from
+                );
+            })
+            // id
+            ->when(strlen($id), function ($q) use ($id) {
+                $q->where('id', $id);
+            })
+            // package_id
+            ->when(strlen($package_id), function ($q) use ($package_id) {
+                $q->where('package_id', $package_id);
+            })
+            // quantity
+            ->when(strlen($quantity), function ($q) use ($quantity) {
+                $q->where('number_file', $quantity);
+            })
+            // time
+            ->when(strlen($time), function ($q) use ($time) {
+                $q->where('expire', $time);
             })
             // order
             ->orderByDesc('created_at');
 
         // limit
         if ($limit) {
-            $packages = $packages->limit($limit);
+            $packageDetails = $packageDetails->limit($limit);
         }
-        $packages = $packages->get()?->toArray() ?? [];;
+        $packageDetails = $packageDetails->get()?->toArray() ?? [];;
 
         return response()->json([
             'status' => 0,
-            'packages' => $packages
+            'packageDetails' => $packageDetails
         ]);
     }
 
@@ -103,8 +161,8 @@ class PackageDetailController extends Controller
     public function destroy($id)
     {
         try {
-            $link = PackageDetail::firstWhere('id', $id);
-            $link->delete();
+            $detail = PackageDetail::firstWhere('id', $id);
+            $detail->delete();
 
             return response()->json([
                 'status' => 0,
@@ -124,6 +182,7 @@ class PackageDetailController extends Controller
             DB::beginTransaction();
             PackageDetail::whereIn('id', $request->ids)->delete();
             DB::commit();
+
             return response()->json([
                 'status' => 0,
             ]);

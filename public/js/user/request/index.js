@@ -5,21 +5,6 @@ $(document).ready(function () {
     user = JSON.parse(localStorage.getItem('user'));
 
     dataTable = $("#table").DataTable({
-        layout: {
-            topStart: {
-                buttons: [
-                    {
-                        extend: "excel",
-                        text: "Xuất Excel",
-                        exportOptions: {
-                            columns: ":not(:last-child)",
-                        },
-                    },
-                    "colvis",
-                ],
-            },
-            top2Start: 'pageLength',
-        },
         ajax: {
             url: `/api/requests/getAll?user_id=${user.id}`,
             dataSrc: "requests",
@@ -37,7 +22,7 @@ $(document).ready(function () {
             },
             {
                 data: function (d) {
-                    return d.package.name;
+                    return d.package_detail.package.name;
                 },
             },
             {
@@ -52,12 +37,12 @@ $(document).ready(function () {
             // },
             {
                 data: function (d) {
-                    return d.package.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
+                    return d.package_detail.package.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
                 },
             },
             {
                 data: function (d) {
-                    return d.package.type == 0 ? 'Không' : d.website_id;
+                    return d.package_detail.package.type == 0 ? 'Không' : d.website_id;
                 },
             },
             {

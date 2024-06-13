@@ -56,18 +56,13 @@ class MemberController extends Controller
         try {
             $data = $request->validate([
                 'id' => 'required|string',
-                'name' => 'required|string',
-                'price' => 'required|numeric',
-                'number_file' => 'required|numeric',
-                'expire' => 'required|numeric',
-                'type' => 'required|in:' . GlobalConstant::TYPE_BY_NUMBER_FILE . ',' . GlobalConstant::TYPE_BY_TIME,
-                'website_id' => 'nullable|in:' . implode(',', GlobalConstant::WEB_TYPE),
-                'avatar' => 'nullable|string',
+                'downloaded_number_file' => 'required|numeric',
+                'expired_at' => 'required',
             ]);
             DB::beginTransaction();
 
             unset($data['id']);
-            Member::firstWhere('id', $data['id'])
+            Member::firstWhere('id', $request->id)
                 ->update($data);
 
             DB::commit();

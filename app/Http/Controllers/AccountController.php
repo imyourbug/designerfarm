@@ -2,29 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Constant\GlobalConstant;
 use App\Http\Controllers\Controller;
+use App\Models\Link;
 use App\Models\Member;
+use App\Models\Setting;
+use App\Models\User;
+use App\Models\UserRole;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Throwable;
+use Toastr;
 
-class MemberController extends Controller
+class AccountController extends Controller
 {
-    public function index()
-    {
-        return view('user.member.index', [
-            'title' => 'Gói đã đăng ký',
-        ]);
-    }
-
     public function getAll(Request $request)
     {
-        $user_id = $request->user_id;
         $to = $request->to;
         $from = $request->from;
         $limit = $request->limit;
-
-        $members = Member::with(['user', 'packageDetail.package'])
+        $accounts = User::with([])
+            ->where('role', GlobalConstant::ROLE_USER)
             // to
             ->when($to, function ($q) use ($to) {
                 return $q->where('created_at', '<=', $to . ' 23:59:59');
@@ -37,31 +37,43 @@ class MemberController extends Controller
                     $from
                 );
             })
-            // user_id
-            ->when(strlen($user_id), function ($q) use ($user_id) {
-                $q->whereIn('user_id', $user_id);
-            })
             // order
             ->orderByDesc('created_at');
 
         // limit
         if ($limit) {
-            $members = $members->limit($limit);
+            $accounts = $accounts->limit($limit);
         }
-        $members = $members->get();
+        $accounts = $accounts->get();
 
         return response()->json([
             'status' => 0,
-            'members' => $members
+            'accounts' => $accounts
         ]);
     }
 
     public function destroy($id)
     {
         try {
+            User::firstWhere('id', $id)->delete();
+
+            return response()->json([
+                'status' => 0,
+            ]);
+        } catch (Throwable $e) {
+
+            return response()->json([
+                'status' => 1,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function deleteAll(Request $request)
+    {
+        try {
             DB::beginTransaction();
-            Member::firstWhere('id', $id)
-                ->delete();
+            User::whereIn('id', $request->ids)->delete();
             DB::commit();
 
             return response()->json([

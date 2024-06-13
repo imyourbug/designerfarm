@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\Setting;
 use App\Constant\GlobalConstant;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\LoginRequest;
 use App\Http\Requests\Users\RecoverRequest;
 use App\Http\Requests\Users\RegisterRequest;
 use App\Mail\RecoverPasswordMail;
+use App\Models\Package;
+use App\Models\Request as ModelsRequest;
+use App\Models\Setting;
 use App\Models\User;
+use App\Models\Website;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +28,12 @@ class AdminController extends Controller
     {
         return view('admin.home', [
             'title' => 'Trang người dùng',
+            'users' => User::where('role', GlobalConstant::ROLE_USER)
+                ->get(),
+            'packages' => Package::all(),
+            'websites' => Website::all(),
+            'requests' => ModelsRequest::where('status', GlobalConstant::STATUS_PENDING)
+                ->get(),
         ]);
     }
 
@@ -40,31 +49,6 @@ class AdminController extends Controller
         return view('admin.forgot.index', [
             'title' => 'Quên mật khẩu'
         ]);
-    }
-
-    public function recover(RecoverRequest $request)
-    {
-        if (!$user = User::firstWhere('email', $request->input('email'))) {
-            Toastr::error('Email không tồn tại!', 'Lỗi');
-
-            return redirect()->back();
-        }
-        $source = [
-            'a', 'b', 'c', 'd', 'e', 'g', 1, 2, 3, 4, 5, 6
-        ];
-        $new_password = '';
-        foreach ($source as $s) {
-            $new_password .= $source[rand(0, count($source) - 1)];
-        }
-        $reset_password = $user->update([
-            'password' => Hash::make($new_password)
-        ]);
-        if ($reset_password) {
-            Mail::to($request->input('email'))->send(new RecoverPasswordMail($new_password));
-        }
-        Toastr::success('Lấy mật khẩu thành công! Hãy kiểm tra email của bạn', 'Thành công');
-
-        return redirect()->back();
     }
 
     public function logout()

@@ -12,7 +12,7 @@ class Request extends Model
     protected $fillable = [
         // 'code',
         'user_id',
-        'package_id',
+        'packagedetail_id',
         'total',
         'expire',
         'website_id',
@@ -25,8 +25,8 @@ class Request extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function package()
+    public function packageDetail()
     {
-        return $this->belongsTo(Package::class, 'package_id', 'id');
+        return $this->belongsTo(PackageDetail::class, 'packagedetail_id', 'id');
     }
 }

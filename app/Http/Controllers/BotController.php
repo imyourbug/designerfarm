@@ -48,22 +48,22 @@ class BotController extends Controller
             DB::beginTransaction();
             if (!$downloadHistory) {
                 // get priority package 1 - by website 2 - by web all 3 - by number file
-                $members = Member::with('package')
+                $members = Member::with('packageDetail')
                     ->where(
                         [
                             ['user_id', '=', $id],
                             ['expired_at', '>=', now()->format('Y-m-d 00:00:00')],
                         ]
                     )
-                    ->whereHas('package', function ($q) {
-                        $q->whereColumn('members.downloaded_number_file', '<', 'packages.number_file');
+                    ->whereHas('packageDetail', function ($q) {
+                        $q->whereColumn('members.downloaded_number_file', '<', 'package_details.number_file');
                     })
                     ->orderBy('number_file')
-                    ->orderBy('expire')
-                    ->get();
+                    ->orderBy('expire');
 
                 $packageSelected = null;
-                foreach ($members as $member) {
+                $listMembers = $members->get();
+                foreach ($listMembers as $member) {
                     // if there is package by website id
                     if (strlen($website_id) && $member->website_id == $website_id) {
                         $packageSelected = $member;
@@ -124,8 +124,8 @@ class BotController extends Controller
                     ['expired_at', '>=', now()->format('Y-m-d 00:00:00')],
                 ]
             )
-                ->whereHas('package', function ($q) {
-                    $q->whereColumn('members.downloaded_number_file', '<', 'packages.number_file');
+                ->whereHas('packageDetail', function ($q) {
+                    $q->whereColumn('members.downloaded_number_file', '<', 'package_details.number_file');
                 })
                 ->where('website_id', $data['typeWeb'])
                 ->orWhere('website_id', GlobalConstant::WEB_ALL)

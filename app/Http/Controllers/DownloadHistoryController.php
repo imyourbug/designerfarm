@@ -25,7 +25,7 @@ class DownloadHistoryController extends Controller
         $downloadHistories = DownloadHistory::with(['user'])
             // user_id
             ->when(strlen($user_id), function ($q) use ($user_id) {
-                $q->where('id', $user_id);
+                $q->where('user_id', $user_id);
             })
             // // to
             // ->when($to, function ($q) use ($to) {
@@ -39,10 +39,6 @@ class DownloadHistoryController extends Controller
             //         $from
             //     );
             // })
-            // // ids
-            // ->when(count($ids), function ($q) use ($ids) {
-            //     $q->whereIn('id', $ids);
-            // })
             // order
             ->orderByDesc('created_at');
 
@@ -50,7 +46,7 @@ class DownloadHistoryController extends Controller
         if ($limit) {
             $downloadHistories = $downloadHistories->limit($limit);
         }
-        $downloadHistories = $downloadHistories->get()?->toArray() ?? [];;
+        $downloadHistories = $downloadHistories->get()?->toArray() ?? [];
 
         return response()->json([
             'status' => 0,

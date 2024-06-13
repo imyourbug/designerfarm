@@ -42,6 +42,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     #packages
     Route::group(['prefix' => 'packages', 'as' => 'packages.'], function () {
         Route::get('/', 'PackageController@index')->name('index');
+        Route::get('/{id}', 'PackageController@show')->name('show');
     });
 
     #downloadhistories

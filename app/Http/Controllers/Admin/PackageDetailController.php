@@ -20,7 +20,7 @@ class PackageDetailController extends Controller
     {
         return view('admin.packagedetail.list', [
             'title' => 'Danh sách chi tiết gói',
-            'packages' => PackageDetail::all(),
+            'packages' => Package::all(),
             'websites' => Website::all(),
         ]);
     }
@@ -34,6 +34,7 @@ class PackageDetailController extends Controller
     public function store(Request $request)
     {
         try {
+            // dd($request->all());
             $data = $request->validate([
                 'price' => 'required|numeric',
                 'price_sale' => 'nullable|numeric',
@@ -63,6 +64,17 @@ class PackageDetailController extends Controller
             ]);
             DB::beginTransaction();
 
+            // check
+            $package = PackageDetail::where([
+                'number_file' => $data['number_file'],
+                'expire' => $data['expire'],
+                'package_id' => $data['package_id'],
+            ])
+                ->first();
+            if ($package) {
+                throw new Exception('Đã tồn tại');
+            }
+
             unset($data['id']);
             PackageDetail::firstWhere('id', $request->id)
                 ->update($data);
@@ -82,8 +94,8 @@ class PackageDetailController extends Controller
     {
         return view('admin.packagedetail.edit', [
             'title' => 'Chi tiết gói',
-            'websites' => Website::all(),
-            'package' => PackageDetail::firstWhere('id', $id),
+            'packages' => Package::all(),
+            'detail' => PackageDetail::firstWhere('id', $id),
         ]);
     }
 

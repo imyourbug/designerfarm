@@ -20,7 +20,7 @@
                 <div class="col-lg-6 col-sm-12">
                     <div class="form-group">
                         <label for="menu">Tài khoản <span class="required">(*)</span></label>
-                        <input type="text" class="form-control" id="email" value="{{ $user->email }}"
+                        <input type="text" class="form-control" id="name" value="{{ $user->name }}"
                             placeholder="Nhập tài khoản" disabled>
                     </div>
                 </div>

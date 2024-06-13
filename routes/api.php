@@ -33,6 +33,13 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     #upload
     Route::post('/upload', 'UploadController@upload')->name('upload');
 
+    #accounts
+    Route::group(['prefix' => 'accounts', 'as' => 'accounts.'], function () {
+        Route::delete('/{id}/destroy', 'AccountController@destroy')->name('destroy');
+        Route::get('/getAll', 'AccountController@getAll')->name('getAll');
+        Route::post('/deleteAll', 'AccountController@deleteAll')->name('deleteAll');
+    });
+
     #packages
     Route::group(['prefix' => 'packages', 'as' => 'packages.'], function () {
         Route::delete('/{id}/destroy', 'PackageController@destroy')->name('destroy');
@@ -40,6 +47,16 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('/getAll', 'PackageController@getAll')->name('getAll');
         Route::get('/getPackageById', 'PackageController@getPackageById')->name('getPackageById');
         Route::post('/deleteAll', 'PackageController@deleteAll')->name('deleteAll');
+    });
+
+    #packagedetails
+    Route::group(['prefix' => 'packagedetails', 'as' => 'packagedetails.'], function () {
+        Route::delete('/{id}/destroy', 'PackageDetailController@destroy')->name('destroy');
+        Route::post('/create', 'PackageDetailController@store')->name('store');
+        Route::get('/getAll', 'PackageDetailController@getAll')->name('getAll');
+        Route::get('/searchOne', 'PackageDetailController@searchOne')->name('searchOne');
+        Route::get('/getPackageById', 'PackageDetailController@getPackageById')->name('getPackageById');
+        Route::post('/deleteAll', 'PackageDetailController@deleteAll')->name('deleteAll');
     });
 
     #downloadhistories

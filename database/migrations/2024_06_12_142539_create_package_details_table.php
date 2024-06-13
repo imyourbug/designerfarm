@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('expire')->nullable(); // by number of month
             // $table->string('website_id')->nullable(); // id website
             // $table->string('description')->nullable();
+            $table->unsignedBigInteger('package_id')->nullable();
             $table->timestamps();
         });
     }

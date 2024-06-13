@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('package_id')->nullable();
+            $table->unsignedBigInteger('packagedetail_id')->nullable();
             $table->integer('expire')->nullable();
             $table->string('expired_at')->nullable();
             $table->string('website_id')->nullable();

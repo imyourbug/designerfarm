@@ -82,15 +82,6 @@ class AccountController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            return response()->json([
-                'status' => 0,
-                'accounts' => User::where('role', GlobalConstant::ROLE_USER)
-                    ->orderByDesc('id')
-                    ->get()
-            ]);
-        }
-
         return view('admin.account.list', [
             'title' => 'Danh sách tài khoản',
         ]);

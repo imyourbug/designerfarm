@@ -5,21 +5,6 @@ $(document).ready(function () {
     user = JSON.parse(localStorage.getItem('user'));
 
     dataTable = $("#table").DataTable({
-        layout: {
-            topStart: {
-                buttons: [
-                    {
-                        extend: "excel",
-                        text: "Xuất Excel",
-                        exportOptions: {
-                            columns: ":not(:last-child)",
-                        },
-                    },
-                    "colvis",
-                ],
-            },
-            top2Start: 'pageLength',
-        },
         ajax: {
             url: `/api/downloadhistories/getAll?user_id=${user.id}`,
             dataSrc: "downloadHistories",

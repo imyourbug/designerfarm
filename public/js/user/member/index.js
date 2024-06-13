@@ -2,21 +2,6 @@ var dataTable = null;
 
 $(document).ready(function () {
     dataTable = $("#table").DataTable({
-        layout: {
-            topStart: {
-                buttons: [
-                    {
-                        extend: "excel",
-                        text: "Xuất Excel",
-                        exportOptions: {
-                            columns: ":not(:last-child)",
-                        },
-                    },
-                    "colvis",
-                ],
-            },
-            top2Start: 'pageLength',
-        },
         ajax: {
             url: `/api/members/getAll`,
             dataSrc: "members",
@@ -24,17 +9,17 @@ $(document).ready(function () {
         columns: [
             {
                 data: function (d) {
-                    return d.package.name;
+                    return d.package_detail.package.name;
                 },
             },
             {
                 data: function (d) {
-                    return d.package.number_file;
+                    return d.package_detail.number_file;
                 },
             },
             {
                 data: function (d) {
-                    return d.package.number_file - d.downloaded_number_file;
+                    return d.package_detail.number_file - d.downloaded_number_file;
                 },
             },
             {
@@ -49,12 +34,12 @@ $(document).ready(function () {
             },
             {
                 data: function (d) {
-                    return d.package.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
+                    return d.package_detail.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
                 },
             },
             {
                 data: function (d) {
-                    return d.package.type == 0 ? 'Không' : d.website_id;
+                    return d.package_detail.type == 0 ? 'Không' : d.website_id;
                 },
             },
         ],

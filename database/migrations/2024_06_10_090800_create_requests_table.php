@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             // $table->string('code')->unique();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('package_id')->nullable();
+            $table->unsignedBigInteger('packagedetail_id')->nullable();
             $table->string('total')->nullable();
             $table->string('status')->nullable()->default(0); // 0 - pending; 1 - accepted; 2 - canceled
             $table->integer('expire')->nullable(); // by number of month

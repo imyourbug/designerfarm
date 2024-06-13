@@ -20,7 +20,7 @@
                 <div class="col-lg-6 col-sm-12">
                     <div class="form-group">
                         <label for="menu">Tài khoản <span class="required">(*)</span></label>
-                        <input type="text" class="form-control" name="email" value="{{ old('email') }}"
+                        <input type="text" class="form-control" name="name" value="{{ old('name') }}"
                             placeholder="Nhập tài khoản">
                     </div>
                 </div>

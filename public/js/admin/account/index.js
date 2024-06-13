@@ -16,7 +16,7 @@ $(document).ready(function () {
             },
         },
         ajax: {
-            url: "/admin/accounts",
+            url: "/api/accounts/getAll",
             dataSrc: "accounts",
         },
         columns: [

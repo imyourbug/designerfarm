@@ -38,22 +38,22 @@ $(document).ready(function () {
             // },
             {
                 data: function (d) {
-                    return d.user.email;
+                    return d.user.name;
                 },
             },
             {
                 data: function (d) {
-                    return d.package.name;
+                    return d.package_detail.package.name;
                 },
             },
             {
                 data: function (d) {
-                    return d.package.number_file;
+                    return d.package_detail.number_file;
                 },
             },
             {
                 data: function (d) {
-                    return d.package.number_file - d.downloaded_number_file;
+                    return d.package_detail.number_file - d.downloaded_number_file;
                 },
             },
             {
@@ -68,17 +68,20 @@ $(document).ready(function () {
             },
             {
                 data: function (d) {
-                    return d.package.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
+                    return d.package_detail.package.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
                 },
             },
             {
                 data: function (d) {
-                    return d.package.type == 0 ? 'Không' : d.website_id;
+                    return d.package_detail.package.type == 0 ? 'Không' : d.website_id;
                 },
             },
             {
                 data: function (d) {
-                    return `<button data-id="${d.id}" class="btn btn-danger btn-sm btn-delete">
+                    return `<a target="_blank" class="btn btn-primary btn-sm" href='/admin/members/update/${d.id}'>
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button data-id="${d.id}" class="btn btn-danger btn-sm btn-delete">
                                 <i class="fas fa-trash"></i>
                             </button>`;
                 },

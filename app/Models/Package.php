@@ -27,4 +27,9 @@ class Package extends Model
     {
         return $this->hasMany(Member::class, 'user_id', 'id');
     }
+
+    public function details()
+    {
+        return $this->hasMany(PackageDetail::class, 'package_id', 'id')->orderByDesc('number_file');
+    }
 }

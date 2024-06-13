@@ -24,49 +24,49 @@ $(document).ready(function () {
         columns: [
             {
                 data: function (d) {
-                    return d.name;
-                },
-            },
-            // {
-            //     data: function (d) {
-            //         return `${formatCash(d.price)}`;
-            //     },
-            // },
-            // {
-            //     data: function (d) {
-            //         return `${formatCash(d.price_sale || 0)}`;
-            //     },
-            // },
-            // {
-            //     data: function (d) {
-            //         return `${d.number_file}/${d.type == 0 ? 'năm' : 'ngày'}`;
-            //     },
-            // },
-            // {
-            //     data: function (d) {
-            //         return d.expire;
-            //     },
-            // },
-            {
-                data: function (d) {
-                    return d.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
+                    return d.package.name;
                 },
             },
             {
                 data: function (d) {
-                    return d.type == 0 ? 'Không' : d.website_id;
+                    return `${formatCash(d.price)}`;
                 },
             },
             {
                 data: function (d) {
-                    return d.description;
+                    return `${formatCash(d.price_sale || 0)}`;
                 },
             },
             {
                 data: function (d) {
-                    return `<img style="width: 50px;height:50px" src="${d.avatar}" alt="image" />`;
+                    return `${d.number_file}/${d.package.type == 0 ? 'năm' : 'ngày'}`;
                 },
             },
+            {
+                data: function (d) {
+                    return d.expire;
+                },
+            },
+            {
+                data: function (d) {
+                    return d.package.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
+                },
+            },
+            {
+                data: function (d) {
+                    return d.package.type == 0 ? 'Không' : d.package.website_id;
+                },
+            },
+            // {
+            //     data: function (d) {
+            //         return d.description;
+            //     },
+            // },
+            // {
+            //     data: function (d) {
+            //         return `<img style="width: 50px;height:50px" src="${d.avatar}" alt="image" />`;
+            //     },
+            // },
             {
                 data: function (d) {
                     return `<a class="btn btn-sm btn-primary btn-edit" target="_blank" href="/admin/packagedetails/update/${d.id}">

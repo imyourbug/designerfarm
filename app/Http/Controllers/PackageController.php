@@ -6,6 +6,7 @@ use App\Constant\GlobalConstant;
 use App\Models\Package;
 use App\Models\Website;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class PackageController extends Controller
@@ -32,10 +33,10 @@ class PackageController extends Controller
         return view('user.package.index', [
             'title' => 'Gói tải',
             'packageTypes' => [
-                GlobalConstant::TYPE_BY_NUMBER_FILE => Package::with(['members'])
+                GlobalConstant::TYPE_BY_NUMBER_FILE => Package::with(['members', 'details'])
                     ->where('type', GlobalConstant::TYPE_BY_NUMBER_FILE)
                     ->get(),
-                GlobalConstant::TYPE_BY_TIME => Package::with(['members'])
+                GlobalConstant::TYPE_BY_TIME => Package::with(['members', 'details'])
                     ->where('type', GlobalConstant::TYPE_BY_TIME)
                     ->get(),
             ],
@@ -97,10 +98,27 @@ class PackageController extends Controller
 
     public function show($id)
     {
-        // return view('admin.package.edit', [
-        //     'title' => 'Chi tiết bình luận',
-        //     'package' => Package::firstWhere('id', $id)
-        // ]);
+        $package = Package::with('details')->firstWhere('id', $id);
+        $quantities = [];
+        $times = [];
+        $prices = [];
+        foreach ($package->details as $detail) {
+            $quantities[$detail->number_file] = $detail->number_file;
+            $times[$detail->expire] = $detail->expire;
+            $prices[$detail->price] = $detail->price;
+            if ($detail->price_sale) {
+                $prices[$detail->price_sale] = $detail->price_sale;
+            }
+        }
+        sort($prices);
+
+        return view('user.package.detail', [
+            'title' => 'Chi tiết bình luận',
+            'package' => $package,
+            'quantities' => $quantities,
+            'times' => $times,
+            'prices' => $prices,
+        ]);
     }
 
     public function destroy($id)
