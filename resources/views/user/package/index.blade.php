@@ -79,7 +79,9 @@
                                         </div>
                                     @endif
                                     <!--Image-->
-                                    <figure> <img alt="" src="{{ $package->avatar }}"> </figure>
+                                    <figure>
+                                        <img alt="image" src="{{ $package->avatar }}" />
+                                    </figure>
                                 </div>
                                 <div class="item-box-blog-body">
                                     <!--Heading-->

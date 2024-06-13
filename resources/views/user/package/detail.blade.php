@@ -97,11 +97,6 @@
                 let expire = time;
                 let content = $('#content').text();
 
-                if (!total) {
-                    toastr.error('Gói không khả dụng');
-                    return;
-                }
-
                 $.ajax({
                     method: "POST",
                     url: `/api/requests/create`,
@@ -133,12 +128,19 @@
                 toastr.error('Chưa chọn thông tin gói');
                 return;
             }
+
             let user = JSON.parse(localStorage.getItem('user'));
             if (!user) {
                 toastr.error('Bạn cần đăng nhập');
                 $('.btn-open-login').click();
                 return;
             }
+
+            if (!$('.price').data('price')) {
+                toastr.error('Gói không khả dụng');
+                return;
+            }
+
             $('.content').text(user.id + 'GD' + Date.parse(new Date()));
             $('.btn-open-modal-checkout').click();
         });
