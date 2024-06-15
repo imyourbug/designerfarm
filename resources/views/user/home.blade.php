@@ -6,6 +6,35 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/content.js"></script>
     <script>
+        var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+            cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
+        });
+
+        var channel = pusher.subscribe('AlertDownloadedSuccessfullyChannel');
+        channel.bind('AlertDownloadedSuccessfullyEvent', function(data) {
+            let user = JSON.parse(localStorage.getItem('user'));
+            let loading = $('#submit-code-loading');
+            let text = $('#submit-code-text');
+            text.addClass('d-none');
+            loading.removeClass('d-none');
+
+            if (user && user.id == data.userId) {
+                text.removeClass('d-none');
+                loading.addClass('d-none');
+                // $('#btn-clode-all-modal').click();
+                // display result url
+                let url = data.url;
+                $('.url').text(url);
+                $('.btn-open-modal-result').click();
+                // set url download
+                $('.btn-download').prop('href', url);
+                window.open(`${url}`, '_blank').focus();
+                // reset
+                $('#messageInput').val('');
+                $('#notification').css('display', 'none');
+            }
+        });
+
         function selectOption(id, event) {
             event.preventDefault();
             var options = document.querySelectorAll('.option div');
@@ -239,34 +268,36 @@
                     url: "/api/sendMessage",
                     success: function(response) {
                         if (response.status == 0) {
-                            // toastr.success('Tải thành công', "Thông báo");
-                            intervalGetUrl = setInterval(async () => {
-                                let result = await getCacheById(user.id);
-                                if (result.status == 0) {
-                                    if (result.data) {
-                                        // display result url
-                                        let url = result.data.url;
-                                        $('.btn-open-modal-result').click();
-                                        $('.url').text(url);
-                                        // stop call get ur
-                                        text.removeClass('d-none');
-                                        loading.addClass('d-none');
-                                        clearInterval(intervalGetUrl);
-                                        // set url download
-                                        $('.btn-download').prop('href', url);
-                                        window.open(`${url}`, '_blank').focus();
-                                        // reset
-                                        // $('#reset_btn').click();
-                                    }
-                                } else {
-                                    // return error
-                                    toastr.error(response.message, "Thông báo");
-                                    // stop call get ur
-                                    text.removeClass('d-none');
-                                    loading.addClass('d-none');
-                                    clearInterval(intervalGetUrl);
-                                }
-                            }, 4000);
+                            toastr.success(
+                                'Tải thành công! Bạn sẽ nhận được link tải sau vài giây!',
+                                "Thông báo");
+                            // intervalGetUrl = setInterval(async () => {
+                            //     let result = await getCacheById(user.id);
+                            //     if (result.status == 0) {
+                            //         if (result.data) {
+                            //             // display result url
+                            //             let url = result.data.url;
+                            //             $('.btn-open-modal-result').click();
+                            //             $('.url').text(url);
+                            //             // stop call get ur
+                            //             text.removeClass('d-none');
+                            //             loading.addClass('d-none');
+                            //             clearInterval(intervalGetUrl);
+                            //             // set url download
+                            //             $('.btn-download').prop('href', url);
+                            //             window.open(`${url}`, '_blank').focus();
+                            //             // reset
+                            //             // $('#reset_btn').click();
+                            //         }
+                            //     } else {
+                            //         // return error
+                            //         toastr.error(response.message, "Thông báo");
+                            //         // stop call get ur
+                            //         text.removeClass('d-none');
+                            //         loading.addClass('d-none');
+                            //         clearInterval(intervalGetUrl);
+                            //     }
+                            // }, 4000);
                         } else {
                             text.removeClass('d-none');
                             loading.addClass('d-none');
@@ -276,24 +307,24 @@
                 });
 
 
-                async function getCacheById(id) {
-                    let result = null;
-                    let formData = new FormData();
-                    formData.append('id', id);
-                    await $.ajax({
-                        method: "POST",
-                        url: `/api/getCacheById`,
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        success: function(response) {
-                            result = response;
-                        }
-                    })
+                // async function getCacheById(id) {
+                //     let result = null;
+                //     let formData = new FormData();
+                //     formData.append('id', id);
+                //     await $.ajax({
+                //         method: "POST",
+                //         url: `/api/getCacheById`,
+                //         data: formData,
+                //         cache: false,
+                //         contentType: false,
+                //         processData: false,
+                //         success: function(response) {
+                //             result = response;
+                //         }
+                //     })
 
-                    return result;
-                }
+                //     return result;
+                // }
 
                 // Hàm hiển thị thông báo
                 function showNotification(message, alertClass) {
@@ -632,7 +663,8 @@
                 </div>
                 <div class="modal-body">
                     <p class="url" style="font-style:italic;color:orange">Link tải</p>
-                    <a style="float: right;" href="#" target="_blank" download class="btn-download btn btn-sm btn-success"><i class="fa-solid fa-download"></i></a>
+                    <a style="float: right;" href="#" target="_blank" download
+                        class="btn-download btn btn-sm btn-success"><i class="fa-solid fa-download"></i></a>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
@@ -640,5 +672,6 @@
             </div>
         </div>
     </div>
-    <input type="hidden" class="btn btn-success btn-open-modal-result" data-target="#modalResult" data-toggle="modal" />
+    <input type="hidden" class="btn btn-success btn-open-modal-result" data-target="#modalResult"
+        data-toggle="modal" />
 @endsection

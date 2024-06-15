@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constant\GlobalConstant;
+use App\Events\AlertDownloadedSuccessfullyEvent;
 use App\Models\DownloadHistory;
 use App\Models\Member;
 use App\Models\Package;
@@ -33,10 +34,12 @@ class BotController extends Controller
             $id = $request->id ?? '';
             $url = $request->url ?? '';
             $website_id = $request->website_id ?? '';
-            Cache::put($id, json_encode([
-                'id' => $id,
-                'url' => $url,
-            ]));
+            // Cache::put($id, json_encode([
+            //     'id' => $id,
+            //     'url' => $url,
+            // ]));
+            // push notification about result from tool
+            event(new AlertDownloadedSuccessfullyEvent($id, $url));
 
             $downloadHistory = DownloadHistory::where([
                 ['user_id', '=', $id],
@@ -145,9 +148,9 @@ class BotController extends Controller
                 'text' =>  "$id|$newText",
             ];
             $client = new Client();
-            // $client->post("https://api.telegram.org/bot$this->botKey/sendMessage", [
-            //     'json' => $dataSend
-            // ]);
+            $client->post("https://api.telegram.org/bot$this->botKey/sendMessage", [
+                'json' => $dataSend
+            ]);
         } catch (Throwable $e) {
             return response()->json([
                 'status' => GlobalConstant::STATUS_ERROR,
@@ -259,7 +262,7 @@ class BotController extends Controller
                 break;
         }
 
-        return $result;
+        return "$result|$typeWeb";
     }
 
     public function deleteAllCache(Request $request)

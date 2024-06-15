@@ -9,7 +9,6 @@
 @section('content')
     <div class="row">
         <div class="col-lg-3 col-6">
-
             <div class="small-box bg-info">
                 <div class="inner">
                     <h3>{{ $requests->count() }}</h3>
@@ -18,12 +17,11 @@
                 <div class="icon">
                     <i class="ion ion-bag"></i>
                 </div>
-                <a href="{{ route('admin.requests.index') }}" class="small-box-footer">Xem thêm <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{ route('admin.requests.index') }}" class="small-box-footer">Xem thêm <i
+                        class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-
         <div class="col-lg-3 col-6">
-
             <div class="small-box bg-success">
                 <div class="inner">
                     <h3>{{ $websites->count() }}</h3>
@@ -35,9 +33,7 @@
                 <a href="#" class="small-box-footer">Xem thêm <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-
         <div class="col-lg-3 col-6">
-
             <div class="small-box bg-warning">
                 <div class="inner">
                     <h3>{{ $users->count() }}</h3>
@@ -50,9 +46,7 @@
                         class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-
         <div class="col-lg-3 col-6">
-
             <div class="small-box bg-danger">
                 <div class="inner">
                     <h3>{{ $packages->count() }}</h3>
@@ -61,9 +55,22 @@
                 <div class="icon">
                     <i class="ion ion-pie-graph"></i>
                 </div>
-                <a href="{{ route('admin.packages.index') }}" class="small-box-footer">Xem thêm <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{ route('admin.packages.index') }}" class="small-box-footer">Xem thêm <i
+                        class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-primary">
+                <div class="inner">
+                    <h3>{{ $discounts->count() }}</h3>
+                    <p>Mã giảm giá</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="{{ route('admin.discounts.index') }}" class="small-box-footer">Xem thêm <i
+                        class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
     </div>
 @endsection

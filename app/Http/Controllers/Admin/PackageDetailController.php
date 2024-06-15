@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Constant\GlobalConstant;
 use App\Http\Controllers\Controller;
+use App\Models\Member;
 use App\Models\Package;
 use App\Models\PackageDetail;
+use App\Models\Request as ModelsRequest;
 use App\Models\User;
 use App\Models\Website;
 use Exception;
@@ -104,6 +106,10 @@ class PackageDetailController extends Controller
         try {
             DB::beginTransaction();
             PackageDetail::firstWhere('id', $id)
+                ->delete();
+            Member::where('packagedetail_id', $id)
+                ->delete();
+            ModelsRequest::where('packagedetail_id', $id)
                 ->delete();
             DB::commit();
 

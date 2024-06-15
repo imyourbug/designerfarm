@@ -90,6 +90,17 @@
                                 </p>
                             </a>
                         </li>
+                        <li
+                            class="nav-item {{ in_array(request()->route()->getName(), ['admin.discounts.index', 'admin.discounts.create'])
+                                ? 'menu-is-opening menu-open'
+                                : '' }}">
+                            <a href="{{ route('admin.discounts.index') }}" class="nav-link">
+                                <i class="nav-icon fa-solid fa-ticket"></i>
+                                <p>
+                                    Mã giảm giá
+                                </p>
+                            </a>
+                        </li>
                     @break
                 @endswitch
             </ul>

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Constant\GlobalConstant;
 use App\Http\Controllers\Controller;
+use App\Models\Member;
 use App\Models\Package;
+use App\Models\Request as ModelsRequest;
 use App\Models\User;
 use App\Models\Website;
 use Exception;
@@ -106,8 +108,15 @@ class PackageController extends Controller
     {
         try {
             DB::beginTransaction();
-            Package::firstWhere('id', $id)
+            $package = Package::firstWhere('id', $id);
+            $details = $package->details();
+            $listPackagedetailId = $details->pluck('id');
+            Member::whereIn('packagedetail_id', $listPackagedetailId)
                 ->delete();
+            ModelsRequest::whereIn('packagedetail_id', $listPackagedetailId)
+                ->delete();
+            $package->delete();
+            $details->delete();
             DB::commit();
 
             return response()->json([

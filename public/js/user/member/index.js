@@ -1,9 +1,12 @@
 var dataTable = null;
+var user = null;
 
 $(document).ready(function () {
+    user = JSON.parse(localStorage.getItem('user'));
+
     dataTable = $("#table").DataTable({
         ajax: {
-            url: `/api/members/getAll`,
+            url: `/api/members/getAll?user_id=${user.id}`,
             dataSrc: "members",
         },
         columns: [

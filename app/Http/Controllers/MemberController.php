@@ -39,7 +39,7 @@ class MemberController extends Controller
             })
             // user_id
             ->when(strlen($user_id), function ($q) use ($user_id) {
-                $q->whereIn('user_id', $user_id);
+                $q->where('user_id', $user_id);
             })
             // order
             ->orderByDesc('created_at');

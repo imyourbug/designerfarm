@@ -31,10 +31,7 @@ class Handler extends ExceptionHandler
             function (Throwable $e, $request) {
                 return response()->json([
                     'status' => 1,
-                    'error' => [
-                        'code' => $e->getCode(),
-                        'message' =>  $e->getMessage(),
-                    ]
+                    'message' =>  $e->getMessage(),
                 ]);
             }
         );

@@ -24,7 +24,7 @@ $(document).ready(function () {
         columns: [
             {
                 data: function (d) {
-                    return d.package.name;
+                    return d.package ? d.package.name : '';
                 },
             },
             {
@@ -39,7 +39,7 @@ $(document).ready(function () {
             },
             {
                 data: function (d) {
-                    return `${d.number_file}/${d.package.type == 0 ? 'năm' : 'ngày'}`;
+                    return `${d.number_file}/${(d.package ? d.package.type : '') == 0 ? 'năm' : 'ngày'}`;
                 },
             },
             {
@@ -49,12 +49,12 @@ $(document).ready(function () {
             },
             {
                 data: function (d) {
-                    return d.package.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
+                    return (d.package ? d.package.type : '') == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
                 },
             },
             {
                 data: function (d) {
-                    return d.package.type == 0 ? 'Không' : d.package.website_id;
+                    return (d.package ? d.package.type : '') == 0 ? 'Không' : d.package.website_id;
                 },
             },
             // {

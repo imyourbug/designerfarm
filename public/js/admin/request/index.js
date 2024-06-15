@@ -2,15 +2,6 @@ var dataTable = null;
 
 $(document).ready(function () {
     dataTable = $("#table").DataTable({
-        columnDefs: [
-            // { visible: false, targets: 1 },
-            // { visible: false, targets: 2 },
-            // { visible: false, targets: 3 },
-        ],
-        lengthMenu: [
-            // [100, 250, 500],
-            // [100, 250, 500]
-        ],
         layout: {
             topStart: {
                 buttons: [
@@ -31,14 +22,9 @@ $(document).ready(function () {
             dataSrc: "requests",
         },
         columns: [
-            // {
-            //     data: function (d) {
-            //         return `<input class="btn-select" type="checkbox" data-id="${d.id}" />`;
-            //     }
-            // },
             {
                 data: function (d) {
-                    return d.user.email;
+                    return d.user.name;
                 },
             },
             {
@@ -114,6 +100,40 @@ function getStatus(id = '', website_id = '', status = '') {
 
     return renderStatus;
 }
+
+// function getStatus(id = '', website_id = '', status = '') {
+//     let renderStatus = '';
+//     switch (true) {
+//         case status == 0:
+//             renderStatus = `<div class="btn-group">
+//                 <span class="btn btn-primary">Đang chờ</span>
+//                 <button type="button" class="btn btn-primary btn-flat dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="true">
+//                 <span class="sr-only">Toggle Dropdown</span>
+//                 </button>
+//                 <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(67px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
+//                  <form action="/admin/requests/update" method="post">
+//                     <input type="hidden" value="${website_id}" name="website_id" />
+//                     <input type="hidden" value="${$('#csrf-token').prop('content')}" name="_token" />
+//                     <input type="hidden" value="${id}" name="id" />
+//                     <input type="hidden" value="1" name="status" />
+//                     <button onclick="return confirm('Bạn có muốn đổi trạng thái?')">Đã xác nhận</button>
+//                 </form>
+//                 <a data-id=${id} data-website_id='${website_id}' data-status=${2} class="dropdown-item" onclick="return confirm('Bạn có muốn đổi trạng thái?')" href="/admin/requests/updateGet?id=${id}&website_id=${website_id}&status=${2}">Đã hủy</a>
+//                 </div>
+//                 </div>`;
+//             break;
+//         case status == 1:
+//             renderStatus = '<span class="btn btn-success">Đã xác nhận</span>';
+//             break;
+//         case status == 2:
+//             renderStatus = '<span class="btn btn-danger">Đã hủy</span>';
+//             break;
+//         default:
+//             break;
+//     }
+
+//     return renderStatus;
+// }
 
 $(document).on("click", ".btn-change-status", function () {
     if (confirm("Bạn có muốn đổi trạng thái?")) {

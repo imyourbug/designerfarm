@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Constant\GlobalConstant;
+use App\Models\Member;
 use App\Models\Package;
 use App\Models\PackageDetail;
+use App\Models\Request as ModelsRequest;
 use App\Models\Website;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -90,7 +92,7 @@ class PackageDetailController extends Controller
 
         return response()->json([
             'status' => $detail ? GlobalConstant::STATUS_OK : GlobalConstant::STATUS_ERROR,
-            'detail' => $detail
+            'detail' => $detail,
         ]);
     }
 
@@ -161,13 +163,20 @@ class PackageDetailController extends Controller
     public function destroy($id)
     {
         try {
-            $detail = PackageDetail::firstWhere('id', $id);
-            $detail->delete();
+            DB::beginTransaction();
+            PackageDetail::firstWhere('id', $id)
+                ->delete();
+            Member::where('packagedetail_id', $id)
+                ->delete();
+            ModelsRequest::where('packagedetail_id', $id)
+                ->delete();
+            DB::commit();
 
             return response()->json([
                 'status' => 0,
             ]);
         } catch (Throwable $e) {
+            DB::rollBack();
 
             return response()->json([
                 'status' => 1,

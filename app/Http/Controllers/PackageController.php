@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Constant\GlobalConstant;
+use App\Models\Member;
 use App\Models\Package;
+use App\Models\Request as ModelsRequest;
 use App\Models\Website;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -88,7 +90,7 @@ class PackageController extends Controller
         if ($limit) {
             $packages = $packages->limit($limit);
         }
-        $packages = $packages->get()?->toArray() ?? [];;
+        $packages = $packages->get()?->toArray() ?? [];
 
         return response()->json([
             'status' => 0,
@@ -113,7 +115,7 @@ class PackageController extends Controller
         sort($prices);
 
         return view('user.package.detail', [
-            'title' => 'Chi tiết bình luận',
+            'title' => 'Chi tiết gói',
             'package' => $package,
             'quantities' => $quantities,
             'times' => $times,
@@ -124,13 +126,23 @@ class PackageController extends Controller
     public function destroy($id)
     {
         try {
-            $link = Package::firstWhere('id', $id);
-            $link->delete();
+            DB::beginTransaction();
+            $package = Package::firstWhere('id', $id);
+            $details = $package->details();
+            $listPackagedetailId = $details->pluck('id');
+            Member::whereIn('packagedetail_id', $listPackagedetailId)
+                ->delete();
+            ModelsRequest::whereIn('packagedetail_id', $listPackagedetailId)
+                ->delete();
+            $package->delete();
+            $details->delete();
+            DB::commit();
 
             return response()->json([
                 'status' => 0,
             ]);
         } catch (Throwable $e) {
+            DB::rollBack();
 
             return response()->json([
                 'status' => 1,

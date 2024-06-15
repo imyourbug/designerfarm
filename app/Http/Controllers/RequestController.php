@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constant\GlobalConstant;
+use App\Events\AlertChargedSuccessfullyEvent;
 use App\Models\Member;
 use App\Models\Request as ModelsRequest;
 use Carbon\Carbon;
@@ -145,6 +146,8 @@ class RequestController extends Controller
                             'number_file' => $requestModel->packageDetail->number_file ?? 0,
                         ]);
                     }
+                    // push notification to user
+                    event(new AlertChargedSuccessfullyEvent($requestModel->user_id));
                     break;
                 default:
                     break;

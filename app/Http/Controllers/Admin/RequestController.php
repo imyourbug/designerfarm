@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Constant\GlobalConstant;
+use App\Events\AlertChargedSuccessfullyEvent;
 use App\Http\Controllers\Controller;
+use App\Models\Member;
 use App\Models\Package;
+use App\Models\Request as ModelsRequest;
 use App\Models\User;
 use App\Models\Website;
+use Carbon\Carbon;
+use DateTime;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -53,33 +58,116 @@ class RequestController extends Controller
         return redirect()->back();
     }
 
+    function getNumberOfMonths($date1, $date2)
+    {
+        $date1 = new DateTime($date1);
+        $date2 = new DateTime($date2);
+
+        $interval = $date1->diff($date2);
+
+        return ($interval->y * 12) + $interval->m + (int)($interval->d > 0);
+    }
+
     public function update(Request $request)
     {
         try {
             $data = $request->validate([
-                'id' => 'required|string',
-                'name' => 'required|string',
-                'price' => 'required|numeric',
-                'price_sale' => 'nullable|numeric',
-                'number_file' => 'required|numeric',
-                'expire' => 'required|numeric',
-                'type' => 'required|in:' . GlobalConstant::TYPE_BY_NUMBER_FILE . ',' . GlobalConstant::TYPE_BY_TIME,
+                'id' => 'required|integer',
+                'status' => 'required|in:' . implode(',', GlobalConstant::REQUEST_STATUS),
                 'website_id' => 'nullable|in:' . implode(',', GlobalConstant::WEB_TYPE),
-                'avatar' => 'nullable|string',
-                'description' => 'nullable|string',
             ]);
-            DB::beginTransaction();
 
-            unset($data['id']);
-            Package::firstWhere('id', $request->id)
-                ->update($data);
+            $requestModel = ModelsRequest::firstWhere('id', $data['id']);
+            switch (true) {
+                case  $data['status'] == GlobalConstant::STATUS_ACCEPTED:
+                    // create or update memeber
+                    $member = Member::where([
+                        'packagedetail_id' => $requestModel->packagedetail_id,
+                        'user_id' => $requestModel->user_id,
+                    ])
+                        // ->where(function ($query) {
+                        //     $query->whereNull('website_id')
+                        //         ->orWhere('website_id', '=', '');
+                        // })
+                        ->when(strlen($data['website_id']), function ($q) use ($data) {
+                            return $q->where('website_id', $data['website_id']);
+                        })
+                        ->first();
+                    if ($member) {
+                        // type
+                        $type = $member->packageDetail->package->type ?? '';
+                        $expired_at = $member->expired_at ?? '';
+                        $expire = $requestModel->expire ?? '';
+                        switch (true) {
+                            case $type == GlobalConstant::TYPE_BY_NUMBER_FILE:
+                                $downloaded_number_file = 0;
+                                if (
+                                    strtotime($expired_at) < strtotime(now()->format('Y-m-d'))
+                                    ||  $member->downloaded_number_file >= $member->packageDetail->number_file
+                                ) {
+                                    $expired_at = now()->addMonths($requestModel->expire);
+                                } else {
+                                    // reset package
+                                    $downloaded_number_file = $member->downloaded_number_file - $member->packageDetail->number_file;
+                                    $expired_at = Carbon::parse($expired_at)->addMonths($requestModel->expire);
+                                    $expire = $this->getNumberOfMonths($expired_at, now());
+                                }
+                                // increase expire, expired_at
+                                $member->update(
+                                    [
+                                        'expire' => $expire,
+                                        'expired_at' => $expired_at,
+                                        'downloaded_number_file' => $downloaded_number_file,
+                                    ]
+                                );
+                                break;
 
-            DB::commit();
+                            case $type == GlobalConstant::TYPE_BY_TIME:
+                                if (
+                                    strtotime($expired_at) < strtotime(now()->format('Y-m-d'))
+                                ) {
+                                    $expired_at = now()->addMonths($requestModel->expire);
+                                } else {
+                                    // reset package
+                                    $expired_at = Carbon::parse($expired_at)->addMonths($requestModel->expire);
+                                    $expire = $this->getNumberOfMonths($expired_at, now());
+                                }
+                                // increase expire, expired_at
+                                $member->update(
+                                    [
+                                        'expire' => $expire,
+                                        'expired_at' => $expired_at,
+                                        'downloaded_number_file' => 0,
+                                    ]
+                                );
+                                break;
 
-            Toastr::success('Cập nhật thành công', 'Thành công');
+                            default:
+
+                                break;
+                        }
+                    } else {
+                        Member::create([
+                            'user_id' => $requestModel->user_id,
+                            'packagedetail_id' => $requestModel->packagedetail_id,
+                            'expire' => $requestModel->expire,
+                            'website_id' => $requestModel->website_id,
+                            'expired_at' => now()->addMonths($requestModel->expire),
+                            'number_file' => $requestModel->packageDetail->number_file ?? 0,
+                        ]);
+                    }
+                    // push notification to user
+                    event(new AlertChargedSuccessfullyEvent($data['id']));
+                    break;
+                default:
+                    break;
+            }
+            $requestModel->update([
+                'status' => $data['status'],
+            ]);
+            Toastr::success('Cập nhật thành công', 'Thông báo');
         } catch (Throwable $e) {
-            DB::rollBack();
-            Toastr::error($e->getMessage(), 'Lỗi');
+            Toastr::error($e->getMessage(), 'Thông báo');
         }
 
         return redirect()->back();

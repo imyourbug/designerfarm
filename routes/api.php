@@ -40,6 +40,14 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::post('/deleteAll', 'AccountController@deleteAll')->name('deleteAll');
     });
 
+    #discounts
+    Route::group(['prefix' => 'discounts', 'as' => 'discounts.'], function () {
+        Route::delete('/{id}/destroy', 'DiscountController@destroy')->name('destroy');
+        Route::get('/getAll', 'DiscountController@getAll')->name('getAll');
+        Route::get('/getDiscountByCode', 'DiscountController@getDiscountByCode')->name('getDiscountByCode');
+        Route::post('/deleteAll', 'DiscountController@deleteAll')->name('deleteAll');
+    });
+
     #packages
     Route::group(['prefix' => 'packages', 'as' => 'packages.'], function () {
         Route::delete('/{id}/destroy', 'PackageController@destroy')->name('destroy');

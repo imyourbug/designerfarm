@@ -61,14 +61,35 @@
     @include('layout.header')
     @yield('content')
     @include('layout.footer')
-
+    <div class="modal fade" id="modalAlertChargedSuccessfully" style="display: none;" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-md modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thông báo</h4>
+                    <button type="button" class="closeModalAlertChargedSuccessfully close" data-dismiss="modal"
+                        aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h3>Quý khách đã mua gói tải thành công</h3>
+                    <p>Nhấn vào đây để xem các gói đã đăng ký <a href="{{ route('members.index') }}">click</a></p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- <input type="hidden" id="btn-clode-all-modal" data-dismiss="modal"/> --}}
+    <input type="hidden" id="btn-open-modal-alert-charged-successfully" data-toggle="modal"
+        data-target="#modalAlertChargedSuccessfully" />
     <div class="Toastify"></div>
     <script src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
     {!! Toastr::message() !!}
     {{-- select2 --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     {{-- common --}}
-    @stack('scripts')
     <script>
         var user = null;
 
@@ -173,6 +194,27 @@
             $(".modal-backdrop").remove();
         }
     </script>
+    {{-- PUSHER --}}
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    {{-- <script src="//js.pusher.com/3.1/pusher.min.js"></script> --}}
+    <script>
+        // Enable pusher logging - don't include this in production
+        // Pusher.logToConsole = true;
+
+        var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+            cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
+        });
+
+        var channel = pusher.subscribe('AlertChargedSuccessfullyChannel');
+        channel.bind('AlertChargedSuccessfullyEvent', function(data) {
+            let user = JSON.parse(localStorage.getItem('user'));
+            if (user && user.id == data.userId) {
+                // $('#btn-clode-all-modal').click();
+                $('#btn-open-modal-alert-charged-successfully').click();
+            }
+        });
+    </script>
+    @stack('scripts')
 </body>
 
 </html>

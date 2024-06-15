@@ -8,6 +8,7 @@ use App\Http\Requests\Users\LoginRequest;
 use App\Http\Requests\Users\RecoverRequest;
 use App\Http\Requests\Users\RegisterRequest;
 use App\Mail\RecoverPasswordMail;
+use App\Models\Discount;
 use App\Models\Package;
 use App\Models\Request as ModelsRequest;
 use App\Models\Setting;
@@ -32,6 +33,7 @@ class AdminController extends Controller
                 ->get(),
             'packages' => Package::all(),
             'websites' => Website::all(),
+            'discounts' => Discount::all(),
             'requests' => ModelsRequest::where('status', GlobalConstant::STATUS_PENDING)
                 ->get(),
         ]);

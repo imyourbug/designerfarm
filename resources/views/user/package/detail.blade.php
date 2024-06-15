@@ -68,14 +68,16 @@
 
         var quantity = null;
         var time = null;
+        var countApplyCode = 0;
 
         $(document).on('click', '.btn-option-quantity', function() {
             $('.btn-option-quantity').css('border', 'none');
             $(this).css('border', '2px solid black');
             quantity = $(this).data('quantity');
             let package_id = $(this).data('package_id');
-            console.log(package_id, quantity, time);
             getPrice(package_id, quantity, time);
+            // reset apply code
+            countApplyCode = 0;
         });
 
         $(document).on('click', '.btn-option-time', function() {
@@ -83,8 +85,9 @@
             $(this).css('border', '2px solid black');
             time = $(this).data('time');
             let package_id = $(this).data('package_id');
-            console.log(package_id, quantity, time);
             getPrice(package_id, quantity, time);
+            // reset apply code
+            countApplyCode = 0;
         });
 
         $(document).on('click', '.btn-complete', function() {
@@ -145,6 +148,66 @@
             $('.btn-open-modal-checkout').click();
         });
 
+        $(document).on('change', '.discount-code', function() {
+            let package_id = $(this).data('package_id');
+            countApplyCode = 0;
+
+            getPrice(package_id, quantity, time);
+
+        })
+
+        $(document).on('click', '.btn-apply-code', function() {
+            if (countApplyCode == 1) {
+                toastr.error('Đã nhập mã giảm giá');
+                return;
+            }
+            if (!quantity || !time) {
+                toastr.error('Chưa chọn thông tin gói');
+                return;
+            }
+
+            if (!$('.price').data('price')) {
+                toastr.error('Gói không khả dụng');
+                return;
+            }
+
+            let user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                toastr.error('Bạn cần đăng nhập');
+                $('.btn-open-login').click();
+                return;
+            }
+
+            let discountCode = $('.discount-code').val();
+            if (!discountCode) {
+                toastr.error('Bạn cần nhập mã giảm giá');
+                return;
+            }
+
+            $.ajax({
+                method: "GET",
+                url: `/api/discounts/getDiscountByCode?code=${discountCode}`,
+                success: function(response) {
+                    if (response.status == 0) {
+                        let oldPrice = $('.price').data('price');
+                        let discount = response.discount.discount;
+                        let newPrice = parseInt((1 - discount / 100) * oldPrice);
+                        console.log(oldPrice, newPrice);
+
+                        $('.price').data('price', newPrice);
+                        $('.price').text(
+                            `${formatCash(newPrice)} đ`);
+
+                        toastr.success(`Áp mã thành công. Quý khách được giảm ${discount}%`);
+                        // prevent apply code more
+                        countApplyCode = 1;
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        });
+
         function getPrice(package_id, quantity = '', time = '') {
             $.ajax({
                 method: "GET",
@@ -159,7 +222,7 @@
                         $('.status').css('color', 'green');
                     } else {
                         $('.price').data('price', '');
-                        $('.status').text(`Hết hàng`);
+                        $('.status').text(`Gói không khả dụng`);
                         $('.status').css('color', 'red');
                     }
                 }
@@ -179,35 +242,18 @@
                 <div class="">
                     <img src="{{ $package->avatar }}" style="width: 100%;height:100%" alt="{{ $package->avatar }}" />
                 </div>
-                <div class="woocommerce-product-details__short-description">
+                {{-- <div class="woocommerce-product-details__short-description">
                     <ul>
                         <li><strong>Hình thức:</strong>&nbsp;Download tự động qua bot telegram 24/24</li>
                         <li><strong>Bảo hành:</strong>&nbsp;Toàn thời gian sử dụng</li>
                         <li><strong>Hỗ trợ:</strong>&nbsp;Windows, MacOs. Không giới hạn thiết bị</li>
                     </ul>
-                </div>
+                </div> --}}
             </div>
             <div class="col-lg-6 col-md-12 col-sm-12">
                 <div class="uk-panel tm-element-woo-title" id="template-ASly7_2n#3">
                     <h1 class="product_title entry-title">{{ $package->name }}</h1>
                     <div class="wp_rv_product_info">
-                        {{-- <div class="Stars__StyledStars-sc-15olgyg-0 dYhelp">
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 32 32">
-                                    <path fill="none" fill-rule="evenodd" stroke="#FFB500" stroke-width="1.5"
-                                        d="M16 1.695l-4.204 8.518-9.401 1.366 6.802 6.631-1.605 9.363L16 23.153l8.408 4.42-1.605-9.363 6.802-6.63-9.4-1.367L16 1.695z">
-                                    </path>
-                                </svg>
-                            </span>
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 32 32">
-                                    <path fill="#FDD835" fill-rule="evenodd" stroke="#FFB500" stroke-width="1.5"
-                                        d="M16 1.695l-4.204 8.518-9.401 1.366 6.802 6.631-1.605 9.363L16 23.153l8.408 4.42-1.605-9.363 6.802-6.63-9.4-1.367L16 1.695z">
-                                    </path>
-                                </svg>
-                            </span>
-                        </div> --}}
-                        {{-- <span class="wp_rv_total" style="">( <strong>0</strong> đánh giá)</span> --}}
                         <span class="wp_rv_sold"><strong>{{ rand(300, 600) }}</strong> Đã bán</span>
                     </div>
                     <h3 class="price">
@@ -242,6 +288,24 @@
                     <div class="mt-2">
                         <button class="btn btn-success btn-buy">MUA NGAY</button>
                     </div>
+                    <div class="">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12 col-sm-12 mt-2">
+                                <input data-package_id="{{ $package->id }}" type="text"
+                                    class="form-control discount-code" placeholder="Nhập mã giảm giá..." />
+                            </div>
+                            <div class="col-lg-6 col-md-12 col-sm-12 mt-2">
+                                <button style="" class="btn btn-warning btn-apply-code">ÁP MÃ</button>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- <div class="mt-2">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <span style="width: 100%" class="btn btn-sm btn-success btn-apply-code">Áp mã thành công</span>
+                            </div>
+                        </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -272,11 +336,6 @@
                                                 aria-controls="custom-tabs-four-home" aria-selected="false">Chuyển
                                                 khoản</a>
                                         </li>
-                                        {{-- <li class="nav-item">
-                                            <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill"
-                                                href="#custom-tabs-four-profile" role="tab"
-                                                aria-controls="custom-tabs-four-profile" aria-selected="false">Nhân sự</a>
-                                        </li> --}}
                                     </ul>
                                 </div>
                                 <div class="card-body">
@@ -284,7 +343,8 @@
                                         <div class="tab-pane fade active show" id="custom-tabs-four-home" role="tabpanel"
                                             aria-labelledby="custom-tabs-four-home-tab">
                                             <div class="text-center">
-                                                Bạn vui lòng CK số tiền muốn nạp bằng cách quét mã QR của 1 trong 2 ngân
+                                                Bạn vui lòng CK số tiền <b class="price"></b> bằng cách quét mã QR của 1
+                                                trong 2 ngân
                                                 hàng sau:
                                             </div>
                                             <div class="row">
@@ -323,7 +383,8 @@
                                                                 class="content" id="content"></span></span></strong><br>
                                                     <em>(Trong đó <strong class="content"></strong> để
                                                         xác định tài
-                                                        khoản của bạn, Hệ thống sẽ cộng tiền vào tài khoản này cho bạn)</em>
+                                                        khoản của bạn, Hệ thống sẽ đăng ký gói vào tài khoản này cho
+                                                        bạn)</em>
                                                 </div>
                                                 <br>
                                             </div>
@@ -331,9 +392,9 @@
                                                 <div class="bg-pop">
                                                     <ul class="introduce-list">
                                                         <li>Phải nhập chính xác nội dung CK mà hệ thống đã hiển thị sẵn cho
-                                                            bạn, để được CỘNG TIỀN TỰ ĐỘNG.</li>
+                                                            bạn, để được ĐĂNG KÝ TỰ ĐỘNG.</li>
                                                         <li>Sau khi chuyển khoản thành công, nhấn vào nút Hoàn thành.</li>
-                                                        <li>Trường hợp sau vài phút mà bạn không nhận được tiền vui lòng gọi
+                                                        <li>Trường hợp sau vài phút mà bạn không nhận được gói vui lòng gọi
                                                             tới số hotline <a class="bold"
                                                                 href="tel:{{ $settings['hotline'] }}"
                                                                 title="Click gọi ngay!">{{ $settings['hotline'] }}</a>.

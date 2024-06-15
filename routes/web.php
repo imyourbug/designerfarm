@@ -81,6 +81,14 @@ Route::group([
     ], function () {
         Route::get('/', 'AdminController@index')->name('index');
 
+        #discounts
+        Route::group(['prefix' => 'discounts', 'as' => 'discounts.'], function () {
+            Route::get('/', 'DiscountController@index')->name('index');
+            Route::post('/create', 'DiscountController@store')->name('store');
+            Route::get('/update/{id}', 'DiscountController@show')->name('show');
+            Route::post('/update', 'DiscountController@update')->name('update');
+        });
+
         #accounts
         Route::group(['prefix' => 'accounts', 'as' => 'accounts.'], function () {
             Route::get('/', 'AccountController@index')->name('index');
