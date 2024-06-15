@@ -30,9 +30,13 @@
                 $('.btn-download').prop('href', url);
                 window.open(`${url}`, '_blank').focus();
                 // reset
-                $('#messageInput').val('');
-                $('#notification').css('display', 'none');
+                $('#reset_btn').click();
             }
+        });
+
+        $(document).on('click', '#reset_btn', function() {
+            $('#messageInput').val('');
+            $('#notification').css('display', 'none');
         });
 
         function selectOption(id, event) {
@@ -52,11 +56,6 @@
         var hash = window.location.hash.substr(1);
         if (hash) {
             document.getElementById(hash).classList.add('active');
-        }
-
-        function goToHomePage() {
-            // Replace '/' with the actual URL of your home page
-            window.location.href = '/';
         }
 
         $(document).ready(function() {
@@ -271,33 +270,6 @@
                             toastr.success(
                                 'Tải thành công! Bạn sẽ nhận được link tải sau vài giây!',
                                 "Thông báo");
-                            // intervalGetUrl = setInterval(async () => {
-                            //     let result = await getCacheById(user.id);
-                            //     if (result.status == 0) {
-                            //         if (result.data) {
-                            //             // display result url
-                            //             let url = result.data.url;
-                            //             $('.btn-open-modal-result').click();
-                            //             $('.url').text(url);
-                            //             // stop call get ur
-                            //             text.removeClass('d-none');
-                            //             loading.addClass('d-none');
-                            //             clearInterval(intervalGetUrl);
-                            //             // set url download
-                            //             $('.btn-download').prop('href', url);
-                            //             window.open(`${url}`, '_blank').focus();
-                            //             // reset
-                            //             // $('#reset_btn').click();
-                            //         }
-                            //     } else {
-                            //         // return error
-                            //         toastr.error(response.message, "Thông báo");
-                            //         // stop call get ur
-                            //         text.removeClass('d-none');
-                            //         loading.addClass('d-none');
-                            //         clearInterval(intervalGetUrl);
-                            //     }
-                            // }, 4000);
                         } else {
                             text.removeClass('d-none');
                             loading.addClass('d-none');
@@ -305,26 +277,6 @@
                         }
                     },
                 });
-
-
-                // async function getCacheById(id) {
-                //     let result = null;
-                //     let formData = new FormData();
-                //     formData.append('id', id);
-                //     await $.ajax({
-                //         method: "POST",
-                //         url: `/api/getCacheById`,
-                //         data: formData,
-                //         cache: false,
-                //         contentType: false,
-                //         processData: false,
-                //         success: function(response) {
-                //             result = response;
-                //         }
-                //     })
-
-                //     return result;
-                // }
 
                 // Hàm hiển thị thông báo
                 function showNotification(message, alertClass) {
@@ -409,7 +361,7 @@
                                     class="d-none spinner-border spinner-border-sm spinner"></span>
                                 <span id="submit-code-text" class="text">DOWNLOAD</span>
                             </button>
-                            <button data-dashlane-rid="7df0e654d6340e33" id="reset_btn" onclick="resetForm()"
+                            <button data-dashlane-rid="7df0e654d6340e33" id="reset_btn"
                                 class="btn btn-lg btn-outline-warning btn-getlink" data-dashlane-label="true"
                                 data-form-type="">
                                 <span class="text">RESET</span>
