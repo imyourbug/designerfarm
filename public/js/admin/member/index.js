@@ -2,15 +2,7 @@ var dataTable = null;
 
 $(document).ready(function () {
     dataTable = $("#table").DataTable({
-        columnDefs: [
-            // { visible: false, targets: 1 },
-            // { visible: false, targets: 2 },
-            // { visible: false, targets: 3 },
-        ],
-        lengthMenu: [
-            // [100, 250, 500],
-            // [100, 250, 500]
-        ],
+        ordering: false,
         layout: {
             topStart: {
                 buttons: [
@@ -31,11 +23,6 @@ $(document).ready(function () {
             dataSrc: "members",
         },
         columns: [
-            // {
-            //     data: function (d) {
-            //         return `<input class="btn-select" type="checkbox" data-id="${d.id}" />`;
-            //     }
-            // },
             {
                 data: function (d) {
                     return d.user.name;
@@ -73,7 +60,7 @@ $(document).ready(function () {
             },
             {
                 data: function (d) {
-                    return d.package_detail.package.type == 0 ? 'Không' : d.website_id;
+                    return d.package_detail.package.type == 0 ? 'Không' : d.package_detail.package.website_id;
                 },
             },
             {

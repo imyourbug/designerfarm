@@ -5,16 +5,12 @@ $(document).ready(function () {
     user = JSON.parse(localStorage.getItem('user'));
 
     dataTable = $("#table").DataTable({
+        ordering: false,
         ajax: {
             url: `/api/requests/getAll?user_id=${user.id}`,
             dataSrc: "requests",
         },
         columns: [
-            // {
-            //     data: function (d) {
-            //         return d.user.email;
-            //     },
-            // },
             {
                 data: function (d) {
                     return `<b>${d.content}</b>`;
@@ -30,11 +26,6 @@ $(document).ready(function () {
                     return `${formatCash(d.total)}`;
                 },
             },
-            // {
-            //     data: function (d) {
-            //         return d.expire;
-            //     },
-            // },
             {
                 data: function (d) {
                     return d.package_detail.package.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';

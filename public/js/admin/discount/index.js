@@ -2,6 +2,7 @@ var dataTable = null;
 
 $(document).ready(function () {
     dataTable = $("#table").DataTable({
+        ordering: false,
         layout: {
             topStart: {
                 buttons: [

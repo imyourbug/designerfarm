@@ -5,6 +5,7 @@ $(document).ready(function () {
     user = JSON.parse(localStorage.getItem('user'));
 
     dataTable = $("#table").DataTable({
+        ordering: false,
         ajax: {
             url: `/api/members/getAll?user_id=${user.id}`,
             dataSrc: "members",
@@ -42,7 +43,7 @@ $(document).ready(function () {
             },
             {
                 data: function (d) {
-                    return d.package_detail.package.type == 0 ? 'Không' : d.website_id;
+                    return d.package_detail.package.type == 0 ? 'Không' : d.package_detail.package.website_id;
                 },
             },
         ],
