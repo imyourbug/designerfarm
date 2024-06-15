@@ -37,12 +37,12 @@ $(document).ready(function () {
             },
             {
                 data: function (d) {
-                    return d.package_detail.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
+                    return d.package_detail.package.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
                 },
             },
             {
                 data: function (d) {
-                    return d.package_detail.type == 0 ? 'Không' : d.website_id;
+                    return d.package_detail.package.type == 0 ? 'Không' : d.website_id;
                 },
             },
         ],

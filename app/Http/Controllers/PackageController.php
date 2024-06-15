@@ -84,7 +84,7 @@ class PackageController extends Controller
                 $q->whereIn('id', $ids);
             })
             // order
-            ->orderByDesc('created_at');
+            ->orderByDesc('id');
 
         // limit
         if ($limit) {

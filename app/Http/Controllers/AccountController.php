@@ -38,7 +38,7 @@ class AccountController extends Controller
                 );
             })
             // order
-            ->orderByDesc('created_at');
+            ->orderByDesc('id');
 
         // limit
         if ($limit) {

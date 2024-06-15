@@ -138,7 +138,7 @@ class PackageDetailController extends Controller
                 $q->where('expire', $time);
             })
             // order
-            ->orderByDesc('created_at');
+            ->orderByDesc('id');
 
         // limit
         if ($limit) {

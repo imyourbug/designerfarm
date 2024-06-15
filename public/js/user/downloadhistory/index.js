@@ -12,7 +12,7 @@ $(document).ready(function () {
         columns: [
             {
                 data: function (d) {
-                    return d.user.email;
+                    return d.user.name;
                 },
             },
             {

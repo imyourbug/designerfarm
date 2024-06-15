@@ -98,18 +98,9 @@
                                             dụng
                                         </p>
                                     </div>
-                                    <!--Text-->
                                     <div class="item-box-blog-text">
                                         <p>{{ $package->description }}</p>
                                     </div>
-                                    {{-- <div class="item-box-blog-text mb-2">
-                                        <h3 class="">
-                                            {{ $package->number_file . ' file/' . ($package->type == 0 ? 'năm' : 'ngày') }}
-                                        </h3>
-                                    </div>
-                                    <div class="item-box-blog-text">
-                                        <h3 class="price">{!! \App\Helpers\Helper::getPrice($package->price, $package->price_sale) !!}</h3>
-                                    </div> --}}
                                     <a style="width:100%" class="btn btn-success mt-4 btn-open-detail"
                                         href="{{ route('packages.show', ['id' => $package->id]) }}">Đăng
                                         ký</a>

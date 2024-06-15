@@ -42,7 +42,7 @@ class MemberController extends Controller
                 $q->where('user_id', $user_id);
             })
             // order
-            ->orderByDesc('created_at');
+            ->orderByDesc('id');
 
         // limit
         if ($limit) {
