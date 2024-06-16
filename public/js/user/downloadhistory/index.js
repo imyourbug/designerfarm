@@ -5,6 +5,7 @@ $(document).ready(function () {
     user = JSON.parse(localStorage.getItem('user'));
 
     dataTable = $("#table").DataTable({
+        autoWidth: false,
         ordering: false,
         ajax: {
             url: `/api/downloadhistories/getAll?user_id=${user.id}`,
@@ -14,6 +15,11 @@ $(document).ready(function () {
             {
                 data: function (d) {
                     return d.user.name;
+                },
+            },
+            {
+                data: function (d) {
+                    return d.input_url;
                 },
             },
             {

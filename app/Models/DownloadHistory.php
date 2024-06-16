@@ -15,7 +15,8 @@ class DownloadHistory extends Model
 
     protected $fillable = [
         'user_id',
-        'url'
+        'url',
+        'input_url',
     ];
 
     public function user()

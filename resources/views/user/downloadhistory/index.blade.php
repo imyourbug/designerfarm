@@ -7,6 +7,23 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.2/css/dataTables.dataTables.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
+    <style>
+        #table th:nth-child(2),
+        #table th:nth-child(3) {
+            width: 30%;
+            max-width: 30%;
+            word-break: break-all;
+            white-space: pre-line;
+        }
+
+        #table td:nth-child(2),
+        #table td:nth-child(3) {
+            width: 30%;
+            max-width: 30%;
+            word-break: break-all;
+            white-space: pre-line;
+        }
+    </style>
 @endpush
 @push('scripts')
     <script src="/js/popper.min.js"></script>
@@ -35,7 +52,8 @@
                             <thead>
                                 <tr>
                                     <th>Tài khoản</th>
-                                    <th>Link</th>
+                                    <th>Link cần tải</th>
+                                    <th>Link kết quả</th>
                                     <th>Ngày tải</th>
                                     <th>Thao tác</th>
                                 </tr>

@@ -34,10 +34,7 @@ class BotController extends Controller
             $id = $request->id ?? '';
             $url = $request->url ?? '';
             $website_id = $request->website_id ?? '';
-            // Cache::put($id, json_encode([
-            //     'id' => $id,
-            //     'url' => $url,
-            // ]));
+
             // push notification about result from tool
             event(new AlertDownloadedSuccessfullyEvent($id, $url));
 
@@ -87,10 +84,13 @@ class BotController extends Controller
                 if ($packageSelected) {
                     $packageSelected->increment('downloaded_number_file');
                 }
+                // get input url from cache
+                $inputUrl = Cache::pull($id, '');
                 // create download history
                 DownloadHistory::create([
                     'user_id' => $id,
                     'url' => $url,
+                    'input_url' => $inputUrl,
                 ]);
             }
             DB::commit();
@@ -99,7 +99,6 @@ class BotController extends Controller
                 'status' => 0,
             ]);
         } catch (Throwable $e) {
-            Cache::forget($id);
             DB::rollBack();
 
             return response()->json([
@@ -121,20 +120,22 @@ class BotController extends Controller
             ]);
 
             // check available packages
+            // DB::enableQueryLog();
             $availablePackage = Member::where(
                 [
                     ['user_id', '=', $data['id']],
                     ['expired_at', '>=', now()->format('Y-m-d 00:00:00')],
                 ]
             )
-                ->whereHas('packageDetail', function ($q) {
-                    $q->whereColumn('members.downloaded_number_file', '<', 'package_details.number_file');
+                ->whereColumn('downloaded_number_file', '<', 'number_file')
+                ->where(function ($q) use ($data) {
+                    $q->orWhere('website_id', GlobalConstant::WEB_ALL)
+                        ->orWhere('website_id', $data['typeWeb'])
+                        ->orWhere('website_id', '')
+                        ->orWhereNull('website_id');
                 })
-                ->where('website_id', $data['typeWeb'])
-                ->orWhere('website_id', GlobalConstant::WEB_ALL)
-                ->orWhere('website_id', '')
-                ->orWhereNull('website_id')
                 ->first();
+            // dd(DB::getRawQueryLog(), $availablePackage);
 
             if (!$availablePackage) {
                 throw new Exception('Đã hết số lượt tải file, mời bạn gia hạn hoặc đăng ký gói mới.');
@@ -143,9 +144,14 @@ class BotController extends Controller
             $newText = $this->getIdFromText($data['text'], $data['typeDownload'] ?? '', $data['typeWeb']);
 
             $id = $data['id'];
+            $inputUrl = $data['text'];
+
+            // store url to cache
+            Cache::put($id, $inputUrl);
+
             $dataSend = [
                 'chat_id' => $this->groupTelegramId,
-                'text' =>  "$id|$newText",
+                'text' => "$id|$newText",
             ];
             $client = new Client();
             $client->post("https://api.telegram.org/bot$this->botKey/sendMessage", [

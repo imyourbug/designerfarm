@@ -50,8 +50,15 @@
 
         @media (min-width: 1000px) {
             .main-header {
-                margin: 0px 250px !important;
+                padding: 0px 250px !important;
+                margin: 0px !important;
             }
+        }
+
+        nav.main-header {
+            width: 100%;
+            position: fixed;
+            top: 0px;
         }
     </style>
     @stack('styles')
@@ -153,6 +160,9 @@
                     if (response.status == 0) {
                         toastr.success(response.message, "Thông báo");
                         closeModal('modalRegister');
+                        setTimeout(() => {
+                            window.location.href = '/';
+                        }, 2000);
                     } else {
                         toastr.error(response.message, "Thông báo");
                     }
