@@ -13,6 +13,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class BotController extends Controller
@@ -34,6 +35,9 @@ class BotController extends Controller
             $id = $request->id ?? '';
             $url = $request->url ?? '';
             $website_id = $request->website_id ?? '';
+
+            $params = json_encode($request->all());
+            Log::debug("REQUEST PARAMS setCacheById", $request->all());
 
             // push notification about result from tool
             event(new AlertDownloadedSuccessfullyEvent($id, $url));
@@ -92,6 +96,7 @@ class BotController extends Controller
                     'url' => $url,
                     'input_url' => $inputUrl,
                 ]);
+                Log::debug("DECREASED downloaded_number_file successfully");
             }
             DB::commit();
 
