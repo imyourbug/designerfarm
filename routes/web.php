@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/reset-number-file', function () {
+    return Artisan::call('reset-number-file');
+});
+
 Route::get('/schedule', function () {
     return Artisan::call('schedule:run');
 });
