@@ -6,11 +6,13 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/content.js"></script>
     <script>
-        var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+        Pusher.logToConsole = true;
+
+        var pusherDownload = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
             cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
         });
+        var channel = pusherDownload.subscribe('AlertDownloadedSuccessfullyChannel');
 
-        var channel = pusher.subscribe('AlertDownloadedSuccessfullyChannel');
         channel.bind('AlertDownloadedSuccessfullyEvent', function(data) {
             let user = JSON.parse(localStorage.getItem('user'));
             let loading = $('#submit-code-loading');

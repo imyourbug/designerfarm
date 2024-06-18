@@ -39,21 +39,6 @@
 @push('scripts')
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
-    <script>
-        function formatCash(str) {
-            str = str.toString();
-            if (str && str !== "0") {
-                return str
-                    .split("")
-                    .reverse()
-                    .reduce((prev, next, index) => {
-                        return (index % 3 ? next : next + ".") + prev;
-                    });
-            }
-
-            return str;
-        }
-    </script>
 @endpush
 @section('content')
     <div class="main-content" style="margin-top: 100px;">
@@ -112,89 +97,5 @@
             </div>
             <br>
         @endforeach
-    </div>
-    <input type="hidden" data-toggle="modal" data-target="#modalPackageDetail" class="btn-open-modal-detail" />
-    <div class="modal fade" id="modalPackageDetail" aria-modal="true" role="dialog">
-        <div class="modal-dialog modal-md modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Lựa chọn gói</h4>
-                    <button type="button" class="closeModalPackageDetail close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="package_type" />
-                    <input type="hidden" id="package_id" />
-                    <div class="periods type-number-file mb-2">
-                        <div class="row" style="">
-                            <div class="col-lg-6 col-md-6 col-sm-6">Tên gói</div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 package_name" style="text-align: right">aaa</div>
-                        </div>
-                        <div class="row" style="">
-                            <div class="col-lg-6 col-md-6 col-sm-6">Số lượt tải</div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 package_number_file" style="text-align: right">aaa</div>
-                        </div>
-                    </div>
-                    <div class="periods type-time row">
-                        <label for="menu" style="font-weight: bold">Thời hạn <span class="required">(*)</span></label>
-                        <div class="col-lg-12 col-md-12 col-sm-12 option" style="">
-                            <div class=""><input class="rdo-type-time" data-expire="12" id="type-time-fourth"
-                                    name="type-time-option" type="radio" />
-                                <label for="type-time-fourth">1 năm</label>
-                            </div>
-                            <span class="btn btn-warning label-price-fourth" style="">120000</span>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 option" style="">
-                            <div class=""><input class="rdo-type-time" data-expire="6" id="type-time-third"
-                                    name="type-time-option" type="radio" />
-                                <label for="type-time-third">6 tháng</label>
-                            </div>
-                            <span class="btn btn-warning label-price-third" style="">120000</span>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 option" style="">
-                            <div class="">
-                                <input class="rdo-type-time" id="type-time-second" data-expire="3" name="type-time-option"
-                                    type="radio" />
-                                <label for="type-time-second">3 tháng</label>
-                            </div>
-                            <span class="btn btn-warning label-price-second" style="">120000</span>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 option" style="">
-                            <div class="">
-                                <input class="rdo-type-time" id="type-time-first" data-expire="1"
-                                    name="type-time-option" type="radio" />
-                                <label for="type-time-first">1 tháng</label>
-                            </div>
-                            <span class="btn btn-warning label-price-first" style="">120000</span>
-                        </div>
-                    </div>
-                    <div class="periods type-time row">
-                        <div class="col-lg-12 col-md-12 col-sm-12" style="">
-                            <div class="form-group">
-                                <label for="menu" style="font-weight: bold">Website <span
-                                        class="required">(*)</span></label>
-                                <select name="website_id" id="website_id" class="form-control">
-                                    <option selected value="ALL">--ALL--</option>
-                                    @foreach ($websites as $website)
-                                        <option value="{{ $website->code }}">{{ $website->code }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row block-money" style="">
-                        <div class="col-lg-6 col-md-6 col-sm-6">Tổng tiền</div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 total" style="text-align: right"></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" style="width: 100%" class="btn-close-modal btn btn-default"
-                        data-dismiss="modal">Đóng</button>
-                    <button type="button" style="width: 100%" class="btn-confirm btn btn-success" data-toggle="modal"
-                        data-target="#modalCheckout">Xác nhận</button>
-                </div>
-            </div>
-        </div>
     </div>
 @endsection

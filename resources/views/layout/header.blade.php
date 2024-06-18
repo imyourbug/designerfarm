@@ -17,14 +17,35 @@
                 <span class="txt-user-name">Tài khoản</span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
-                <a href="#" data-toggle="modal" data-target="#modalLogin"
-                    class="dropdown-item btn-open-login">
+                <a href="#" data-toggle="modal" data-target="#modalLogin" class="dropdown-item btn-open-login">
                     <i class="fa-solid fa-key"></i>&emsp13;Đăng nhập
                 </a>
                 <a href="#" data-toggle="modal" data-target="#modalRegister"
                     class="dropdown-item btn-open-register">
                     <i class="fa-solid fa-registered"></i>&emsp13;Đăng ký
                 </a>
+            </div>
+        </li>
+        <li class="nav-item dropdown block-account">
+            <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+                <span>Các gói</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
+                style="left: inherit; right: 0px;">
+                <table class="block-package">
+                    <tr>
+                        <td style="padding: 10px 15px">
+                            Gosi 1
+                        </td>
+                        <td>150/150</td>
+                    </tr>
+                </table>
+                {{-- <a href="#" class="dropdown-item">
+                    <i class="fa-solid fa-lock"></i></i>&emsp13;Đổi mật khẩu
+                </a>
+                <a href="#" class="btn-logout dropdown-item">
+                    <i class="fa-solid fa-right-from-bracket"></i>&emsp13;Đăng xuất
+                </a> --}}
             </div>
         </li>
         <li class="nav-item dropdown block-account">
@@ -44,7 +65,7 @@
                 <div class="dropdown-divider"></div>
                 <a href="#" data-toggle="modal" data-target="#modalChangePassword"
                     class="dropdown-item btn-open-change-password">
-                        <i class="fa-solid fa-lock"></i></i>&emsp13;Đổi mật khẩu
+                    <i class="fa-solid fa-lock"></i></i>&emsp13;Đổi mật khẩu
                 </a>
                 <a href="#" class="btn-logout dropdown-item">
                     <i class="fa-solid fa-right-from-bracket"></i>&emsp13;Đăng xuất
@@ -105,8 +126,8 @@
             </div>
             <div class="modal-body">
                 <div class="input-group mb-3">
-                    <input type="text" name="name_register" id="name_register" value="" class="form-control"
-                        placeholder="Nhập tài khoản">
+                    <input type="text" name="name_register" id="name_register" value=""
+                        class="form-control" placeholder="Nhập tài khoản">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -114,8 +135,8 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" name="password_register" id="password_register" value="" class="form-control"
-                        placeholder="Nhập mật khẩu">
+                    <input type="password" name="password_register" id="password_register" value=""
+                        class="form-control" placeholder="Nhập mật khẩu">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -123,8 +144,8 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" name="re_password_register" id="re_password_register" value="" class="form-control"
-                        placeholder="Nhập lại mật khẩu">
+                    <input type="password" name="re_password_register" id="re_password_register" value=""
+                        class="form-control" placeholder="Nhập lại mật khẩu">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -149,7 +170,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Đổi mật khẩu</h4>
-                <button type="button" class="closeModalChangePassword close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="closeModalChangePassword close" data-dismiss="modal"
+                    aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
@@ -164,8 +186,8 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" name="password_change" id="password_change" value="" class="form-control"
-                        placeholder="Nhập mật khẩu">
+                    <input type="password" name="password_change" id="password_change" value=""
+                        class="form-control" placeholder="Nhập mật khẩu">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -173,8 +195,8 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" name="new_password_change" id="new_password_change" value="" class="form-control"
-                        placeholder="Nhập lại mật khẩu mới">
+                    <input type="password" name="new_password_change" id="new_password_change" value=""
+                        class="form-control" placeholder="Nhập lại mật khẩu mới">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -193,4 +215,3 @@
         </div>
     </div>
 </div>
-

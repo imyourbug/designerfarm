@@ -69,25 +69,119 @@
         var quantity = null;
         var time = null;
         var countApplyCode = 0;
+        var clickedQuantity = null;
+        var clickedTime = null;
 
         $(document).on('click', '.btn-option-quantity', function() {
+            console.log('click quantity');
+            let thisQuantity = $(this).data('quantity');
+
             $('.btn-option-quantity').css('border', 'none');
             $(this).css('border', '2px solid black');
-            quantity = $(this).data('quantity');
-            let package_id = $(this).data('package_id');
-            getPrice(package_id, quantity, time);
-            // reset apply code
-            countApplyCode = 0;
+            if (quantity != thisQuantity) {
+                quantity = thisQuantity;
+                // enable available options block-expire
+                let package_id = $(this).data('package_id');
+                $.ajax({
+                    method: "GET",
+                    url: `/api/packagedetails/searchOne?package_id=${package_id}&quantity=${thisQuantity}`,
+                    success: function(response) {
+                        if (response.status == 0) {
+                            $('.btn-option-time').prop('disabled', true);
+
+                            let i = 0;
+                            let count = 0;
+                            let firstTime = null;
+                            response.detail.forEach(e => {
+                                $(`.btn-option-time[data-package_id='${package_id}']`).each(
+                                    function() {
+                                        if ($(this).data('time') == e.expire) {
+                                            if (i == 0) {
+                                                i == 1;
+                                                firstTime = e.expire;
+                                            }
+                                            if (time == e.expire) {
+                                                count == 1;
+                                            }
+                                            $(this).prop('disabled', false);
+                                        }
+                                    });
+                            });
+                            // set default time option
+                            if (count == 0) {
+                                $(`.btn-option-time`).css('border',
+                                    'none');
+                                $(`.btn-option-time[data-time='${firstTime}']`).css('border',
+                                    '2px solid black');
+                                time = firstTime;
+                                getPrice(package_id, quantity, time);
+                            }
+                        } else {
+                            // to do
+                        }
+                    }
+                });
+            } else {
+                quantity = null;
+                $(this).css('border', 'none');
+                $('.btn-option-time').prop('disabled', false);
+            }
         });
 
         $(document).on('click', '.btn-option-time', function() {
+            let thisTime = $(this).data('time');
+
             $('.btn-option-time').css('border', 'none');
             $(this).css('border', '2px solid black');
-            time = $(this).data('time');
-            let package_id = $(this).data('package_id');
-            getPrice(package_id, quantity, time);
-            // reset apply code
-            countApplyCode = 0;
+            if (time != thisTime) {
+                time = thisTime;
+                // enable available options block-expire
+                let package_id = $(this).data('package_id');
+                $.ajax({
+                    method: "GET",
+                    url: `/api/packagedetails/searchOne?package_id=${package_id}&time=${thisTime}`,
+                    success: function(response) {
+                        if (response.status == 0) {
+                            $('.btn-option-quantity').prop('disabled', true);
+
+                            let i = 0;
+                            let count = 0;
+                            let firstQuantity = null;
+                            response.detail.forEach(e => {
+                                $(`.btn-option-quantity[data-package_id='${package_id}']`).each(
+                                    function() {
+                                        if ($(this).data('quantity') == e.number_file) {
+                                            if (i == 0) {
+                                                i == 1;
+                                                firstQuantity = e.number_file;
+                                            }
+                                            if (quantity == e.number_file) {
+                                                count == 1;
+                                            }
+                                            $(this).prop('disabled', false);
+                                        }
+                                    });
+                            });
+                            // set default quantity option
+                            if (count == 0) {
+                                $(`.btn-option-quantity`).css('border',
+                                    'none');
+                                $(`.btn-option-quantity[data-quantity='${firstQuantity}']`).css(
+                                    'border',
+                                    '2px solid black');
+                                quantity = firstQuantity;
+                                getPrice(package_id, quantity, time);
+                            }
+                        } else {
+                            // to do
+                        }
+                    }
+                });
+            } else {
+                time = null;
+                $(this).css('border', 'none');
+                $('.btn-option-quantity').prop('disabled', false);
+            }
         });
 
         $(document).on('click', '.btn-complete', function() {
@@ -211,22 +305,25 @@
         function getPrice(package_id, quantity = '', time = '') {
             $.ajax({
                 method: "GET",
-                url: `/api/packagedetails/searchOne?package_id=${package_id}&quantity=${quantity}&time=${time}`,
+                url: `/api/packagedetails/searchOne?package_id=${package_id}&quantity=${quantity}&time=${time}&limit=${1}`,
                 success: function(response) {
                     if (response.status == 0) {
-                        $('.price').text(
-                            `${formatCash(response.detail.price_sale || response.detail.price)} đ`);
-                        $('.price').data('price', response.detail.price_sale || response.detail.price);
-                        $('#packagedetail_id').val(response.detail.id);
-                        $('.status').text(`Còn hàng`);
-                        $('.status').css('color', 'green');
+                        let detail = response.detail[0];
+                        if (detail) {
+                            $('.price').text(
+                                `${formatCash(detail.price_sale || detail.price)} đ`);
+                            $('.price').data('price', detail.price_sale || detail.price);
+                            $('#packagedetail_id').val(detail.id);
+                            // $('.status').text(`Còn hàng`);
+                            $('.status').css('color', 'green');
+                        }
                     } else {
                         $('.price').data('price', '');
-                        $('.status').text(`Gói không khả dụng`);
+                        // $('.status').text(`Gói không khả dụng`);
                         $('.status').css('color', 'red');
                     }
                 }
-            })
+            });
         }
     </script>
 @endpush
@@ -242,13 +339,6 @@
                 <div class="">
                     <img src="{{ $package->avatar }}" style="width: 100%;height:100%" alt="{{ $package->avatar }}" />
                 </div>
-                {{-- <div class="woocommerce-product-details__short-description">
-                    <ul>
-                        <li><strong>Hình thức:</strong>&nbsp;Download tự động qua bot telegram 24/24</li>
-                        <li><strong>Bảo hành:</strong>&nbsp;Toàn thời gian sử dụng</li>
-                        <li><strong>Hỗ trợ:</strong>&nbsp;Windows, MacOs. Không giới hạn thiết bị</li>
-                    </ul>
-                </div> --}}
             </div>
             <div class="col-lg-6 col-md-12 col-sm-12">
                 <div class="uk-panel tm-element-woo-title" id="template-ASly7_2n#3">
@@ -269,9 +359,9 @@
                                     $package->type == \App\Constant\GlobalConstant::TYPE_BY_TIME ? 'Ngày' : 'Năm';
                             @endphp
                             @foreach ($quantities as $quantity)
-                                <span data-package_id="{{ $package->id }}" data-quantity="{{ $quantity }}"
+                                <button data-package_id="{{ $package->id }}" data-quantity="{{ $quantity }}"
                                     class="btn btn-option btn-option-quantity btn-default btn-sm">{{ $quantity }}
-                                    File/{{ $typeText }}</span>
+                                    File/{{ $typeText }}</button>
                             @endforeach
                         </div>
                     </div>
@@ -279,9 +369,9 @@
                         <label for="">Thời gian</label>
                         <div class="block-expire">
                             @foreach ($times as $time)
-                                <span data-package_id="{{ $package->id }}" data-time="{{ $time }}"
+                                <button data-package_id="{{ $package->id }}" data-time="{{ $time }}"
                                     class="btn btn-option btn-option-time btn-default btn-sm">{{ $time }}
-                                    tháng</span>
+                                    tháng</button>
                             @endforeach
                         </div>
                     </div>
@@ -299,13 +389,6 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="mt-2">
-                        <div class="row">
-                            <div class="col-lg-6 col-md-12 col-sm-12">
-                                    <span style="width: 100%" class="btn btn-sm btn-success btn-apply-code">Áp mã thành công</span>
-                            </div>
-                        </div>
-                    </div> --}}
                 </div>
             </div>
         </div>

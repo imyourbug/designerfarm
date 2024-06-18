@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Constant\GlobalConstant;
 use App\Http\Controllers\Controller;
+use App\Models\Member;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -38,7 +39,10 @@ class AuthController extends Controller
         return response()->json([
             'status' => GlobalConstant::STATUS_OK,
             'message' => 'Đăng nhập thành công',
-            'user' => Auth::user()
+            'user' => Auth::user(),
+            'members' => Member::with(['packageDetail.package'])
+                ->where('user_id', Auth::id())
+                ->get(),
         ]);
     }
 

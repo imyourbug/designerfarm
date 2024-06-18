@@ -17,6 +17,7 @@ class DownloadHistory extends Model
         'user_id',
         'url',
         'input_url',
+        'id_url',
     ];
 
     public function user()
