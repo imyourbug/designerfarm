@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->id();
-            $table->string('key');
+        Schema::table('websites', function (Blueprint $table) {
+            $table->string('image')->nullable();
+            $table->string('status')->nullable()->default(1);
             $table->string('name')->nullable();
-            $table->longText('value')->nullable();
-            $table->timestamps();
+            $table->longText('sample_link')->nullable();
+            $table->longText('website_link')->nullable();
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('settings');
+        //
     }
 };

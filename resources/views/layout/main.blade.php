@@ -60,10 +60,6 @@
             position: fixed;
             top: 0px;
         }
-
-        .dropdown-menu {
-            top: 5px;
-        }
     </style>
     @stack('styles')
 </head>
@@ -144,18 +140,6 @@
                         $('.block-login').css('display', 'none');
                         $('.block-account').css('display', 'block');
                         $('.txt-user-name').text(response.user.name);
-                        // display packages
-                        $('.block-package').html('');
-                        let html = '';
-                        response.members.forEach(e => {
-                            html += `<tr>
-                                        <td style="padding: 10px 15px">
-                                            ${e.package_detail.package.name}
-                                        </td>
-                                    <td>${e.number_file}/${e.number_file-e.downloaded_number_file}</td>
-                                    </tr>`;
-                        });
-                        $('.block-package').html(html);
                     } else {
                         toastr.error(response.message, "Thông báo");
                     }

@@ -48,20 +48,9 @@ class PackageController extends Controller
 
     public function getAll(Request $request)
     {
-        $user_id = $request->user_id;
-        $package_id = $request->package_id;
         $to = $request->to;
         $from = $request->from;
-        $content = $request->content;
-        $user = $request->user;
-        $uid = $request->uid;
-        $note = $request->note;
-        $phone = $request->phone;
-        $title = $request->title;
-        $name_facebook = $request->name_facebook;
-        $today = $request->today;
         $limit = $request->limit;
-        $ids = $request->ids ?? [];
         $packages = Package::with([])
             // to
             ->when($to, function ($q) use ($to) {
@@ -75,14 +64,6 @@ class PackageController extends Controller
                     $from
                 );
             })
-            // uid
-            ->when(strlen($uid), function ($q) use ($uid) {
-                return $q->where('uid', 'like', "%$uid%");
-            })
-            // ids
-            ->when(count($ids), function ($q) use ($ids) {
-                $q->whereIn('id', $ids);
-            })
             // order
             ->orderByDesc('id');
 
@@ -90,7 +71,7 @@ class PackageController extends Controller
         if ($limit) {
             $packages = $packages->limit($limit);
         }
-        $packages = $packages->get()?->toArray() ?? [];
+        $packages = $packages->get();
 
         return response()->json([
             'status' => 0,

@@ -29,6 +29,7 @@ class Handler extends ExceptionHandler
         });
         $this->renderable(
             function (Throwable $e, $request) {
+                // dd($e);
                 return response()->json([
                     'status' => 1,
                     'message' =>  $e->getMessage(),

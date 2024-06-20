@@ -19,53 +19,36 @@ $(document).ready(function () {
             top2Start: 'pageLength',
         },
         ajax: {
-            url: `/api/requests/getAll`,
-            dataSrc: "requests",
+            url: `/api/websites/getAll`,
+            dataSrc: "websites",
         },
         columns: [
             {
                 data: function (d) {
-                    return d.user.name;
+                    return d.name;
                 },
             },
             {
                 data: function (d) {
-                    return `<b>${d.content}</b>`;
+                    return d.code;
                 },
             },
             {
                 data: function (d) {
-                    return d.package_detail.package.name;
+                    return `<img style="width: 50px;height:50px" src="${d.image}" alt="image" />`;
                 },
             },
             {
                 data: function (d) {
-                    return `${formatCash(d.total)}`;
+                    return getStatus(d.id, d.status);
                 },
             },
             {
                 data: function (d) {
-                    return d.expire;
-                },
-            },
-            {
-                data: function (d) {
-                    return d.package_detail.package.type == 0 ? 'Tải lẻ' : 'Tải theo tháng hoặc năm';
-                },
-            },
-            {
-                data: function (d) {
-                    return d.package_detail.package.type == 0 ? 'Không' : d.website_id;
-                },
-            },
-            {
-                data: function (d) {
-                    return getStatus(d.id, d.website_id || '', d.status);
-                },
-            },
-            {
-                data: function (d) {
-                    return `<button data-id="${d.id}" class="btn btn-danger btn-sm btn-delete">
+                    return `<a class="btn btn-sm btn-primary btn-edit" target="_blank" href="/admin/websites/update/${d.id}">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button data-id="${d.id}" class="btn btn-danger btn-sm btn-delete">
                                 <i class="fas fa-trash"></i>
                             </button>`;
                 },
@@ -74,26 +57,31 @@ $(document).ready(function () {
     });
 });
 
-function getStatus(id = '', website_id = '', status = '') {
+
+function getStatus(id = '', status = '') {
     let renderStatus = '';
     switch (true) {
         case status == 0:
             renderStatus = `<div class="btn-group">
-                <span class="btn btn-primary">Đang chờ</span>
-                <button type="button" class="btn btn-primary btn-flat dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="true">
+                <span class="btn btn-danger">Đang bảo trì</span>
+                <button type="button" class="btn btn-danger btn-flat dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="true">
                 <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(67px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
-                <a data-id=${id} data-website_id='${website_id}' data-status=${1} class="dropdown-item btn-change-status" href="#">Đã xác nhận</a>
-                <a data-id=${id} data-website_id='${website_id}' data-status=${2} class="dropdown-item btn-change-status" href="#">Đã hủy</a>
+                <a data-id=${id} data-status=${1} class="dropdown-item btn-change-status" href="#">Hoạt động</a>
                 </div>
                 </div>`;
             break;
         case status == 1:
-            renderStatus = '<span class="btn btn-success">Đã xác nhận</span>';
-            break;
-        case status == 2:
-            renderStatus = '<span class="btn btn-danger">Đã hủy</span>';
+            renderStatus = `<div class="btn-group">
+                <span class="btn btn-success">Đang hoạt động</span>
+                <button type="button" class="btn btn-success btn-flat dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="true">
+                <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(67px, 37px, 0px); top: 0px; left: 0px; will-change: transform;">
+                <a data-id=${id} data-status=${0} class="dropdown-item btn-change-status" href="#">Bảo trì</a>
+                </div>
+                </div>`;
             break;
         default:
             break;
@@ -102,18 +90,17 @@ function getStatus(id = '', website_id = '', status = '') {
     return renderStatus;
 }
 
+
 $(document).on("click", ".btn-change-status", function () {
     if (confirm("Bạn có muốn đổi trạng thái?")) {
         let id = $(this).data("id");
         let status = $(this).data("status");
-        let website_id = $(this).data("website_id");
         $.ajax({
             type: "POST",
-            url: `/api/requests/update`,
+            url: `/api/websites/update`,
             data: {
                 id,
                 status,
-                website_id
             },
             success: function (response) {
                 if (response.status == 0) {
@@ -132,7 +119,7 @@ $(document).on("click", ".btn-delete", function () {
         let id = $(this).data("id");
         $.ajax({
             type: "DELETE",
-            url: `/api/requests/${id}/destroy`,
+            url: `/api/websites/${id}/destroy`,
             success: function (response) {
                 if (response.status == 0) {
                     toastr.success("Xóa thành công");
@@ -144,17 +131,3 @@ $(document).on("click", ".btn-delete", function () {
         });
     }
 });
-
-function formatCash(str) {
-    str = str.toString();
-    if (str && str !== "0") {
-        return str
-            .split("")
-            .reverse()
-            .reduce((prev, next, index) => {
-                return (index % 3 ? next : next + ".") + prev;
-            });
-    }
-
-    return str;
-}

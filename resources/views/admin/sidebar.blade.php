@@ -47,6 +47,17 @@
                             </a>
                         </li>
                         <li
+                            class="nav-item {{ in_array(request()->route()->getName(), ['admin.websites.index', 'admin.websites.create'])
+                                ? 'menu-is-opening menu-open'
+                                : '' }}">
+                            <a href="{{ route('admin.websites.index') }}" class="nav-link">
+                                <i class="nav-icon fa-regular fa-file-lines"></i>
+                                <p>
+                                    Website
+                                </p>
+                            </a>
+                        </li>
+                        <li
                             class="nav-item {{ in_array(request()->route()->getName(), ['admin.packages.index', 'admin.packages.create'])
                                 ? 'menu-is-opening menu-open'
                                 : '' }}">
@@ -98,6 +109,17 @@
                                 <i class="nav-icon fa-solid fa-ticket"></i>
                                 <p>
                                     Mã giảm giá
+                                </p>
+                            </a>
+                        </li>
+                        <li
+                            class="nav-item {{ in_array(request()->route()->getName(), ['admin.settings.index'])
+                                ? 'menu-is-opening menu-open'
+                                : '' }}">
+                            <a href="{{ route('admin.settings.index') }}" class="nav-link">
+                                <i class="nav-icon fa-solid fa-gear"></i>
+                                <p>
+                                    Hệ thống
                                 </p>
                             </a>
                         </li>

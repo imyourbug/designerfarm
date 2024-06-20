@@ -30,6 +30,10 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::post('/getCacheByKey', 'BotController@getCacheByKey')->name('getCacheByKey');
     Route::post('/deleteAllCache', 'BotController@deleteAllCache')->name('deleteAllCache');
 
+    #settings
+    Route::post('delete', 'SettingController@delete')->name('delete');
+    Route::get('getAll', 'SettingController@getAll')->name('getAll');
+
     #upload
     Route::post('/upload', 'UploadController@upload')->name('upload');
 
@@ -55,6 +59,14 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::get('/getAll', 'PackageController@getAll')->name('getAll');
         Route::get('/getPackageById', 'PackageController@getPackageById')->name('getPackageById');
         Route::post('/deleteAll', 'PackageController@deleteAll')->name('deleteAll');
+    });
+
+    #websites
+    Route::group(['prefix' => 'websites', 'as' => 'websites.'], function () {
+        Route::delete('/{id}/destroy', 'WebsiteController@destroy')->name('destroy');
+        Route::post('/update', 'WebsiteController@update')->name('update');
+        Route::get('/getAll', 'WebsiteController@getAll')->name('getAll');
+        Route::post('/deleteAll', 'WebsiteController@deleteAll')->name('deleteAll');
     });
 
     #packagedetails
@@ -93,7 +105,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         Route::group(['prefix' => 'accounts', 'as' => 'accounts.'], function () {
             Route::delete('/{id}/destroy', 'AccountController@destroy')->name('destroy');
         });
-    
+
         #settings
         Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
             Route::post('/create', 'SettingController@store')->name('store');
@@ -102,5 +114,3 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         });
     });
 });
-
-

@@ -6,13 +6,11 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/content.js"></script>
     <script>
-        Pusher.logToConsole = true;
-
-        var pusherDownload = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+        var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
             cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
         });
-        var channel = pusherDownload.subscribe('AlertDownloadedSuccessfullyChannel');
 
+        var channel = pusher.subscribe('AlertDownloadedSuccessfullyChannel');
         channel.bind('AlertDownloadedSuccessfullyEvent', function(data) {
             let user = JSON.parse(localStorage.getItem('user'));
             let loading = $('#submit-code-loading');
@@ -36,40 +34,35 @@
             }
         });
 
+        var website = '';
+
         $(document).on('click', '#reset_btn', function() {
             $('#messageInput').val('');
             $('#notification').css('display', 'none');
+            $('.option-website').removeClass('active');
+            website = '';
         });
 
-        function selectOption(id, event) {
+        $(document).on('click', '.option-website', function() {
             event.preventDefault();
-            var options = document.querySelectorAll('.option div');
-            options.forEach(function(option) {
-                option.classList.remove('active');
-            });
-            document.getElementById(id).classList.add('active');
+            let status = $(this).data('status');
+            if (status == 0) {
+                toastr.error('Website đang bảo trì! Hãy chọn website khác.');
+                return;
+            }
+            let id = $(this).data('id');
+            website = id;
 
-            // Replace 'your_url_here' with the actual URL corresponding to the selected option
-            var url = ''; // Add URL corresponding to the selected option
-            window.location.href = url + '#' + id;
-        }
-
-        // Optional: Highlight the initially selected option based on URL hash
-        var hash = window.location.hash.substr(1);
-        if (hash) {
-            document.getElementById(hash).classList.add('active');
-        }
+            $('.option-website').removeClass('active');
+            $(this).addClass('active');
+        });
 
         $(document).ready(function() {
-            var intervalGetUrl = null;
             // default
-            $('#Freepik').click();
+            // $('#Freepik').click();
+            $('.btn-open-modal-notification').click();
             //
             $('#getlink_btn').click(function() {
-                if (intervalGetUrl) {
-                    intervalGetUrl = null;
-                    clearInterval(intervalGetUrl);
-                }
                 // Kiểm tra xem userID đã đăng nhập chưa
                 let user = localStorage.getItem('user');
                 if (!user) {
@@ -93,19 +86,11 @@
                     return;
                 }
 
-                // Lấy base URL của trang web hiện tại
-                var currentUrl = window.location.href;
-                var baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
-
                 // Kiểm tra URL hiện tại và xác định giá trị của website
-                var website = '';
-                var fragment = currentUrl.split('#')[1];
-                if (fragment === 'Freepik' || fragment === 'Envato' || fragment === 'AdobeStock' ||
-                    fragment === 'Pikbest' || fragment === 'Pngtree' || fragment === 'MotionArray' ||
-                    fragment === 'Lovepik' || fragment === 'Artlist' || fragment === 'Storyblocks' ||
-                    fragment === 'Vecteezy' || fragment === 'Flaticon') {
-                    website = fragment;
-                } else {
+                if (website === 'Freepik' || website === 'Envato' || website === 'AdobeStock' ||
+                    website === 'Pikbest' || website === 'Pngtree' || website === 'MotionArray' ||
+                    website === 'Lovepik' || website === 'Artlist' || website === 'Storyblocks' ||
+                    website === 'Vecteezy' || website === 'Flaticon') {} else {
                     showNotification('Vui lòng chọn website cần tải.', 'alert-warning');
                     return;
                 }
@@ -294,50 +279,13 @@
         <h1 class="title">CHỌN WEBSITE CẦN TẢI</h1>
         <hr class="separator">
         <div class="option-switcher">
-            <div class="option">
-                <div id="Freepik" onclick="selectOption('Freepik', event)"><img src="/asset/freepik.png"
-                        alt="Freepik Icon">Freepik</div>
-            </div>
-            <div class="option">
-                <div id="Envato" onclick="selectOption('Envato', event)"><img src="/asset/envato.png"
-                        alt="Envato Icon">Envato Elements</div>
-            </div>
-            <div class="option">
-                <div id="AdobeStock" onclick="selectOption('AdobeStock', event)"><img src="/asset/adobestock.png"
-                        alt="Adobe Stock Icon">Adobe Stock</div>
-            </div>
-            <div class="option">
-                <div id="Pikbest" onclick="selectOption('Pikbest', event)"><img src="/asset/pikbest.png"
-                        alt="Pikbest Icon">Pikbest</div>
-            </div>
-            <div class="option">
-                <div id="MotionArray" onclick="selectOption('MotionArray', event)"><img src="/asset/motionarray.png"
-                        alt="Motion Array Icon">Motion Array</div>
-            </div>
-            <div class="option">
-                <div id="Lovepik" onclick="selectOption('Lovepik', event)"><img src="/asset/lovepik.png"
-                        alt="Lovepik Icon">Lovepik</div>
-            </div>
-            <div class="option">
-                <div id="Pngtree" onclick="selectOption('Pngtree', event)"><img src="/asset/pngtree.png"
-                        alt="Pngtree Icon">Pngtree</div>
-            </div>
-            <div class="option">
-                <div id="Artlist" onclick="selectOption('Artlist', event)"><img src="/asset/artlist.png"
-                        alt="Artlist Icon">Artlist</div>
-            </div>
-            <div class="option">
-                <div id="Storyblocks" onclick="selectOption('Storyblocks', event)"><img src="/asset/storyblocks.png"
-                        alt="Storyblocks Icon">Storyblocks</div>
-            </div>
-            <div class="option">
-                <div id="Vecteezy" onclick="selectOption('Vecteezy', event)"><img src="/asset/vecteezy.png"
-                        alt="Vecteezy Icon">Vecteezy</div>
-            </div>
-            <div class="option">
-                <div id="Flaticon" onclick="selectOption('Flaticon', event)"><img src="/asset/flaticon.png"
-                        alt="Flaticon Icon">Flaticon</div>
-            </div>
+            @foreach ($websites as $website)
+                <div class="option">
+                    <div id="{{ $website->code }}" class="option-website" data-id="{{ $website->code }}"
+                        data-status="{{ $website->status }}"><img src="{{ $website->image }}"
+                            alt="{{ $website->code }} Icon">{{ $website->name }}</div>
+                </div>
+            @endforeach
         </div>
 
     </div>
@@ -626,6 +574,31 @@
             </div>
         </div>
     </div>
-    <input type="hidden" class="btn btn-success btn-open-modal-result" data-target="#modalResult"
-        data-toggle="modal" />
+    <div class="modal fade" id="modalNotification" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-md modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button type="button" class="closeModalNotification close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    @if (!empty($settings['popup-image']))
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <img src="{{ $settings['popup-image'] ?? '' }}" alt="Image" style="width: 100%" />
+                            </div>
+                        </div>
+                    @endif
+                    @if (!empty($settings['popup-text']))
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                {!! $settings['popup-text'] ?? '' !!}
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" class="btn-open-modal-result" data-target="#modalResult" data-toggle="modal" />
+    <input type="hidden" class="btn-open-modal-notification" data-target="#modalNotification" data-toggle="modal" />
 @endsection

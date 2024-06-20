@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Website extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'code',
+        'image',
+        'status',
+        'name',
+        'sample_link',
+        'website_link',
+    ];
 }

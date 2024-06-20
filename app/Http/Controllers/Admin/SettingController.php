@@ -4,17 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
-use App\Models\TaskChemistry;
-use App\Models\TaskDetail;
-use App\Models\TaskItem;
-use App\Models\TaskMap;
-use App\Models\TaskSolution;
-use App\Models\TaskStaff;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Throwable;
 use Toastr;
 
@@ -29,9 +19,9 @@ class SettingController extends Controller
                 ]);
             }
         } catch (Throwable $e) {
-            Toastr::error($e->getMessage(), __('title.toastr.fail'));
+            Toastr::error($e->getMessage(), 'Thông báo');
         }
-        Toastr::success(__('message.success.update'), __('title.toastr.success'));
+        Toastr::success('Cập nhật thành công', 'Thông báo');
 
         return redirect()->back();
     }
@@ -40,7 +30,8 @@ class SettingController extends Controller
     {
         return view('admin.setting', [
             'title' => 'Cài đặt',
-            'settings' => Setting::orderBy('key')->get()
+            'settings' => Setting::orderBy('key')
+                ->get()
         ]);
     }
 
@@ -61,38 +52,6 @@ class SettingController extends Controller
             ]);
         }
 
-        return response()->json([
-            'status' => 0,
-        ]);
-    }
-
-    public function getAll()
-    {
-        return response()->json([
-            'status' => 0,
-            'settings' => Setting::orderBy('key')->get()
-        ]);
-    }
-
-    public function delete(Request $request)
-    {
-        $data = $request->validate([
-            'key' => 'required|array',
-            'key.*' => 'nullable|string',
-        ]);
-
-        try {
-            if (!in_array('*', $data['key'])) {
-                Setting::whereIn('key', $data['key'] ?? [])->delete();
-            } else {
-                Setting::truncate();;
-            }
-        } catch (Throwable $e) {
-            return response()->json([
-                'status' => 1,
-                'message' => $e->getMessage()
-            ]);
-        }
         return response()->json([
             'status' => 0,
         ]);

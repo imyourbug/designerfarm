@@ -71,7 +71,7 @@ class AccountController extends Controller
 
             DB::commit();
 
-            Toastr::success(__('message.success.update'), 'Thành công');
+            Toastr::success('Cập nhật thành công', 'Thành công');
         } catch (Throwable $e) {
             DB::rollBack();
             Toastr::error($e->getMessage(), 'Lỗi');

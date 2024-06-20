@@ -38,11 +38,6 @@ Route::get('/migrate', function () {
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::get('/', 'HomeController@index')->name('home');
 
-    #charge
-    Route::group(['prefix' => 'charge', 'as' => 'charge.'], function () {
-        Route::get('/', 'ChargeController@index')->name('index');
-    });
-
     #packages
     Route::group(['prefix' => 'packages', 'as' => 'packages.'], function () {
         Route::get('/', 'PackageController@index')->name('index');
@@ -85,6 +80,12 @@ Route::group([
     ], function () {
         Route::get('/', 'AdminController@index')->name('index');
 
+        #settings
+        Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
+            Route::get('/', 'SettingController@index')->name('index');
+            Route::post('update', 'SettingController@update')->name('update');
+        });
+
         #discounts
         Route::group(['prefix' => 'discounts', 'as' => 'discounts.'], function () {
             Route::get('/', 'DiscountController@index')->name('index');
@@ -113,6 +114,14 @@ Route::group([
             Route::post('/create', 'PackageController@store')->name('store');
             Route::get('/update/{id}', 'PackageController@show')->name('show');
             Route::post('/update', 'PackageController@update')->name('update');
+        });
+
+        #websites
+        Route::group(['prefix' => 'websites', 'as' => 'websites.'], function () {
+            Route::get('/', 'WebsiteController@index')->name('index');
+            Route::post('/create', 'WebsiteController@store')->name('store');
+            Route::get('/update/{id}', 'WebsiteController@show')->name('show');
+            Route::post('/update', 'WebsiteController@update')->name('update');
         });
 
         #packagedetails

@@ -46,6 +46,9 @@ class GlobalConstant
     public const WEB_PIKBEST = 'Pikbest';
     public const WEB_STORYBLOCKS = 'Storyblocks';
     public const WEB_VECTEEZY = 'Vecteezy';
+    public const WEB_CREATIVEFABRICA = 'Creativefabrica';
+    public const WEB_YAYIMAGE = 'Yayimage';
+    public const WEB_SLIDESGO = 'Slidesgo';
     public const WEB_ALL = 'ALL';
 
     public const WEB_TYPE = [
@@ -58,6 +61,9 @@ class GlobalConstant
         self::WEB_PIKBEST,
         self::WEB_STORYBLOCKS,
         self::WEB_VECTEEZY,
+        self::WEB_CREATIVEFABRICA,
+        self::WEB_YAYIMAGE,
+        self::WEB_SLIDESGO,
         self::WEB_ALL,
     ];
 
@@ -67,4 +73,7 @@ class GlobalConstant
         self::WEB_MOTION,
         self::WEB_LOVEPIK,
     ];
+
+    public const STATUS_ACTIVE = 1;
+    public const STATUS_INACTIVE = 0;
 }

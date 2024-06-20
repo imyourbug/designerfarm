@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
 @endpush
 @push('scripts')
-    <script src="/js/admin/package/index.js"></script>
+    <script src="/js/admin/website/index.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
@@ -27,18 +27,12 @@
                     if (response.status == 0) {
                         //hiển thị ảnh
                         $("#image_show").attr('src', response.url);
-                        $("#avatar").val(response.url);
+                        $("#image").val(response.url);
                     } else {
                         toastr.error(response.message, 'Thông báo');
                     }
                 },
             });
-        });
-
-        $(document).on('change', '#type', function() {
-            let type = $(this).val();
-            console.log(type);
-            $('.select-website-id').css('display', type == 0 ? 'none' : 'block');
         });
     </script>
 @endpush
@@ -47,7 +41,7 @@
         <div class="col-lg-12">
             <div class="card direct-chat direct-chat-primary">
                 <div class="card-header ui-sortable-handle header-color" style="cursor: move;">
-                    <h3 class="card-title text-bold">Thêm gói</h3>
+                    <h3 class="card-title text-bold">Thêm website</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -55,40 +49,29 @@
                     </div>
                 </div>
                 <div class="card-body" style="display: block;padding: 10px !important;">
-                    <form action="{{ route('admin.packages.store') }}" method="POST">
+                    <form action="{{ route('admin.websites.store') }}" method="POST">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-6 col-sm-12">
                                     <div class="form-group">
-                                        <label for="menu">Tên gói <span class="required">(*)</span></label>
+                                        <label for="menu">Tên website <span class="required">(*)</span></label>
                                         <input type="text" class="form-control" name="name"
-                                            value="{{ old('name') }}" placeholder="Nhập tên gói">
+                                            value="{{ old('name') }}" placeholder="Nhập tên website">
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-sm-12 select-type">
+                                <div class="col-lg-6 col-sm-12">
                                     <div class="form-group">
-                                        <label for="menu">Loại gói <span class="required">(*)</span></label>
-                                        <select name="type" id="type" class="form-control">
-                                            <option value="0">Tải lẻ</option>
-                                            <option value="1">Tải file theo tháng và năm</option>
-                                        </select>
+                                        <label for="menu">Mã website <span class="required">(*)</span></label>
+                                        <input type="text" class="form-control" name="code"
+                                            value="{{ old('code') }}" placeholder="Nhập mã website">
                                     </div>
                                 </div>
-                                <div class="col-lg-12 col-sm-12">
+                                <div class="col-lg-6 col-sm-12">
                                     <div class="form-group">
-                                        <label for="menu">Mô tả</label>
-                                        <textarea class="form-control" placeholder="Nhập mô tả" name="description" id="description" cols="30" rows="5">{{ old('description') ?? 'Gói nhiều ưu đãi' }}</textarea>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-sm-12 select-website-id" style="display: none">
-                                    <div class="form-group">
-                                        <label for="menu">Website <span class="required">(*)</span></label>
-                                        <select name="website_id" id="website_id" class="form-control">
-                                            <option selected value="">--Không--</option>
-                                            {{-- <option value="ALL">--ALL--</option>  --}}
-                                            @foreach ($websites as $website)
-                                                <option value="{{ $website->code }}">{{ $website->code }}</option>
-                                            @endforeach
+                                        <label for="menu">Trạng thái <span class="required">(*)</span></label>
+                                        <select name="status" id="status" class="form-control">
+                                            <option value="0">Bảo trì</option>
+                                            <option selected value="1">Hoạt động</option>
                                         </select>
                                     </div>
                                 </div>
@@ -100,7 +83,7 @@
                                                 alt="Avatar" />
                                             <input type="file" id="upload" accept=".png,.jpeg">
                                         </div>
-                                        <input type="hidden" name="avatar" id="avatar" value="{{ old('avatar') }}">
+                                        <input type="hidden" name="image" id="image" value="{{ old('image') }}">
                                     </div>
                                 </div>
                             </div>
@@ -118,7 +101,7 @@
         <div class="col-lg-12">
             <div class="card direct-chat direct-chat-primary">
                 <div class="card-header ui-sortable-handle header-color" style="cursor: move;">
-                    <h3 class="card-title text-bold">Danh sách gói</h3>
+                    <h3 class="card-title text-bold">Danh sách website</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
@@ -129,15 +112,10 @@
                     <table id="table" class="table display nowrap dataTable dtr-inline collapsed">
                         <thead>
                             <tr>
-                                <th>Tên gói</th>
-                                {{-- <th>Giá (VNĐ)</th>
-                                <th>Giá sale (VNĐ)</th>
-                                <th>Số file</th>
-                                <th>Thời hạn (tháng)</th> --}}
-                                <th>Loại gói</th>
-                                <th>Website</th>
-                                <th>Mô tả</th>
+                                <th>Tên website</th>
+                                <th>Mã website</th>
                                 <th>Ảnh</th>
+                                <th>Trạng thái</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
