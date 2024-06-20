@@ -288,7 +288,9 @@
                             'Premiere',
                             'Davinci',
                         ];
-                        if (!typeRequired.includes(typeDownload) &&
+                        if (
+                            typeDownload != 'license' &&
+                            !typeRequired.includes(typeDownload) &&
                             link.includes('video-templates/')
                         ) {
                             return showNotification('Vui lòng chọn ít nhất 1 loại file:' + typeRequired
@@ -595,25 +597,23 @@
     <div class="modal fade" id="modalNotification" aria-modal="true" role="dialog">
         <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-body">
-                    <button type="button" class="closeModalNotification close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                    @if (!empty($settings['popup-image']))
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <img src="{{ $settings['popup-image'] ?? '' }}" alt="Image" style="width: 100%" />
-                            </div>
+                <button type="button" class="closeModalNotification close" style="position: absolute;z-index:1;right:0px" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                @if (!empty($settings['popup-image']))
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <img src="{{ $settings['popup-image'] ?? '' }}" alt="Image" style="width: 100%" />
                         </div>
-                    @endif
-                    @if (!empty($settings['popup-text']))
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                {!! $settings['popup-text'] ?? '' !!}
-                            </div>
+                    </div>
+                @endif
+                @if (!empty($settings['popup-text']))
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            {!! $settings['popup-text'] ?? '' !!}
                         </div>
-                    @endif
-                </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

@@ -106,6 +106,7 @@
 
         $(document).ready(function() {
             user = JSON.parse(localStorage.getItem('user'));
+            members = JSON.parse(localStorage.getItem('members'));
             if (user) {
                 $('.block-login').css('display', 'none');
                 $('.block-account').css('display', 'block');
@@ -114,10 +115,26 @@
                 $('.block-login').css('display', 'block');
                 $('.block-account').css('display', 'none');
             }
+            if (members) {
+                console.log(members);
+                $('.block-package').html('');
+                let html = '';
+                members.forEach(e => {
+                    html += `
+                            <tr>
+                                <td style="padding: 10px 15px">
+                                    ${e.package_detail.package.name}
+                                </td>
+                                <td> ${e.downloaded_number_file}/${e.number_file}</td>
+                            </tr>`;
+                });
+                $('.block-package').html(html);
+            }
         });
 
         $(document).on('click', '.btn-logout', function() {
             localStorage.removeItem('user');
+            localStorage.removeItem('members');
             $('.block-login').css('display', 'block');
             $('.block-account').css('display', 'none');
             $('.txt-user-name').text('Tài khoản')
@@ -141,6 +158,7 @@
                         toastr.success(response.message, "Thông báo");
                         closeModal('modalLogin');
                         localStorage.setItem('user', JSON.stringify(response.user));
+                        localStorage.setItem('members', JSON.stringify(response.members));
                         $('.block-login').css('display', 'none');
                         $('.block-account').css('display', 'block');
                         $('.txt-user-name').text(response.user.name);
