@@ -4,10 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Constant\GlobalConstant;
 use App\Http\Controllers\Controller;
-use App\Models\Member;
-use App\Models\Package;
-use App\Models\Request as ModelsRequest;
-use App\Models\User;
 use App\Models\Website;
 use Exception;
 use Illuminate\Http\Request;
@@ -39,6 +35,8 @@ class WebsiteController extends Controller
                 'status' => 'required|in:' . GlobalConstant::STATUS_ACTIVE . ',' . GlobalConstant::STATUS_INACTIVE,
                 'name' => 'required|string',
                 'image' => 'nullable|string',
+                'sample_link' => 'required|string',
+                'website_link' => 'required|string',
             ]);
 
             $checkCode = Website::firstWhere('code', $data['code']);
@@ -63,6 +61,8 @@ class WebsiteController extends Controller
                 'status' => 'required|in:' . GlobalConstant::STATUS_ACTIVE . ',' . GlobalConstant::STATUS_INACTIVE,
                 'name' => 'required|string',
                 'image' => 'nullable|string',
+                'sample_link' => 'required|string',
+                'website_link' => 'required|string',
             ]);
 
             unset($data['id']);

@@ -29,17 +29,27 @@ class GlobalConstant
     public const DOWNLOAD_VIDEO = 'video';
     public const DOWNLOAD_IMAGE = 'image';
     public const DOWNLOAD_LICENSE = 'license';
+    public const DOWNLOAD_MUSIC = 'Music';
+    public const DOWNLOAD_FINAL = 'Final';
+    public const DOWNLOAD_AFTER = 'After';
+    public const DOWNLOAD_PREMIERE = 'Premiere';
+    public const DOWNLOAD_DAVINCI = 'Davinci';
 
     public const DOWNLOAD_TYPE = [
         self::DOWNLOAD_FILE,
         self::DOWNLOAD_VIDEO,
         self::DOWNLOAD_LICENSE,
         self::DOWNLOAD_IMAGE,
+        self::DOWNLOAD_FINAL,
+        self::DOWNLOAD_AFTER,
+        self::DOWNLOAD_PREMIERE,
+        self::DOWNLOAD_DAVINCI,
+        self::DOWNLOAD_MUSIC,
     ];
 
     public const WEB_FREEPIK = 'Freepik';
     public const WEB_ENVATO = 'Envato';
-    public const WEB_MOTION = 'MotionArray';
+    public const WEB_MOTION = 'Motionarray';
     public const WEB_LOVEPIK = 'Lovepik';
     public const WEB_PNGTREE = 'Pngtree';
     public const WEB_FLATICON = 'Flaticon';
@@ -49,6 +59,7 @@ class GlobalConstant
     public const WEB_CREATIVEFABRICA = 'Creativefabrica';
     public const WEB_YAYIMAGE = 'Yayimage';
     public const WEB_SLIDESGO = 'Slidesgo';
+    public const WEB_ARTLIST = 'Artlist';
     public const WEB_ALL = 'ALL';
 
     public const WEB_TYPE = [
@@ -64,6 +75,7 @@ class GlobalConstant
         self::WEB_CREATIVEFABRICA,
         self::WEB_YAYIMAGE,
         self::WEB_SLIDESGO,
+        self::WEB_ARTLIST,
         self::WEB_ALL,
     ];
 

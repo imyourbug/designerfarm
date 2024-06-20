@@ -58,6 +58,22 @@
                                 </div>
                                 <div class="col-lg-6 col-sm-12">
                                     <div class="form-group">
+                                        <label for="menu">Link mẫu <span class="required">(*)</span></label>
+                                        <input type="text" class="form-control" name="sample_link"
+                                            value="{{ old('sample_link') ?? $website->sample_link }}"
+                                            placeholder="Nhập link mẫu">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="menu">Link website <span class="required">(*)</span></label>
+                                        <input type="text" class="form-control" name="website_link"
+                                            value="{{ old('website_link') ?? $website->website_link }}"
+                                            placeholder="Nhập link website">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-sm-12">
+                                    <div class="form-group">
                                         <label for="menu">Trạng thái <span class="required">(*)</span></label>
                                         <select name="status" id="status" class="form-control">
                                             <option {{ $website->status == 0 ? 'selected' : '' }} value="0">Bảo trì
@@ -83,7 +99,7 @@
                         </div>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">Lưu</button>
-                            <a href="{{route('admin.websites.index')}}" class="btn btn-success">Danh sách website</a>
+                            <a href="{{ route('admin.websites.index') }}" class="btn btn-success">Danh sách website</a>
                         </div>
                         @csrf
                     </form>

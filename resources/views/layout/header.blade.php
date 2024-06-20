@@ -30,22 +30,9 @@
             <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
                 <span>Các gói</span>
             </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
-                style="left: inherit; right: 0px;">
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
                 <table class="block-package">
-                    <tr>
-                        <td style="padding: 10px 15px">
-                            Gosi 1
-                        </td>
-                        <td>150/150</td>
-                    </tr>
                 </table>
-                {{-- <a href="#" class="dropdown-item">
-                    <i class="fa-solid fa-lock"></i></i>&emsp13;Đổi mật khẩu
-                </a>
-                <a href="#" class="btn-logout dropdown-item">
-                    <i class="fa-solid fa-right-from-bracket"></i>&emsp13;Đăng xuất
-                </a> --}}
             </div>
         </li>
         <li class="nav-item dropdown block-account">

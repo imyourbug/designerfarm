@@ -4,7 +4,6 @@
 @push('scripts')
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/content.js"></script>
     <script>
         var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
             cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
@@ -36,6 +35,23 @@
 
         var website = '';
 
+        var WEB_TYPE = [
+            'Freepik',
+            'Envato',
+            'AdobeStock',
+            'Pikbest',
+            'Pngtree',
+            'Motionarray',
+            'Lovepik',
+            'Artlist',
+            'Storyblocks',
+            'Vecteezy',
+            'Flaticon',
+            'Creativefabrica',
+            'Yayimage',
+            'Slidesgo',
+        ];
+
         $(document).on('click', '#reset_btn', function() {
             $('#messageInput').val('');
             $('#notification').css('display', 'none');
@@ -52,9 +68,11 @@
             }
             let id = $(this).data('id');
             website = id;
-
             $('.option-website').removeClass('active');
             $(this).addClass('active');
+            //
+            handleIDClick(id);
+            resetForm();
         });
 
         $(document).ready(function() {
@@ -78,6 +96,7 @@
 
                 // Lấy giá trị từ input có id="messageInput"
                 var link = $('#messageInput').val().trim();
+                link = link.replace(/\?fbclid.*/, '').replace(/#.*/, '');
 
                 // Kiểm tra xem input có giá trị không
                 if (link === '') {
@@ -87,10 +106,7 @@
                 }
 
                 // Kiểm tra URL hiện tại và xác định giá trị của website
-                if (website === 'Freepik' || website === 'Envato' || website === 'AdobeStock' ||
-                    website === 'Pikbest' || website === 'Pngtree' || website === 'MotionArray' ||
-                    website === 'Lovepik' || website === 'Artlist' || website === 'Storyblocks' ||
-                    website === 'Vecteezy' || website === 'Flaticon') {} else {
+                if (!WEB_TYPE.includes(website)) {
                     showNotification('Vui lòng chọn website cần tải.', 'alert-warning');
                     return;
                 }
@@ -113,7 +129,7 @@
                     case 'Pngtree':
                         urlPattern = /pngtree\.com\/.*/;
                         break;
-                    case 'MotionArray':
+                    case 'Motionarray':
                         urlPattern = /motionarray\.com\/.*/;
                         break;
                     case 'Lovepik':
@@ -130,6 +146,18 @@
                         break;
                     case 'Flaticon':
                         urlPattern = /flaticon\.com\/.*/;
+                        break;
+                    case 'Creativefabrica':
+                        urlPattern = /creativefabrica\.com\/.*/;
+                        break;
+                    case 'Yayimage':
+                        urlPattern = /yayimages\.com\/.*/;
+                        break;
+                    case 'Slidesgo':
+                        urlPattern = /slidesgo\.com\/.*/;
+                        break;
+                    case 'Artlist':
+                        urlPattern = /artlist\.io\/.*/;
                         break;
                     default:
                         showNotification('Website không hợp lệ.', 'alert-warning');
@@ -210,7 +238,7 @@
                             return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
                         }
                         break;
-                    case 'MotionArray':
+                    case 'Motionarray':
                         if (link.length == 0 || link.indexOf(
                                 'https://motionarray.com/') == -1) {
                             return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
@@ -227,6 +255,47 @@
                                 'https://pngtree.com/') == -1) {
                             return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
                         }
+                        break;
+                    case 'Creativefabrica':
+                        if (link.length == 0 || link.indexOf(
+                                'https://www.creativefabrica.com/') == -1) {
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
+                        }
+                        break;
+                    case 'Yayimage':
+                        if (link.length == 0 || link.indexOf(
+                                'https://yayimages.com/') == -1) {
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
+                        }
+                        break;
+                    case 'Slidesgo':
+                        if (link.length == 0 || link.indexOf(
+                                'https://slidesgo.com/') == -1) {
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
+                        }
+                        break;
+                    case 'Artlist':
+                        if (link.length == 0 || link.indexOf(
+                                'https://artlist.io/') == -1) {
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
+                        }
+                        //
+
+                        let typeDownload = $('input[name="typeDownload"]:checked').val();
+                        let typeRequired = [
+                            'Final',
+                            'After',
+                            'Premiere',
+                            'Davinci',
+                        ];
+                        if (!typeRequired.includes(typeDownload) &&
+                            link.includes('video-templates/')
+                        ) {
+                            return showNotification('Vui lòng chọn ít nhất 1 loại file:' + typeRequired
+                                .join(','),
+                                'alert-warning');
+                        }
+
                         break;
                     default:
                         // Điều chỉnh cách lấy idFile cho các website khác ở đây
@@ -272,6 +341,147 @@
                 }
             });
         });
+
+        // Đối tượng chứa thông tin về các ID và các lựa chọn tương ứng
+        var options = {
+            "Freepik": [{
+                    value: "image",
+                    label: "JPG/PSD/AI"
+                },
+                {
+                    value: "video",
+                    label: "VIDEO"
+                }
+            ],
+            "Envato": [{
+                    value: "file",
+                    label: "FILE"
+                },
+                {
+                    value: "license",
+                    label: "LICENSE"
+                }
+            ],
+            "Motionarray": [{
+                    value: "file",
+                    label: "FILE"
+                },
+                {
+                    value: "license",
+                    label: "LICENSE"
+                }
+            ],
+            "Lovepik": [{
+                    value: "image",
+                    label: "JPG/PSD/AI"
+                },
+                {
+                    value: "video",
+                    label: "VIDEO"
+                }
+            ],
+            "Artlist": [{
+                    value: "license",
+                    label: "LICENSE"
+                },
+                {
+                    value: "Music",
+                    label: "MUSIC/VIDEO"
+                },
+                {
+                    value: "Final",
+                    label: "FinalCut"
+                },
+                {
+                    value: "After",
+                    label: "After Effect"
+                },
+                {
+                    value: "Premiere",
+                    label: "Premiere Pro"
+                },
+                {
+                    value: "Davinci",
+                    label: "Davinci"
+                }
+            ],
+            "Yayimage": [{
+                    value: "file",
+                    label: "FILE"
+                },
+                {
+                    value: "video",
+                    label: "VIDEO"
+                }
+            ],
+        };
+
+        // Xử lý sự kiện click trên các ID
+        function handleIDClick(id) {
+            console.log(id);
+            // Ẩn tất cả các form-group trước khi hiển thị nội dung mới
+            $('.block-content').css('display', 'none');
+            // Hiển thị nội dung của ID được click
+            $(`#${id}Content`).css('display', 'block');
+
+            // Xóa tất cả các radio buttons cũ
+            clearRadioButtons();
+
+            // Thêm radio buttons mới cho ID được click
+            var idOptions = options[id];
+            if (idOptions) {
+                var radioButtonsHTML = '<div style="text-align: center;">';
+                let i = 0;
+                idOptions.forEach(function(option) {
+                    radioButtonsHTML += `
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" ${i == 0 ? 'checked' : ''} type="radio" name="typeDownload" value="${option.value}" data-dashlane-rid="${generateDashlaneRid()}" id="${id}${option.value}" data-form-type="">
+                        <label class="form-check-label" for="${id}${option.value}">${option.label}</label>
+                    </div>
+                `;
+                    i = 1;
+                });
+                radioButtonsHTML += '</div>';
+
+                $('.message-input-container').append(radioButtonsHTML);
+            }
+        }
+
+        function resetForm() {
+            $('#messageInput').val('');
+            $('#notification').css('display', 'none');
+        }
+
+        // Hàm xóa tất cả các radio buttons
+        function clearRadioButtons() {
+            var radioButtons = document.querySelectorAll('input[name="typeDownload"]');
+            radioButtons.forEach(function(radioButton) {
+                radioButton.parentNode.remove();
+            });
+
+            // $('input[name="typeDownload"]').parentNode.remove();
+        }
+
+        // Hàm tạo một dashlane-rid ngẫu nhiên (chỉ mô phỏng)
+        function generateDashlaneRid() {
+            return Math.random().toString(36).substr(2, 10);
+        }
+
+        // Lấy ra tất cả các liên kết trong .sidenav
+        var links = document.querySelectorAll(".sidenav a");
+
+        // Xử lý sự kiện click cho mỗi liên kết
+        links.forEach(function(link) {
+            link.addEventListener("click", function(event) {
+                // Loại bỏ lớp selected từ tất cả các liên kết
+                links.forEach(function(link) {
+                    link.classList.remove("selected");
+                });
+
+                // Thêm lớp selected cho liên kết được click
+                event.target.classList.add("selected");
+            });
+        });
     </script>
 @endpush
 @section('content')
@@ -281,9 +491,10 @@
         <div class="option-switcher">
             @foreach ($websites as $website)
                 <div class="option">
-                    <div id="{{ $website->code }}" class="option-website" data-id="{{ $website->code }}"
-                        data-status="{{ $website->status }}"><img src="{{ $website->image }}"
-                            alt="{{ $website->code }} Icon">{{ $website->name }}</div>
+                    <div id="{{ $website->code }}" class="option-website" data-sample_link="{{ $website->sample_link }}"
+                        data-id="{{ $website->code }}" data-website_link="{{ $website->website_link }}"
+                        data-status="{{ $website->status }}"><img style="width: 16px;height:16px"
+                            src="{{ $website->image }}" alt="{{ $website->code }} Icon">{{ $website->name }}</div>
                 </div>
             @endforeach
         </div>
@@ -332,223 +543,30 @@
 
                     <div class="card-body overflow-auto" style="height: 363px;">
 
-                        <div id="freepikContent" style="display: block;">
-                            <div class="form-group">
-                                <h6 for="freepikLink">HƯỚNG DẪN TẢI FREEPIK:</h6>
-                                <p>
-                                    - <span class="highlight">Bước 1:</span> Truy cập Freepik.com và tìm kiếm File cần
-                                    tải<br>
-                                    - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
-                                </p>
-                                <blockquote>
-                                    <p>https://www.freepik.com/premium-psd/night-club-party-facebook-timeline-covers_58866770.htm
+                        @foreach ($websites as $website)
+                            <div class="block-content" id="{{ $website->code }}Content" style="display: none;">
+                                <div class="form-group">
+                                    <h6 for="freepikLink">HƯỚNG DẪN TẢI <span
+                                            class="website-name">{{ strtoupper($website->code) }}</span>:</h6>
+                                    <p>
+                                        - <span class="highlight">Bước 1:</span> Truy cập <span
+                                            class="website-link">{{ $website->website_link }}</span> và tìm kiếm File cần
+                                        tải<br>
+                                        - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
                                     </p>
-                                </blockquote>
-                                - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm Download<br>
-                                <br>
-                                <hr> <!-- Thanh ngang -->File sẽ được <span class="bold">tự động tải xuống</span>. Nếu
-                                không bạn hãy bấm vào link bên dưới để tải lại nha!
-                                <p></p>
+                                    <blockquote>
+                                        <p class="website-sample">
+                                            {{ $website->sample_link }}
+                                        </p>
+                                    </blockquote>
+                                    - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm Download<br>
+                                    <br>
+                                    <hr>File sẽ được <span class="bold">tự động tải xuống</span>. Nếu
+                                    không bạn hãy bấm vào link bên dưới để tải lại nha!
+                                    <p></p>
+                                </div>
                             </div>
-                        </div>
-
-                        <div id="envatoContent" style="display: none;">
-                            <div class="form-group">
-                                <h6 for="envatoLink">HƯỚNG DẪN TẢI ENVATO ELEMENTS:</h6>
-                                <p>
-                                    - <span class="highlight">Bước 1:</span> Truy cập elements.envato.com và tìm kiếm File
-                                    cần tải<br>
-                                    - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
-                                </p>
-                                <blockquote>
-                                    <p>https://elements.envato.com/space-digital-introduction-VKUJEG2</p>
-                                </blockquote>
-                                - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm Download<br>
-                                <br>
-                                <hr> <!-- Thanh ngang -->File sẽ được <span class="bold">tự động tải xuống</span>. Nếu
-                                không bạn hãy bấm vào link bên dưới để tải lại nha!
-                                <p></p>
-                            </div>
-                        </div>
-
-                        <div id="pikbestContent" style="display: none;">
-                            <div class="form-group">
-                                <h6 for="pikbestLink">HƯỚNG DẪN TẢI PIKBEST:</h6>
-                                <p>
-                                    - <span class="highlight">Bước 1:</span> Truy cập pikbest.com và tìm kiếm File cần
-                                    tải<br>
-                                    - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
-                                </p>
-                                <blockquote>
-                                    <p>https://pikbest.com/png-images/red-text-selamat-hari-raya-idul-fitri-with-mosque-sign-and-eid-mubarak_9997330.html
-                                    </p>
-                                </blockquote>
-                                - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm Download<br>
-                                <br>
-                                <hr> <!-- Thanh ngang -->File sẽ được <span class="bold">tự động tải xuống</span>. Nếu
-                                không bạn hãy bấm vào link bên dưới để tải lại nha!
-                                <p></p>
-                            </div>
-                        </div>
-
-                        <div id="motionarrayContent" style="display: none;">
-                            <div class="form-group">
-                                <h6 for="motionLink">HƯỚNG DẪN TẢI MOTION ARRAY:</h6>
-                                <p>
-                                    - <span class="highlight">Bước 1:</span> Truy cập motionarray.com và tìm kiếm File cần
-                                    tải<br>
-                                    - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
-                                </p>
-                                <blockquote>
-                                    <p>https://motionarray.com/after-effects-templates/colorful-3d-social-media-intro-2384008/
-                                    </p>
-                                </blockquote>
-                                - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm Download<br>
-                                <br>
-                                <hr> <!-- Thanh ngang -->File sẽ được <span class="bold">tự động tải xuống</span>. Nếu
-                                không bạn hãy bấm vào link bên dưới để tải lại nha!
-                                <p></p>
-                            </div>
-                        </div>
-
-                        <div id="lovepikContent" style="display: none;">
-                            <div class="form-group">
-                                <h6 for="lovepikLink">HƯỚNG DẪN TẢI LOVEPIK:</h6>
-                                <p>
-                                    - <span class="highlight">Bước 1:</span> Truy cập lovepik.com và tìm kiếm File cần
-                                    tải<br>
-                                    - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
-                                </p>
-                                <blockquote>
-                                    <p>https://lovepik.com/image-466080622/seaside-simple-pink-summer-promotion-web-ui.html
-                                    </p>
-                                </blockquote>
-                                - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm Download<br>
-                                <br>
-                                <hr> <!-- Thanh ngang -->File sẽ được <span class="bold">tự động tải xuống</span>. Nếu
-                                không bạn hãy bấm vào link bên dưới để tải lại nha!
-                                <p></p>
-                            </div>
-                        </div>
-
-                        <div id="pngtreeContent" style="display: none;">
-                            <div class="form-group">
-                                <h6 for="pngtreeLink">HƯỚNG DẪN TẢI PNGTREE:</h6>
-                                <p>
-                                    - <span class="highlight">Bước 1:</span> Truy cập pngtree.com và tìm kiếm File cần
-                                    tải<br>
-                                    - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
-                                </p>
-                                <blockquote>
-                                    <p>https://pngtree.com/freepng/original-national-tide-wind-carp-leaping-dragon-gate-illustration-poster_7462378.html
-                                    </p>
-                                </blockquote>
-                                - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm Download<br>
-                                <br>
-                                <hr> <!-- Thanh ngang -->File sẽ được <span class="bold">tự động tải xuống</span>. Nếu
-                                không bạn hãy bấm vào link bên dưới để tải lại nha!
-                                <p></p>
-                            </div>
-                        </div>
-
-                        <div id="artlistContent" style="display: none;">
-                            <div class="form-group">
-                                <h6 for="artlistLink">HƯỚNG DẪN TẢI ARTLIST:</h6>
-                                <p>
-                                    - <span class="highlight">Bước 1:</span> Truy cập artlist.io và tìm kiếm File cần
-                                    tải<br>
-                                    - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
-                                </p>
-                                <blockquote>
-                                    <p>https://artlist.io/royalty-free-music/song/freeze/88709</p>
-                                </blockquote>
-                                - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm Download<br>
-                                <br>
-                                <hr> <!-- Thanh ngang -->File sẽ được <span class="bold">tự động tải xuống</span>. Nếu
-                                không bạn hãy bấm vào link bên dưới để tải lại nha!
-                                <p></p>
-                            </div>
-                        </div>
-
-                        <div id="flaticonContent" style="display: none;">
-                            <div class="form-group">
-                                <h6 for="flaticonLink">HƯỚNG DẪN TẢI FLATICON:</h6>
-                                <p>
-                                    - <span class="highlight">Bước 1:</span> Truy cập flaticon.com và tìm kiếm File cần
-                                    tải<br>
-                                    - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
-                                </p>
-                                <blockquote>
-                                    <p>https://www.flaticon.com/free-icon-font/address-card_9821470</p>
-                                </blockquote>
-                                - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm Download<br>
-                                <br>
-                                <hr> <!-- Thanh ngang -->Flaticon hiện tại chỉ hỗ trợ tải icon lẻ dạng SVG. Sau khi File
-                                được tự động mở ở tab mới, bạn hãy mở chuột phải và Save as lại dạng SVG là xong nha!
-                                <p></p>
-                            </div>
-                        </div>
-
-                        <div id="storyblocksContent" style="display: none;">
-                            <div class="form-group">
-                                <h6 for="storyblocksLink">HƯỚNG DẪN TẢI STORYBLOCKS:</h6>
-                                <p>
-                                    - <span class="highlight">Bước 1:</span> Truy cập storyblocks.com và tìm kiếm File cần
-                                    tải<br>
-                                    - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
-                                </p>
-                                <blockquote>
-                                    <p>https://www.storyblocks.com/video/stock/view-of-black-quadcopter-with-camera-flying-on-background-of-nature-soa8cvgnwj8ar2lso
-                                    </p>
-                                </blockquote>
-                                - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm Download<br>
-                                <br>
-                                <hr> <!-- Thanh ngang -->File sẽ được <span class="bold">tự động tải xuống</span>. Nếu
-                                không bạn hãy bấm vào link bên dưới để tải lại nha!
-                                <p></p>
-                            </div>
-                        </div>
-
-                        <div id="vecteezyContent" style="display: none;">
-                            <div class="form-group">
-                                <h6 for="vecteezyLink">HƯỚNG DẪN TẢI VECTEEZY:</h6>
-                                <p>
-                                    - <span class="highlight">Bước 1:</span> Truy cập vecteezy.com và tìm kiếm File cần
-                                    tải<br>
-                                    - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
-                                </p>
-                                <blockquote>
-                                    <p>https://www.vecteezy.com/vector-art/1255564-abstract-geometric-triangle-seamless-pattern
-                                    </p>
-                                </blockquote>
-                                - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm Download<br>
-                                <br>
-                                <hr> <!-- Thanh ngang -->File sẽ được <span class="bold">tự động tải xuống</span>. Nếu
-                                không bạn hãy bấm vào link bên dưới để tải lại nha!
-                                <p></p>
-                            </div>
-                        </div>
-
-                        <div id="adobestockContent" style="display: none;">
-                            <div class="form-group">
-                                <h6 for="adobestockLink">HƯỚNG DẪN TẢI ADOBE STOCK:</h6>
-                                <p>
-                                    - <span class="highlight">Bước 1:</span> Truy cập stock.adobe.com và tìm kiếm File cần
-                                    tải<br>
-                                    - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
-                                </p>
-                                <blockquote>
-                                    <p>https://stock.adobe.com/vn/images/3d-render-abstract-background-with-colorful-spectrum-bright-neon-rays-and-glowing-lines/411360907?prev_url=detail&amp;asset_id=461089776
-                                    </p>
-                                </blockquote>
-                                - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm Download<br>
-                                <br>
-                                <hr> <!-- Thanh ngang -->File sẽ được <span class="bold">tự động tải xuống</span>. Nếu
-                                không bạn hãy bấm vào link bên dưới để tải lại nha!
-                                <p></p>
-                            </div>
-                        </div>
-
+                        @endforeach
                     </div>
                 </div>
             </div>

@@ -57,7 +57,7 @@ class PackageDetailController extends Controller
         $id = $request->id;
         $to = $request->to;
         $from = $request->from;
-        $today = $request->today;
+        $limit = $request->limit;
 
         $detail = PackageDetail::with(['package'])
             // to
@@ -87,8 +87,11 @@ class PackageDetailController extends Controller
             // time
             ->when(strlen($time), function ($q) use ($time) {
                 $q->where('expire', $time);
-            })
-            ->first();
+            });
+        if ($limit) {
+            $detail = $detail->limit($limit);
+        }
+        $detail = $detail->get();
 
         return response()->json([
             'status' => $detail ? GlobalConstant::STATUS_OK : GlobalConstant::STATUS_ERROR,

@@ -36,16 +36,11 @@ class BotController extends Controller
             $url = $request->url ?? '';
             $website_id = $request->website_id ?? '';
 
-            $params = json_encode($request->all());
             Log::debug("REQUEST PARAMS setCacheById", $request->all());
-
-            // push notification about result from tool
-            event(new AlertDownloadedSuccessfullyEvent($id, $url));
 
             $downloadHistory = DownloadHistory::where([
                 ['user_id', '=', $id],
                 ['url', '=', $url],
-
             ])
                 ->whereBetween('created_at', [now()->format('Y-m-d 00:00:00'), now()->format('Y-m-d 23:59:59')])
                 ->first();
@@ -99,6 +94,9 @@ class BotController extends Controller
                 Log::debug("DECREASED downloaded_number_file successfully");
             }
             DB::commit();
+
+            // push notification about result from tool
+            event(new AlertDownloadedSuccessfullyEvent($id, $url));
 
             return response()->json([
                 'status' => 0,
@@ -178,6 +176,58 @@ class BotController extends Controller
     {
         $result = '';
         switch (true) {
+                // artlist
+            case $typeWeb == GlobalConstant::WEB_ARTLIST;
+                // get id
+                $id =  preg_replace(['/#.*/', '/https:\/\/artlist.io\//'], '', $url);
+                // set result
+                switch (true) {
+                    case $typeDownload === GlobalConstant::DOWNLOAD_LICENSE:
+                        $result = "$id|getlicense|Artlist";
+                        break;
+                    default:
+                        if (
+                            str_contains($id, '/song/')
+                            || str_contains($id, '/track/')
+                            || str_contains($id, '/clip/')
+                        ) {
+                            $result = "$id|taifile|taiArtlist";
+                        }
+                        if (str_contains($id, 'video-templates/')) {
+                            $typeDownload = $typeDownload === GlobalConstant::DOWNLOAD_MUSIC ? '' : $typeDownload;
+                            $result = "$id|taifile|tai{$typeDownload}Artlist";
+                        }
+                        break;
+                }
+                break;
+                // yayimages
+            case $typeWeb == GlobalConstant::WEB_YAYIMAGE;
+                // get id
+                $id =  preg_replace(['/#.*/', '/https:\/\/yayimages.com\//'], '', $url);
+                // set result
+                $typeDownload = $typeDownload == GlobalConstant::DOWNLOAD_VIDEO ? 'Video' : '';
+                $result = "$id|taifile|tai{$typeDownload}Yayimage";
+                break;
+                // creativefabrica
+            case $typeWeb == GlobalConstant::WEB_CREATIVEFABRICA;
+                // get last element
+                $url = explode('/', $url);
+                $url = array_filter($url);
+                // get id
+                $id =  preg_replace('/#.*/', '', end($url) ?? '');
+                // set result
+                $result = "$id|taifile|taiCreativefabrica";
+                break;
+                // slidesgo
+            case $typeWeb == GlobalConstant::WEB_SLIDESGO;
+                // get last element
+                $url = explode('/', $url);
+                $url = array_filter($url);
+                // get id
+                $id =  preg_replace('/#.*/', '', end($url) ?? '');
+                // set result
+                $result = "$id|taifile|taiSlidesgo";
+                break;
                 // vecteezy
             case $typeWeb == GlobalConstant::WEB_VECTEEZY;
                 // pattern
