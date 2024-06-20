@@ -89,6 +89,7 @@ class BotController extends Controller
                     'user_id' => $id,
                     'url' => $url,
                     'input_url' => $dataUrl['inputUrl'] ?? '',
+                    'id_url' => $dataUrl['idUrl'] ?? '',
                 ]);
                 Log::debug("DECREASED downloaded_number_file successfully");
             }
@@ -150,7 +151,7 @@ class BotController extends Controller
             // store url to cache
             Cache::put($id, json_encode([
                 'idUrl' => $idUrl,
-                'inputUrl' => $newText,
+                'inputUrl' => $data['text'],
             ]));
 
             $dataSend = [
