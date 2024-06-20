@@ -38,9 +38,10 @@ class BotController extends Controller
 
             Log::debug("REQUEST PARAMS setCacheById", $request->all());
 
+            $dataUrl = json_decode(Cache::pull($id), true);
             $downloadHistory = DownloadHistory::where([
                 ['user_id', '=', $id],
-                ['url', '=', $url],
+                ['id_url', '=', $dataUrl['idUrl'] ?? ''],
             ])
                 ->whereBetween('created_at', [now()->format('Y-m-d 00:00:00'), now()->format('Y-m-d 23:59:59')])
                 ->first();
@@ -83,13 +84,11 @@ class BotController extends Controller
                 if ($packageSelected) {
                     $packageSelected->increment('downloaded_number_file');
                 }
-                // get input url from cache
-                $inputUrl = Cache::pull($id, '');
                 // create download history
                 DownloadHistory::create([
                     'user_id' => $id,
                     'url' => $url,
-                    'input_url' => $inputUrl,
+                    'input_url' => $dataUrl['inputUrl'] ?? '',
                 ]);
                 Log::debug("DECREASED downloaded_number_file successfully");
             }
@@ -144,13 +143,15 @@ class BotController extends Controller
                 throw new Exception('Đã hết số lượt tải file, mời bạn gia hạn hoặc đăng ký gói mới.');
             }
 
-            $newText = $this->getIdFromText($data['text'], $data['typeDownload'] ?? '', $data['typeWeb']);
+            [$newText, $idUrl] = $this->getIdFromText($data['text'], $data['typeDownload'] ?? '', $data['typeWeb']);
 
             $id = $data['id'];
-            $inputUrl = $data['text'];
 
             // store url to cache
-            Cache::put($id, $inputUrl);
+            Cache::put($id, json_encode([
+                'idUrl' => $idUrl,
+                'inputUrl' => $newText,
+            ]));
 
             $dataSend = [
                 'chat_id' => $this->groupTelegramId,
@@ -323,7 +324,7 @@ class BotController extends Controller
                 break;
         }
 
-        return "$result|$typeWeb";
+        return ["$result|$typeWeb", $id];
     }
 
     public function deleteAllCache(Request $request)
