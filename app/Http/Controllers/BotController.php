@@ -54,9 +54,7 @@ class BotController extends Controller
                             ['expired_at', '>=', now()->format('Y-m-d 00:00:00')],
                         ]
                     )
-                    ->whereHas('packageDetail', function ($q) {
-                        $q->whereColumn('members.downloaded_number_file', '<', 'package_details.number_file');
-                    })
+                    ->whereColumn('downloaded_number_file', '<', 'number_file')
                     ->orderBy('number_file')
                     ->orderBy('expire');
 
@@ -76,8 +74,10 @@ class BotController extends Controller
 
                 // increase downloaded_number_file
                 $packageSelected = $packageSelected ?:
-                    $members->where('website_id', '')
-                    ->orWhereNull('website_id')
+                    $members->where(function ($q) {
+                        $q->orWhere('website_id', '')
+                            ->orWhereNull('website_id');
+                    })
                     ->first();
 
                 if ($packageSelected) {
