@@ -35,6 +35,7 @@ class BotController extends Controller
             $id = $request->id ?? '';
             $url = $request->url ?? '';
             $website_id = $request->website_id ?? '';
+            $status = $request->status ?? GlobalConstant::STATUS_OK;
 
             Log::debug("REQUEST PARAMS setCacheById", $request->all());
 
@@ -45,8 +46,9 @@ class BotController extends Controller
             ])
                 ->whereBetween('created_at', [now()->format('Y-m-d 00:00:00'), now()->format('Y-m-d 23:59:59')])
                 ->first();
+
             DB::beginTransaction();
-            if (!$downloadHistory) {
+            if (!$downloadHistory && $status == GlobalConstant::STATUS_OK) {
                 // get priority package 1 - by website 2 - by web all 3 - by number file
                 $members = Member::with('packageDetail')
                     ->where(
@@ -96,7 +98,8 @@ class BotController extends Controller
             DB::commit();
 
             // push notification about result from tool
-            event(new AlertDownloadedSuccessfullyEvent($id, $url));
+            Log::debug("PARAMS alert downloaded successfully event", [$id, $url, $status]);
+            event(new AlertDownloadedSuccessfullyEvent($id, $url, $status));
 
             return response()->json([
                 'status' => 0,

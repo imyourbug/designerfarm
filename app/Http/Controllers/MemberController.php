@@ -17,6 +17,28 @@ class MemberController extends Controller
         ]);
     }
 
+    public function getMembersByUserId(Request $request)
+    {
+        $user_id = $request->user_id;
+
+        $members = Member::with(['user', 'packageDetail.package'])
+            ->where(
+                [
+                    ['user_id', '=', $user_id],
+                    ['expired_at', '>=', now()->format('Y-m-d 00:00:00')],
+                ]
+            )
+            ->whereColumn('downloaded_number_file', '<', 'number_file')
+            ->orderBy('number_file')
+            ->orderBy('expire')
+            ->get();
+
+        return response()->json([
+            'status' => 0,
+            'members' => $members
+        ]);
+    }
+
     public function getAll(Request $request)
     {
         $user_id = $request->user_id;

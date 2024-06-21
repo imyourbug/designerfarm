@@ -13,11 +13,13 @@ class AlertDownloadedSuccessfullyEvent implements ShouldBroadcast
 
     public $userId;
     public $url;
+    public $status;
 
-    public function __construct($userId, $url)
+    public function __construct($userId, $url, $status)
     {
         $this->userId = $userId;
         $this->url = $url;
+        $this->status = $status;
     }
 
     /**

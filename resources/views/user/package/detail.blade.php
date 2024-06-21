@@ -92,30 +92,30 @@
                             let i = 0;
                             let count = 0;
                             let firstTime = null;
+                            let availableTimes = [];
                             response.detail.forEach(e => {
-                                $(`.btn-option-time[data-package_id='${package_id}']`).each(
-                                    function() {
-                                        if ($(this).data('time') == e.expire) {
-                                            if (i == 0) {
-                                                i == 1;
-                                                firstTime = e.expire;
-                                            }
-                                            if (time == e.expire) {
-                                                count == 1;
-                                            }
-                                            $(this).prop('disabled', false);
-                                        }
-                                    });
+                                if (!availableTimes.includes(e.expire)) {
+                                    availableTimes.push(e.expire);
+                                }
                             });
+
+                            availableTimes.forEach((e) => {
+                                if (i == 0) {
+                                    firstTime = e;
+                                    i == 1;
+                                }
+                                $(`.btn-option-time[data-time='${e}']`).prop('disabled', false);
+                            });
+
                             // set default time option
-                            if (count == 0) {
+                            if (firstTime && !availableTimes.includes(time)) {
                                 $(`.btn-option-time`).css('border',
                                     'none');
                                 $(`.btn-option-time[data-time='${firstTime}']`).css('border',
                                     '2px solid black');
                                 time = firstTime;
-                                getPrice(package_id, quantity, time);
-                            }
+                            } 
+                            getPrice(package_id, quantity, time);
                         } else {
                             // to do
                         }
@@ -147,7 +147,11 @@
                             let i = 0;
                             let count = 0;
                             let firstQuantity = null;
+                            let availableQuantities = [];
                             response.detail.forEach(e => {
+                                if (!availableQuantities.includes(e.number_file)) {
+                                    availableQuantities.push(e.number_file);
+                                }
                                 $(`.btn-option-quantity[data-package_id='${package_id}']`).each(
                                     function() {
                                         if ($(this).data('quantity') == e.number_file) {
@@ -162,16 +166,24 @@
                                         }
                                     });
                             });
+                            availableQuantities.forEach((e) => {
+                                if (i == 0) {
+                                    firstQuantity = e;
+                                    i == 1;
+                                }
+                                $(`.btn-option-quantity[data-quantity='${e}']`).prop('disabled', false);
+                            });
                             // set default quantity option
-                            if (count == 0) {
+                            if (firstQuantity && !availableQuantities.includes(quantity)) {
                                 $(`.btn-option-quantity`).css('border',
                                     'none');
                                 $(`.btn-option-quantity[data-quantity='${firstQuantity}']`).css(
                                     'border',
                                     '2px solid black');
                                 quantity = firstQuantity;
-                                getPrice(package_id, quantity, time);
                             }
+                            getPrice(package_id, quantity, time);
+
                         } else {
                             // to do
                         }

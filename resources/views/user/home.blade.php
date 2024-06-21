@@ -5,6 +5,12 @@
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script>
+        // Hàm hiển thị thông báo
+        function showNotification(message, alertClass) {
+            $('#notification').removeClass().addClass('alert').addClass(alertClass).text(message)
+                .show();
+        }
+
         var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
             cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
         });
@@ -18,18 +24,46 @@
             loading.removeClass('d-none');
 
             if (user && user.id == data.userId) {
+                if (data.status == 0) {
+                    // $('#btn-clode-all-modal').click();
+                    // display result url
+                    let url = data.url;
+                    $('.url').text(url);
+                    $('.btn-open-modal-result').click();
+                    // set url download
+                    $('.btn-download').prop('href', url);
+                    window.open(`${url}`, '_blank').focus();
+                    // reset
+                    $('#reset_btn').click();
+                    // sync available numberfile
+                    $.ajax({
+                        type: 'GET',
+                        url: `/api/members/getMembersByUserId?user_id=${user.id}`,
+                        success: function(response) {
+                            if (response.members) {
+                                $('.block-package').html('');
+                                let html = '';
+                                response.members.forEach(e => {
+                                    html += `<tr>
+                                                <td style="padding: 10px 15px">
+                                                    ${e.package_detail.package.name}
+                                                </td>
+                                                <td> ${e.downloaded_number_file}/${e.number_file}</td>
+                                            </tr>`;
+                                });
+                                $('.block-package').html(html);
+                                //
+                                localStorage.setItem('members', JSON.stringify(response.members));
+                            }
+                        },
+                    });
+                } else {
+                    showNotification(
+                        'Tải file lỗi hoặc link bị sai. Vui lòng kiểm tra và thử lại lần nữa. Nếu không được xin liên hệ hotline {{ $settings["hotline"] }}',
+                        'alert-danger');
+                }
                 text.removeClass('d-none');
                 loading.addClass('d-none');
-                // $('#btn-clode-all-modal').click();
-                // display result url
-                let url = data.url;
-                $('.url').text(url);
-                $('.btn-open-modal-result').click();
-                // set url download
-                $('.btn-download').prop('href', url);
-                window.open(`${url}`, '_blank').focus();
-                // reset
-                $('#reset_btn').click();
             }
         });
 
@@ -81,6 +115,7 @@
             $('.btn-open-modal-notification').click();
             //
             $('#getlink_btn').click(function() {
+                $(this).prop('disabled', true);
                 // Kiểm tra xem userID đã đăng nhập chưa
                 let user = localStorage.getItem('user');
                 if (!user) {
@@ -333,14 +368,9 @@
                             loading.addClass('d-none');
                             toastr.error(response.message, "Thông báo");
                         }
+                        $(this).prop('disabled', false);
                     },
                 });
-
-                // Hàm hiển thị thông báo
-                function showNotification(message, alertClass) {
-                    $('#notification').removeClass().addClass('alert').addClass(alertClass).text(message)
-                        .show();
-                }
             });
         });
 
@@ -595,9 +625,10 @@
         </div>
     </div>
     <div class="modal fade" id="modalNotification" aria-modal="true" role="dialog">
-        <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                <button type="button" class="closeModalNotification close" style="position: absolute;z-index:1;right:0px" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="closeModalNotification close"
+                    style="position: absolute;z-index:1;right:0px" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
                 @if (!empty($settings['popup-image']))

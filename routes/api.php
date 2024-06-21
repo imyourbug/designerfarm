@@ -96,6 +96,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     #members
     Route::group(['prefix' => 'members', 'as' => 'members.'], function () {
         Route::get('/getAll', 'MemberController@getAll')->name('getAll');
+        Route::get('/getMembersByUserId', 'MemberController@getMembersByUserId')->name('getMembersByUserId');
         // Route::post('/deleteAll', 'MemberController@deleteAll')->name('deleteAll');
         Route::delete('/{id}/destroy', 'MemberController@destroy')->name('destroy');
     });

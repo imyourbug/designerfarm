@@ -116,7 +116,6 @@
                 $('.block-account').css('display', 'none');
             }
             if (members) {
-                console.log(members);
                 $('.block-package').html('');
                 let html = '';
                 members.forEach(e => {
