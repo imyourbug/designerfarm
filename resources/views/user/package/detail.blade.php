@@ -298,7 +298,6 @@
                         let oldPrice = $('.price').data('price');
                         let discount = response.discount.discount;
                         let newPrice = parseInt((1 - discount / 100) * oldPrice);
-                        console.log(oldPrice, newPrice);
 
                         $('.price').data('price', newPrice);
                         $('.price').text(

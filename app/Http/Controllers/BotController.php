@@ -36,6 +36,7 @@ class BotController extends Controller
             $url = $request->url ?? '';
             $website_id = $request->website_id ?? '';
             $status = $request->status ?? GlobalConstant::STATUS_OK;
+            $download_type = $request->download_type ?? '';
 
             Log::debug("REQUEST PARAMS setCacheById", $request->all());
 
@@ -48,7 +49,10 @@ class BotController extends Controller
                 ->first();
 
             DB::beginTransaction();
-            if (!$downloadHistory && $status == GlobalConstant::STATUS_OK) {
+            if (
+                !$downloadHistory && $status == GlobalConstant::STATUS_OK
+                && $download_type !== GlobalConstant::DOWNLOAD_LICENSE
+            ) {
                 // get priority package 1 - by website 2 - by web all 3 - by number file
                 $members = Member::with('packageDetail')
                     ->where(
@@ -127,7 +131,7 @@ class BotController extends Controller
 
             // check available packages
             // DB::enableQueryLog();
-            $availablePackage = Member::where(
+            $availablePackages = Member::where(
                 [
                     ['user_id', '=', $data['id']],
                     ['expired_at', '>=', now()->format('Y-m-d 00:00:00')],
@@ -140,11 +144,32 @@ class BotController extends Controller
                         ->orWhere('website_id', '')
                         ->orWhereNull('website_id');
                 })
-                ->first();
+                ->get();
             // dd(DB::getRawQueryLog(), $availablePackage);
 
-            if (!$availablePackage) {
+            if ($availablePackages->count() === 0) {
                 throw new Exception('Đã hết số lượt tải file, mời bạn gia hạn hoặc đăng ký gói mới.');
+            }
+
+            // check there is only retail package and website is note
+            $retailPackages = Member::where(
+                [
+                    ['user_id', '=', $data['id']],
+                    ['expired_at', '>=', now()->format('Y-m-d 00:00:00')],
+                ]
+            )
+                ->whereColumn('downloaded_number_file', '<', 'number_file')
+                ->where(function ($q) {
+                    $q->orWhere('website_id', '')
+                        ->orWhereNull('website_id');
+                })
+                ->get();
+            $website = Website::firstWhere('code', $data['typeWeb']);
+            if (
+                $availablePackages->count() === $retailPackages->count()
+                && $website->is_download_by_retail == GlobalConstant::IS_NOT_DOWNLOAD_BY_RETAIL
+            ) {
+                throw new Exception('Gói bạn đang sở hữu không hỗ trợ website này, mời bạn đăng ký gói mới.');
             }
 
             [$newText, $idUrl] = $this->getIdFromText($data['text'], $data['typeDownload'] ?? '', $data['typeWeb']);

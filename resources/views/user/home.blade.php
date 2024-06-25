@@ -7,6 +7,8 @@
     <script>
         // Hàm hiển thị thông báo
         function showNotification(message, alertClass) {
+            $('#getlink_btn').prop('disabled', false);
+
             $('#notification').removeClass().addClass('alert').addClass(alertClass).text(message)
                 .show();
         }
@@ -48,7 +50,7 @@
                                                 <td style="padding: 10px 15px">
                                                     ${e.package_detail.package.name}
                                                 </td>
-                                                <td> ${e.downloaded_number_file}/${e.number_file}</td>
+                                                <td> ${e.number_file - e.downloaded_number_file}/${e.number_file}</td>
                                             </tr>`;
                                 });
                                 $('.block-package').html(html);
@@ -59,7 +61,7 @@
                     });
                 } else {
                     showNotification(
-                        'Tải file lỗi hoặc link bị sai. Vui lòng kiểm tra và thử lại lần nữa. Nếu không được xin liên hệ hotline {{ $settings["hotline"] }}',
+                        'Tải file lỗi hoặc link bị sai. Vui lòng kiểm tra và thử lại lần nữa. Nếu không được xin liên hệ hotline {{ $settings['hotline'] }}',
                         'alert-danger');
                 }
                 text.removeClass('d-none');
@@ -90,6 +92,7 @@
             $('#messageInput').val('');
             $('#notification').css('display', 'none');
             $('.option-website').removeClass('active');
+            $('#getlink_btn').prop('disabled', false);
             website = '';
         });
 
@@ -336,9 +339,9 @@
                         break;
                     default:
                         // Điều chỉnh cách lấy idFile cho các website khác ở đây
-                        showNotification('Chức năng tải file từ ' + website + ' chưa được hỗ trợ.',
+                        return showNotification('Chức năng tải file từ ' + website + ' chưa được hỗ trợ.',
                             'alert-warning');
-                        return;
+                        break;
                 }
 
                 // Gửi request đến API để tải file
@@ -368,7 +371,7 @@
                             loading.addClass('d-none');
                             toastr.error(response.message, "Thông báo");
                         }
-                        $(this).prop('disabled', false);
+                        $('#getlink_btn').prop('disabled', false);
                     },
                 });
             });

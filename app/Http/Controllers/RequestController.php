@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Constant\GlobalConstant;
 use App\Events\AlertChargedSuccessfullyEvent;
+use App\Mail\RequestChargeMail;
 use App\Models\Member;
 use App\Models\Request as ModelsRequest;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Throwable;
 
 class RequestController extends Controller
@@ -36,6 +38,9 @@ class RequestController extends Controller
             $data['status'] = GlobalConstant::STATUS_PENDING;
             // $data['code'] = 'GD' . time() . $data['user_id'];
             ModelsRequest::create($data);
+        
+            // send mail
+            Mail::to(config('mail.to.address'))->send(new RequestChargeMail($data['user_id']));
 
             return response()->json([
                 'status' => 0,
@@ -69,18 +74,12 @@ class RequestController extends Controller
 
             $requestModel = ModelsRequest::firstWhere('id', $data['id']);
             switch (true) {
-                case  $data['status'] == GlobalConstant::STATUS_ACCEPTED:
+                case $data['status'] == GlobalConstant::STATUS_ACCEPTED:
                     // create or update memeber
-                    $member = Member::where([
-                        'packagedetail_id' => $requestModel->packagedetail_id,
-                        'user_id' => $requestModel->user_id,
-                    ])
-                        // ->where(function ($query) {
-                        //     $query->whereNull('website_id')
-                        //         ->orWhere('website_id', '=', '');
-                        // })
-                        ->when(strlen($data['website_id']), function ($q) use ($data) {
-                            return $q->where('website_id', $data['website_id']);
+                    $member = Member::where('user_id', $requestModel->user_id)
+                        ->when(strlen($data['website_id']), function ($q) use ($data, $requestModel) {
+                            return $q->where('website_id', $data['website_id'])
+                                ->where('packagedetail_id', $requestModel->packagedetail_id);
                         })
                         ->first();
                     if ($member) {
@@ -92,26 +91,27 @@ class RequestController extends Controller
                             case $type == GlobalConstant::TYPE_BY_NUMBER_FILE:
                                 $downloaded_number_file = 0;
                                 if (
-                                    strtotime($expired_at) < strtotime(now()->format('Y-m-d'))
-                                    ||  $member->downloaded_number_file >= $member->packageDetail->number_file
+                                    strtotime($expired_at) > strtotime(now()->format('Y-m-d'))
                                 ) {
-                                    $expired_at = now()->addMonths($requestModel->expire);
-                                } else {
-                                    // reset package
-                                    $downloaded_number_file = $member->downloaded_number_file - $member->packageDetail->number_file;
-                                    $expired_at = Carbon::parse($expired_at)->addMonths($requestModel->expire);
-                                    $expire = $this->getNumberOfMonths($expired_at, now());
+                                    // decrease downloaded_number_file
+                                    $downloaded_number_file = $member->number_file != $requestModel->packageDetail->number_file ?
+                                        ($member->downloaded_number_file - $member->number_file)
+                                        : ($member->downloaded_number_file - $requestModel->packageDetail->number_file);
                                 }
-                                // increase expire, expired_at
+
+                                $expired_at = now()->addMonths($requestModel->expire);
+                                $expire = $this->getNumberOfMonths($expired_at, now());
+
                                 $member->update(
                                     [
+                                        'packagedetail_id' => $requestModel->packagedetail_id,
                                         'expire' => $expire,
                                         'expired_at' => $expired_at,
                                         'downloaded_number_file' => $downloaded_number_file,
+                                        'number_file' => $requestModel->packageDetail->number_file,
                                     ]
                                 );
                                 break;
-
                             case $type == GlobalConstant::TYPE_BY_TIME:
                                 if (
                                     strtotime($expired_at) < strtotime(now()->format('Y-m-d'))
@@ -131,9 +131,7 @@ class RequestController extends Controller
                                     ]
                                 );
                                 break;
-
                             default:
-
                                 break;
                         }
                     } else {

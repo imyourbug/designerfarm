@@ -37,6 +37,8 @@ class WebsiteController extends Controller
                 'image' => 'nullable|string',
                 'sample_link' => 'required|string',
                 'website_link' => 'required|string',
+                'is_download_by_retail' => 'required|in:'
+                    . GlobalConstant::IS_DOWNLOAD_BY_RETAIL . ',' . GlobalConstant::IS_NOT_DOWNLOAD_BY_RETAIL,
             ]);
 
             $checkCode = Website::firstWhere('code', $data['code']);
@@ -63,6 +65,8 @@ class WebsiteController extends Controller
                 'image' => 'nullable|string',
                 'sample_link' => 'required|string',
                 'website_link' => 'required|string',
+                'is_download_by_retail' => 'required|in:'
+                    . GlobalConstant::IS_DOWNLOAD_BY_RETAIL . ',' . GlobalConstant::IS_NOT_DOWNLOAD_BY_RETAIL,
             ]);
 
             unset($data['id']);

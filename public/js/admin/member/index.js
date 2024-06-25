@@ -35,12 +35,12 @@ $(document).ready(function () {
             },
             {
                 data: function (d) {
-                    return d.package_detail.number_file;
+                    return d.number_file;
                 },
             },
             {
                 data: function (d) {
-                    return d.package_detail.number_file - d.downloaded_number_file;
+                    return d.number_file - d.downloaded_number_file;
                 },
             },
             {

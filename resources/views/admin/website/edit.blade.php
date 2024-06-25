@@ -83,6 +83,25 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-lg-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="is_download_by_retail">Bao gồm tải lẻ <span
+                                                class="required">(*)</span></label>
+                                        <div class="custom-control custom-radio">
+                                            <input class="custom-control-input" type="radio" id="is_download_by_retail"
+                                                value="1" name="is_download_by_retail"
+                                                {{ $website->is_download_by_retail == 1 ? 'checked' : '' }}>
+                                            <label for="is_download_by_retail" class="custom-control-label">Có</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input class="custom-control-input" type="radio"
+                                                id="is_not_download_by_retail" value="0" name="is_download_by_retail"
+                                                {{ $website->is_download_by_retail == 0 ? 'checked' : '' }}>
+                                            <label for="is_not_download_by_retail"
+                                                class="custom-control-label">Không</label>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="form-group">
                                         <label for="file">Ảnh hiển thị</label><br>

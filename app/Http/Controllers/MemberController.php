@@ -28,7 +28,7 @@ class MemberController extends Controller
                     ['expired_at', '>=', now()->format('Y-m-d 00:00:00')],
                 ]
             )
-            ->whereColumn('downloaded_number_file', '<', 'number_file')
+            // ->whereColumn('downloaded_number_file', '<', 'number_file')
             ->orderBy('number_file')
             ->orderBy('expire')
             ->get();

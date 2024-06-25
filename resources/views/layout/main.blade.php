@@ -124,7 +124,7 @@
                                 <td style="padding: 10px 15px">
                                     ${e.package_detail.package.name}
                                 </td>
-                                <td> ${e.downloaded_number_file}/${e.number_file}</td>
+                                <td> ${e.number_file - e.downloaded_number_file}/${e.number_file}</td>
                             </tr>`;
                 });
                 $('.block-package').html(html);
@@ -170,7 +170,7 @@
                                 <td style="padding: 10px 15px">
                                     ${e.package_detail.package.name}
                                 </td>
-                                <td> ${e.downloaded_number_file}/${e.number_file}</td>
+                                <td> ${e.number_file - e.downloaded_number_file}/${e.number_file}</td>
                             </tr>`;
                         });
                         $('.block-package').html(html);
@@ -255,6 +255,28 @@
             if (user && user.id == data.userId) {
                 // $('#btn-clode-all-modal').click();
                 $('#btn-open-modal-alert-charged-successfully').click();
+                // sync available numberfile
+                $.ajax({
+                    type: 'GET',
+                    url: `/api/members/getMembersByUserId?user_id=${user.id}`,
+                    success: function(response) {
+                        if (response.members) {
+                            $('.block-package').html('');
+                            let html = '';
+                            response.members.forEach(e => {
+                                html += `<tr>
+                                                <td style="padding: 10px 15px">
+                                                    ${e.package_detail.package.name}
+                                                </td>
+                                                <td> ${e.number_file - e.downloaded_number_file}/${e.number_file}</td>
+                                            </tr>`;
+                            });
+                            $('.block-package').html(html);
+                            //
+                            localStorage.setItem('members', JSON.stringify(response.members));
+                        }
+                    },
+                });
             }
         });
     </script>
