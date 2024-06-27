@@ -38,6 +38,9 @@ class RequestController extends Controller
             ]);
             $data['status'] = GlobalConstant::STATUS_PENDING;
             ModelsRequest::create($data);
+        
+            // send mail
+            Mail::to(config('mail.to.address'))->send(new RequestChargeMail($data['user_id']));
 
             // send mail
             $strEmail = Setting::firstWhere('key', GlobalConstant::KEY_EMAIL_NOTIFICATION)->value ?? '';
