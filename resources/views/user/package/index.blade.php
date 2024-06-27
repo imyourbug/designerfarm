@@ -59,7 +59,6 @@
                                 </div>
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="item-box-blog-body">
-                                        <!--Heading-->
                                         <div class="item-box-blog-heading">
                                             <a href="#" tabindex="0">
                                                 <p>{{ $package->name }}</p>
@@ -78,30 +77,6 @@
                                     </div>
                                 </div>
                             </div>
-                            {{-- <div class="item-box-blog">
-                                <div class="item-box-blog-image">
-                                    <figure>
-                                        <img alt="image" src="{{ $package->avatar }}" />
-                                    </figure>
-                                </div>
-                                <div class="item-box-blog-body">
-                                    <div class="item-box-blog-heading">
-                                        <a href="#" tabindex="0">
-                                            <h5>{{ $package->name }}</h5>
-                                        </a>
-                                    </div>
-                                    <div class="item-box-blog-data" style="padding: px 15px;">
-                                        <p><i class="fa fa-user-o"></i> {{ rand(100, 500) }} người đã và
-                                            đang
-                                            sử
-                                            dụng
-                                        </p>
-                                    </div>
-                                    <a style="width:100%" class="btn btn-success btn-open-detail"
-                                        href="{{ route('packages.show', ['id' => $package->id]) }}">Đăng
-                                        ký</a>
-                                </div>
-                            </div> --}}
                         </div>
                     @endif
                 @endforeach

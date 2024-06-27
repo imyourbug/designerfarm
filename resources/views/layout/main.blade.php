@@ -93,12 +93,12 @@
         </div>
     </div>
     <div class="gototop js-top active" style="position: fixed;bottom:40px;right:40px">
-        <a target="_blank" href="{{ $settings['link-messenger'] }}" class="js-gotop">
+        <a target="_blank" href="{{ $settings['link-messenger'] ?? '' }}" class="js-gotop">
             <img src="/image/mess.jpg" style="width: 50px;height:50px" alt="">
         </a>
     </div>
     <div class="gototop js-top active" style="position: fixed;bottom:100px;right:40px">
-        <a target="_blank" href="{{ $settings['link-zalo'] }}" class="js-gotop">
+        <a target="_blank" href="{{ $settings['link-zalo'] ?? '' }}" class="js-gotop">
             <img src="/image/zalo.jpg" style="width: 50px;height:50px" alt="">
         </a>
     </div>
