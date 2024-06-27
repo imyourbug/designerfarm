@@ -30,7 +30,8 @@
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>
                 </div>
-                <a href="{{ route('admin.websites.index') }}" class="small-box-footer">Xem thêm <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{ route('admin.websites.index') }}" class="small-box-footer">Xem thêm <i
+                        class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <div class="col-lg-3 col-6">
@@ -70,6 +71,18 @@
                 </div>
                 <a href="{{ route('admin.discounts.index') }}" class="small-box-footer">Xem thêm <i
                         class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>{{ number_format((int) $total, 0, ',', '.') }} VNĐ</h3>
+                    <p>Doanh thu tháng {{ date('m-Y') }}</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="#" class="small-box-footer">Xem thêm <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
     </div>

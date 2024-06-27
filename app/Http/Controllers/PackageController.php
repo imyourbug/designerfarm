@@ -6,6 +6,7 @@ use App\Constant\GlobalConstant;
 use App\Models\Member;
 use App\Models\Package;
 use App\Models\Request as ModelsRequest;
+use App\Models\Setting;
 use App\Models\Website;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -101,6 +102,9 @@ class PackageController extends Controller
             'quantities' => $quantities,
             'times' => $times,
             'prices' => $prices,
+            'settings' => Setting::orderBy('key')
+                ->pluck('value', 'key')
+                ->toArray()
         ]);
     }
 

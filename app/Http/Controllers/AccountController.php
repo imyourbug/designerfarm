@@ -24,7 +24,7 @@ class AccountController extends Controller
         $from = $request->from;
         $limit = $request->limit;
         $accounts = User::with([])
-            ->where('role', GlobalConstant::ROLE_USER)
+            // ->where('role', GlobalConstant::ROLE_USER)
             // to
             ->when($to, function ($q) use ($to) {
                 return $q->where('created_at', '<=', $to . ' 23:59:59');

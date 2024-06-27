@@ -14,31 +14,53 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 @endpush
 @section('content')
-    <form action="{{ route('admin.accounts.store') }}" method="POST">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-6 col-sm-12">
-                    <div class="form-group">
-                        <label for="menu">Tài khoản <span class="required">(*)</span></label>
-                        <input type="text" class="form-control" name="name" value="{{ old('name') }}"
-                            placeholder="Nhập tài khoản">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card direct-chat direct-chat-primary">
+                <div class="card-header ui-sortable-handle header-color" style="cursor: move;">
+                    <h3 class="card-title text-bold">Thêm tài khoản</h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
                     </div>
                 </div>
-                <div class="col-lg-6 col-sm-12">
-                    <div class="form-group">
-                        <label for="menu">Mật khẩu <span class="required">(*)</span></label>
-                        <input type="password" class="form-control" name="password" value="{{ old('password') }}"
-                            placeholder="Nhập mật khẩu">
+                <form action="{{ route('admin.accounts.store') }}" method="POST">
+                    <div class="card-body" style="display: block;padding: 10px !important;">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label for="menu">Tài khoản <span class="required">(*)</span></label>
+                                    <input type="text" class="form-control" name="name" value="{{ old('name') }}"
+                                        placeholder="Nhập tài khoản">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label for="menu">Mật khẩu <span class="required">(*)</span></label>
+                                    <input type="password" class="form-control" name="password"
+                                        value="{{ old('password') }}" placeholder="Nhập mật khẩu">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="form-group">
+                                    <label>Phân quyền<span class="required">(*)</span></label>
+                                    <select name="role" class="form-control" id="">
+                                        <option value="1">Admin</option>
+                                        <option value="0" selected>Người dùng</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                    @csrf
+                </form>
             </div>
-            <input class="custom-control-input" type="hidden" value="0" name="role" />
         </div>
-        <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Lưu</button>
-        </div>
-        @csrf
-    </form>
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="card direct-chat direct-chat-primary">
@@ -56,8 +78,9 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Tên</th>
-                                <th>Email</th>
-                                <th>Số dư</th>
+                                {{-- <th>Email</th> --}}
+                                {{-- <th>Số dư</th> --}}
+                                <th>Quyền</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>

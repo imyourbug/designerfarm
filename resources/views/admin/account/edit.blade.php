@@ -20,7 +20,7 @@
                 <div class="col-lg-6 col-sm-12">
                     <div class="form-group">
                         <label for="menu">Tài khoản <span class="required">(*)</span></label>
-                        <input type="text" class="form-control" id="name" value="{{ $user->name }}"
+                        <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}"
                             placeholder="Nhập tài khoản" disabled>
                     </div>
                 </div>
@@ -29,6 +29,15 @@
                         <label for="menu">Mật khẩu</label>
                         <input type="password" class="form-control" id="password" name="password"
                             value="{{ old('password') }}" placeholder="Nhập mật khẩu">
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-12">
+                    <div class="form-group">
+                        <label>Phân quyền<span class="required">(*)</span></label>
+                        <select name="role" class="form-control" id="">
+                            <option value="1" {{ $user->role == 1 ? 'selected' : '' }}>Admin</option>
+                            <option {{ $user->role == 0 ? 'selected' : '' }} value="0">Người dùng</option>
+                        </select>
                     </div>
                 </div>
             </div>

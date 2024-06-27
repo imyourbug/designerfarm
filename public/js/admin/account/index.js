@@ -27,11 +27,16 @@ $(document).ready(function () {
             {
                 data: "name",
             },
+            // {
+            //     data: "email",
+            // },
+            // {
+            //     data: "balance",
+            // },
             {
-                data: "email",
-            },
-            {
-                data: "balance",
+                data: function (d) {
+                    return d.role == 0 ? 'Người dùng' : 'Admin';
+                },
             },
             {
                 data: function (d) {

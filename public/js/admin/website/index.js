@@ -45,6 +45,11 @@ $(document).ready(function () {
             },
             {
                 data: function (d) {
+                    return d.is_download_by_retail == 1 ? 'Có' : 'Không';
+                },
+            },
+            {
+                data: function (d) {
                     return `<a class="btn btn-sm btn-primary btn-edit" target="_blank" href="/admin/websites/update/${d.id}">
                                 <i class="fas fa-edit"></i>
                             </a>

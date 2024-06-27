@@ -114,7 +114,7 @@
                                 $(`.btn-option-time[data-time='${firstTime}']`).css('border',
                                     '2px solid black');
                                 time = firstTime;
-                            } 
+                            }
                             getPrice(package_id, quantity, time);
                         } else {
                             // to do
@@ -171,7 +171,8 @@
                                     firstQuantity = e;
                                     i == 1;
                                 }
-                                $(`.btn-option-quantity[data-quantity='${e}']`).prop('disabled', false);
+                                $(`.btn-option-quantity[data-quantity='${e}']`).prop('disabled',
+                                    false);
                             });
                             // set default quantity option
                             if (firstQuantity && !availableQuantities.includes(quantity)) {
@@ -298,7 +299,6 @@
                         let oldPrice = $('.price').data('price');
                         let discount = response.discount.discount;
                         let newPrice = parseInt((1 - discount / 100) * oldPrice);
-                        console.log(oldPrice, newPrice);
 
                         $('.price').data('price', newPrice);
                         $('.price').text(
@@ -447,11 +447,11 @@
                                                     <br>
                                                     <div class="clear text-center">
                                                         <div style="margin: 10px 0px 10px 0px">
-                                                            <img src="/image/qr1.png">
+                                                            <img src="{{ $settings['qr-checkout-1'] }}">
                                                         </div>
                                                         <div>
-                                                            <strong class="green">VIETINBANK</strong><br>
-                                                            108868647721<br>
+                                                            <strong class="green">{{ $settings['qr-bank-name-1'] }}</strong><br>
+                                                            {{ $settings['qr-account-1'] }}<br>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -459,11 +459,11 @@
                                                     <br>
                                                     <div class="clear text-center">
                                                         <div style="margin: 10px 0px 10px 0px">
-                                                            <img src="/image/qr1.png">
+                                                            <img src="{{ $settings['qr-checkout-2'] }}">
                                                         </div>
                                                         <div>
-                                                            <strong class="green">MOMO</strong><br>
-                                                            108868647721<br>
+                                                            <strong class="green">{{ $settings['qr-bank-name-2'] }}</strong><br>
+                                                            {{ $settings['qr-account-2'] }}<br>
                                                         </div>
                                                     </div>
                                                 </div>

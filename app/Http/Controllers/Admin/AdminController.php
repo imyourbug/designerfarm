@@ -27,6 +27,16 @@ class AdminController extends Controller
 {
     public function index()
     {
+
+        $total = 0;
+        $requests = ModelsRequest::where('status', GlobalConstant::STATUS_ACCEPTED)
+            ->get();
+        foreach ($requests as $request) {
+            if ($request->created_at->format('m-Y') == date('m-Y')) {
+                $total += $request->total;
+            }
+        }
+
         return view('admin.home', [
             'title' => 'Trang người dùng',
             'users' => User::where('role', GlobalConstant::ROLE_USER)
@@ -36,6 +46,7 @@ class AdminController extends Controller
             'discounts' => Discount::all(),
             'requests' => ModelsRequest::where('status', GlobalConstant::STATUS_PENDING)
                 ->get(),
+            'total' => $total
         ]);
     }
 

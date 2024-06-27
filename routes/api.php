@@ -29,10 +29,12 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::post('/getCacheById', 'BotController@getCacheById')->name('getCacheById');
     Route::post('/getCacheByKey', 'BotController@getCacheByKey')->name('getCacheByKey');
     Route::post('/deleteAllCache', 'BotController@deleteAllCache')->name('deleteAllCache');
-
     #settings
-    Route::post('delete', 'SettingController@delete')->name('delete');
-    Route::get('getAll', 'SettingController@getAll')->name('getAll');
+    Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
+        Route::post('delete', 'SettingController@delete')->name('delete');
+        Route::post('/create', 'SettingController@store')->name('store');
+        Route::get('getAll', 'SettingController@getAll')->name('getAll');
+    });
 
     #upload
     Route::post('/upload', 'UploadController@upload')->name('upload');
@@ -105,13 +107,6 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
         #accounts
         Route::group(['prefix' => 'accounts', 'as' => 'accounts.'], function () {
             Route::delete('/{id}/destroy', 'AccountController@destroy')->name('destroy');
-        });
-
-        #settings
-        Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
-            Route::post('/create', 'SettingController@store')->name('store');
-            Route::get('/getAll', 'SettingController@getAll')->name('getAll');
-            Route::post('/delete', 'SettingController@delete')->name('delete');
         });
     });
 });

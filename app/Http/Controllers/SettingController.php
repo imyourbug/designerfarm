@@ -9,6 +9,28 @@ use Throwable;
 
 class SettingController extends Controller
 {
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'settings' => 'required|array',
+            'settings.*.key' => 'required|string',
+            'settings.*.value' => 'nullable|string',
+            'settings.*.name' => 'nullable|string',
+        ]);
+        foreach ($data['settings'] as $value) {
+            Setting::updateOrCreate([
+                'key' => $value['key']
+            ], [
+                'value' => $value['value'],
+                'name' => $value['name'],
+            ]);
+        }
+
+        return response()->json([
+            'status' => 0,
+        ]);
+    }
+
     public function getAll()
     {
         return response()->json([

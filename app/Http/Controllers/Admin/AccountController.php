@@ -31,7 +31,7 @@ class AccountController extends Controller
             $data = $request->validate([
                 'name' => 'required|string',
                 'password' => 'required|string',
-                // 'role' => 'required|in:0,1',
+                'role' => 'required|in:' . GlobalConstant::ROLE_ADMIN . ',' . GlobalConstant::ROLE_USER,
             ]);
             $check = User::firstWhere('name', $data['name']);
             if ($check) {
@@ -56,18 +56,17 @@ class AccountController extends Controller
             $data = $request->validate([
                 'user_id' => 'required|string',
                 'password' => 'nullable|string',
-                // 'balance' => 'required|string',
+                'role' => 'required|in:' . GlobalConstant::ROLE_ADMIN . ',' . GlobalConstant::ROLE_USER,
             ]);
-            $dataUpdate = [];
             if (strlen($data['password'])) {
-                $dataUpdate = array_merge($dataUpdate, [
-                    'password' => Hash::make($data['password']),
-                ]);
+                $data['password'] = Hash::make($data['password']);
+            } else {
+                unset( $data['password']);
             }
             DB::beginTransaction();
 
             User::firstWhere('id', $data['user_id'])
-                ->update($dataUpdate);
+                ->update($data);
 
             DB::commit();
 

@@ -92,6 +92,16 @@
             </div>
         </div>
     </div>
+    <div class="gototop js-top active" style="position: fixed;bottom:40px;right:40px">
+        <a target="_blank" href="{{ $settings['link-messenger'] }}" class="js-gotop">
+            <img src="/image/mess.jpg" style="width: 50px;height:50px" alt="">
+        </a>
+    </div>
+    <div class="gototop js-top active" style="position: fixed;bottom:100px;right:40px">
+        <a target="_blank" href="{{ $settings['link-zalo'] }}" class="js-gotop">
+            <img src="/image/zalo.jpg" style="width: 50px;height:50px" alt="">
+        </a>
+    </div>
     {{-- <input type="hidden" id="btn-clode-all-modal" data-dismiss="modal"/> --}}
     <input type="hidden" id="btn-open-modal-alert-charged-successfully" data-toggle="modal"
         data-target="#modalAlertChargedSuccessfully" />
@@ -124,7 +134,7 @@
                                 <td style="padding: 10px 15px">
                                     ${e.package_detail.package.name}
                                 </td>
-                                <td> ${e.downloaded_number_file}/${e.number_file}</td>
+                                <td> ${e.number_file - e.downloaded_number_file}/${e.number_file}</td>
                             </tr>`;
                 });
                 $('.block-package').html(html);
@@ -170,7 +180,7 @@
                                 <td style="padding: 10px 15px">
                                     ${e.package_detail.package.name}
                                 </td>
-                                <td> ${e.downloaded_number_file}/${e.number_file}</td>
+                                <td> ${e.number_file - e.downloaded_number_file}/${e.number_file}</td>
                             </tr>`;
                         });
                         $('.block-package').html(html);
@@ -255,6 +265,28 @@
             if (user && user.id == data.userId) {
                 // $('#btn-clode-all-modal').click();
                 $('#btn-open-modal-alert-charged-successfully').click();
+                // sync available numberfile
+                $.ajax({
+                    type: 'GET',
+                    url: `/api/members/getMembersByUserId?user_id=${user.id}`,
+                    success: function(response) {
+                        if (response.members) {
+                            $('.block-package').html('');
+                            let html = '';
+                            response.members.forEach(e => {
+                                html += `<tr>
+                                                <td style="padding: 10px 15px">
+                                                    ${e.package_detail.package.name}
+                                                </td>
+                                                <td> ${e.number_file - e.downloaded_number_file}/${e.number_file}</td>
+                                            </tr>`;
+                            });
+                            $('.block-package').html(html);
+                            //
+                            localStorage.setItem('members', JSON.stringify(response.members));
+                        }
+                    },
+                });
             }
         });
     </script>

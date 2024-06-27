@@ -16,5 +16,6 @@ class Website extends Model
         'name',
         'sample_link',
         'website_link',
+        'is_download_by_retail',
     ];
 }

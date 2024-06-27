@@ -41,7 +41,12 @@ class AuthController extends Controller
             'message' => 'Đăng nhập thành công',
             'user' => Auth::user(),
             'members' => Member::with(['packageDetail.package'])
-                ->where('user_id', Auth::id())
+                ->where(
+                    [
+                        ['user_id', '=', Auth::id()],
+                        ['expired_at', '>=', now()->format('Y-m-d 00:00:00')],
+                    ]
+                )
                 ->get(),
         ]);
     }

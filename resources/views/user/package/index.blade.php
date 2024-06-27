@@ -52,30 +52,44 @@
             <div class="row">
                 @foreach ($packages as $package)
                     @if ($package->details->count())
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="item-box-blog">
-                                <div class="item-box-blog-image">
-                                    <!--Date-->
-                                    @if ($package->price_sale)
-                                        <div class="item-box-blog-date "
-                                            style="background-color:rgb(223, 52, 52); border-radius:5px"> <span
-                                                class=""
-                                                style="">{{ '-' . (1 - $package->price_sale / $package->price) * 100 . '%' }}</span>
+                        <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <img style="width: 100%;height:100%" alt="image" src="{{ $package->avatar }}" />
+                                </div>
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <div class="item-box-blog-body">
+                                        <!--Heading-->
+                                        <div class="item-box-blog-heading">
+                                            <a href="#" tabindex="0">
+                                                <p>{{ $package->name }}</p>
+                                            </a>
                                         </div>
-                                    @endif
-                                    <!--Image-->
+                                        <div class="item-box-blog-data" style="padding: px 15px;">
+                                            <p><i class="fa fa-user-o"></i> {{ rand(100, 500) }} người đã và
+                                                đang
+                                                sử
+                                                dụng
+                                            </p>
+                                        </div>
+                                        <a style="width:100%" class="btn btn-success btn-open-detail"
+                                            href="{{ route('packages.show', ['id' => $package->id]) }}">Đăng
+                                            ký</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- <div class="item-box-blog">
+                                <div class="item-box-blog-image">
                                     <figure>
                                         <img alt="image" src="{{ $package->avatar }}" />
                                     </figure>
                                 </div>
                                 <div class="item-box-blog-body">
-                                    <!--Heading-->
                                     <div class="item-box-blog-heading">
                                         <a href="#" tabindex="0">
                                             <h5>{{ $package->name }}</h5>
                                         </a>
                                     </div>
-                                    <!--Data-->
                                     <div class="item-box-blog-data" style="padding: px 15px;">
                                         <p><i class="fa fa-user-o"></i> {{ rand(100, 500) }} người đã và
                                             đang
@@ -83,14 +97,11 @@
                                             dụng
                                         </p>
                                     </div>
-                                    <div class="item-box-blog-text">
-                                        <p>{{ $package->description }}</p>
-                                    </div>
-                                    <a style="width:100%" class="btn btn-success mt-4 btn-open-detail"
+                                    <a style="width:100%" class="btn btn-success btn-open-detail"
                                         href="{{ route('packages.show', ['id' => $package->id]) }}">Đăng
                                         ký</a>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     @endif
                 @endforeach
