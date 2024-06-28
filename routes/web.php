@@ -80,6 +80,11 @@ Route::group([
     ], function () {
         Route::get('/', 'AdminController@index')->name('index');
 
+        #reports
+        Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
+            Route::get('/', 'ReportController@index')->name('index');
+        });
+
         #settings
         Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
             Route::get('/', 'SettingController@index')->name('index');

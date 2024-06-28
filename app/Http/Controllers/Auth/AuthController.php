@@ -64,7 +64,7 @@ class AuthController extends Controller
                 throw new Exception('Tài khoản đã có người đăng ký!');
             }
             unset($data['re_password']);
-            User::create($data);
+            $user = User::create($data);
         } catch (Throwable $e) {
             return response()->json([
                 'status' => GlobalConstant::STATUS_ERROR,
@@ -75,6 +75,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => GlobalConstant::STATUS_OK,
             'message' => 'Tạo tài khoản thành công',
+            'user' => $user
         ]);
     }
 

@@ -1,13 +1,13 @@
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <ul class="navbar-nav" style="font-weight: bold">
-        <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button">
-                <img style="width: 30px;height:30px" src="{{ $settings['logo'] ?? '' }}" alt="">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light" style="height: 80px">
+    <ul class="navbar-nav" style="font-weight: bold;height:100%;align-items:center">
+        <li class="nav-item" style="height:100%;">
+            <a class="nav-link" data-widget="pushmenu" href="/" role="button">
+                <img style="width: 100%;height:60px" src="{{ $settings['logo'] ?? '' }}" alt="">
             </a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
+        {{-- <li class="nav-item d-none d-sm-inline-block">
             <a href="/" class="nav-link logo-text ml-2">DESIGNER FARM</a>
-        </li>
+        </li> --}}
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ route('packages.index') }}" class="nav-link logo-text ml-2">Gói tải</a>
         </li>

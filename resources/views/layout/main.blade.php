@@ -204,9 +204,10 @@
                     if (response.status == 0) {
                         toastr.success(response.message, "Thông báo");
                         closeModal('modalRegister');
-                        setTimeout(() => {
-                            window.location.href = '/';
-                        }, 2000);
+                        localStorage.setItem('user', JSON.stringify(response.user));
+                        $('.block-login').css('display', 'none');
+                        $('.block-account').css('display', 'block');
+                        $('.txt-user-name').text(response.user.name);
                     } else {
                         toastr.error(response.message, "Thông báo");
                     }

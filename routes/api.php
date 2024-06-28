@@ -29,6 +29,12 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::post('/getCacheById', 'BotController@getCacheById')->name('getCacheById');
     Route::post('/getCacheByKey', 'BotController@getCacheByKey')->name('getCacheByKey');
     Route::post('/deleteAllCache', 'BotController@deleteAllCache')->name('deleteAllCache');
+
+    #reports
+    Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
+        Route::get('/getRevenue', 'ReportController@getRevenue')->name('getRevenue');
+    });
+
     #settings
     Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
         Route::post('delete', 'SettingController@delete')->name('delete');
