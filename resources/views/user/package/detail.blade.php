@@ -447,7 +447,7 @@
                                                     <br>
                                                     <div class="clear text-center">
                                                         <div style="margin: 10px 0px 10px 0px">
-                                                            <img src="{{ $settings['qr-checkout-1'] }}">
+                                                            <img style="width: 350px;height:350px" src="{{ $settings['qr-checkout-1'] }}">
                                                         </div>
                                                         <div>
                                                             <strong class="green">{{ $settings['qr-bank-name-1'] }}</strong><br>
@@ -459,7 +459,7 @@
                                                     <br>
                                                     <div class="clear text-center">
                                                         <div style="margin: 10px 0px 10px 0px">
-                                                            <img src="{{ $settings['qr-checkout-2'] }}">
+                                                            <img style="width: 350px;height:350px" src="{{ $settings['qr-checkout-2'] }}">
                                                         </div>
                                                         <div>
                                                             <strong class="green">{{ $settings['qr-bank-name-2'] }}</strong><br>
