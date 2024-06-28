@@ -2,7 +2,7 @@
     <ul class="navbar-nav" style="font-weight: bold">
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button">
-                <img src="/image/mess.jpg" alt="">
+                <img style="width: 30px;height:30px" src="{{ $settings['logo'] ?? '' }}" alt="">
             </a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
