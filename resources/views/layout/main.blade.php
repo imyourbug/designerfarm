@@ -146,6 +146,7 @@
             localStorage.removeItem('members');
             $('.block-login').css('display', 'block');
             $('.block-account').css('display', 'none');
+            $('.block-package').html('');
             $('.txt-user-name').text('Tài khoản')
         });
 
