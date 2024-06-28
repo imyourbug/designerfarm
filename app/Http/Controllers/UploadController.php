@@ -29,6 +29,7 @@ class UploadController extends Controller
                 );
                 $url = '/storage/' . $pathFull . '/' . $file_name;
             } catch (Throwable $e) {
+                dd($e);
                 return response()->json([
                     'status' => 1,
                     'message' => $e->getMessage()
