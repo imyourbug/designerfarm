@@ -7,6 +7,7 @@ use App\Events\AlertDownloadedSuccessfullyEvent;
 use App\Models\DownloadHistory;
 use App\Models\Member;
 use App\Models\Package;
+use App\Models\Setting;
 use App\Models\Website;
 use Exception;
 use GuzzleHttp\Client;
@@ -23,10 +24,14 @@ class BotController extends Controller
 
     public function __construct()
     {
-        $this->botKey = "7464014003:AAF9NYa010asmUdBl_0rgzRyMrsVnmX5BcU";
-        $this->groupTelegramId = "-1002226806991";
-        // $this->botKey = $settings['bot_id'];
-        // $this->groupTelegramId = $settings['group_id'];
+        $settings = Setting::orderByDesc('key')
+            ->pluck('value', 'key')
+            ->toArray();
+
+        // $this->botKey = "7464014003:AAF9NYa010asmUdBl_0rgzRyMrsVnmX5BcU";
+        // $this->groupTelegramId = "-1002226806991";
+        $this->botKey = $settings['tele-bot-id'];
+        $this->groupTelegramId = $settings['tele-group-id'];
     }
 
     public function setCacheById(Request $request)

@@ -44,14 +44,6 @@
     <script src="/js/popper.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script>
-        $(document).on('click', '.btn-confirm', function() {
-            let user = JSON.parse(localStorage.getItem('user'));
-            $('.btn-close-modal').click();
-            if (user) {
-                $('.content').text(user.id + 'GD' + Date.parse(new Date()));
-            }
-        });
-
         function formatCash(str) {
             str = str.toString();
             if (str && str !== "0") {
@@ -251,7 +243,7 @@
                 return;
             }
 
-            $('.content').text(user.id + 'GD' + Date.parse(new Date()));
+            $('.content-transaction').text(user.id + 'GD' + Date.parse(new Date()));
             $('.btn-open-modal-checkout').click();
         });
 
@@ -447,10 +439,12 @@
                                                     <br>
                                                     <div class="clear text-center">
                                                         <div style="margin: 10px 0px 10px 0px">
-                                                            <img style="width: 350px;height:350px" src="{{ $settings['qr-checkout-1'] }}">
+                                                            <img style="width: 350px;height:350px"
+                                                                src="{{ $settings['qr-checkout-1'] }}">
                                                         </div>
                                                         <div>
-                                                            <strong class="green">{{ $settings['qr-bank-name-1'] }}</strong><br>
+                                                            <strong
+                                                                class="green">{{ $settings['qr-bank-name-1'] }}</strong><br>
                                                             {{ $settings['qr-account-1'] }}<br>
                                                         </div>
                                                     </div>
@@ -459,10 +453,12 @@
                                                     <br>
                                                     <div class="clear text-center">
                                                         <div style="margin: 10px 0px 10px 0px">
-                                                            <img style="width: 350px;height:350px" src="{{ $settings['qr-checkout-2'] }}">
+                                                            <img style="width: 350px;height:350px"
+                                                                src="{{ $settings['qr-checkout-2'] }}">
                                                         </div>
                                                         <div>
-                                                            <strong class="green">{{ $settings['qr-bank-name-2'] }}</strong><br>
+                                                            <strong
+                                                                class="green">{{ $settings['qr-bank-name-2'] }}</strong><br>
                                                             {{ $settings['qr-account-2'] }}<br>
                                                         </div>
                                                     </div>
@@ -475,8 +471,8 @@
                                                     <strong style="line-height: 30px;">Nội dung CK bắt buộc là: <span
                                                             class="orange"
                                                             style="font-size: 30px; line-height: 23px;"><span
-                                                                class="content" id="content"></span></span></strong><br>
-                                                    <em>(Trong đó <strong class="content"></strong> để
+                                                                class="content-transaction" id="content"></span></span></strong><br>
+                                                    <em>(Trong đó <strong class="content-transaction"></strong> để
                                                         xác định tài
                                                         khoản của bạn, Hệ thống sẽ đăng ký gói vào tài khoản này cho
                                                         bạn)</em>
