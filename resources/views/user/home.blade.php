@@ -520,91 +520,103 @@
     </script>
 @endpush
 @section('content')
-    <div class="container">
-        <h1 class="title">CHỌN WEBSITE CẦN TẢI</h1>
-        <hr class="separator">
-        <div class="option-switcher">
-            @foreach ($websites as $website)
-                <div class="option">
-                    <div id="{{ $website->code }}" class="option-website" data-sample_link="{{ $website->sample_link }}"
-                        data-id="{{ $website->code }}" data-website_link="{{ $website->website_link }}"
-                        data-status="{{ $website->status }}"><img style="width: 16px;height:16px"
-                            src="{{ $website->image }}" alt="{{ $website->code }} Icon">{{ $website->name }}</div>
-                </div>
-            @endforeach
+    <div class="row">
+        <div class="col-lg-2 col-md-12 mt-4 di-md-none" style="text-align:right">
+            <img style="width: 100%;height:70%" src="{{ $settings['banner-home-left'] ?? '' }}" alt="">
         </div>
-
-    </div>
-    <div class="main-content">
-        <!-- Your main content here -->
-        <div class="row">
-            <div class="col-xl-8 col-lg-7">
-                <div class="card shadow mb-4" style="height: 416px;">
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">GETLINK HERE!</h6>
-                    </div>
-                    <div class="card-body" data-dashlane-rid="d3558ec42fb066ad" data-form-type="">
-
-                        <div class="form-group message-input-container">
-                            <label for="messageInput">Dán link cần tải vào ô bên dưới và nhấn nút Download:</label>
-                            <textarea class="form-control message-input" id="messageInput" spellcheck="false" data-dashlane-rid="1518be2f631a0d2d"
-                                style="height: 114px;" data-form-type=""></textarea>
+        <div class="col-lg-8 col-md-12 col-sm-12">
+            <div class="container">
+                <h1 class="title">CHỌN WEBSITE CẦN TẢI</h1>
+                <hr class="separator">
+                <div class="option-switcher">
+                    @foreach ($websites as $website)
+                        <div class="option">
+                            <div id="{{ $website->code }}" class="option-website"
+                                data-sample_link="{{ $website->sample_link }}" data-id="{{ $website->code }}"
+                                data-website_link="{{ $website->website_link }}" data-status="{{ $website->status }}"><img
+                                    style="width: 16px;height:16px" src="{{ $website->image }}"
+                                    alt="{{ $website->code }} Icon">{{ $website->name }}</div>
                         </div>
-                        <div class="form-group" style="text-align: center;">
-                            <button class="btn btn-lg btn-outline-info btn-getlink" id="getlink_btn"
-                                data-dashlane-rid="4f12969a7bd7df33" data-dashlane-label="true" data-form-type="">
-                                <span id="submit-code-loading"
-                                    class="d-none spinner-border spinner-border-sm spinner"></span>
-                                <span id="submit-code-text" class="text">DOWNLOAD</span>
-                            </button>
-                            <button data-dashlane-rid="7df0e654d6340e33" id="reset_btn"
-                                class="btn btn-lg btn-outline-warning btn-getlink" data-dashlane-label="true"
-                                data-form-type="">
-                                <span class="text">RESET</span>
-                            </button>
-                        </div>
-
-                        <div class="m-separator m-separator--dashed"></div>
-                        <div id="notification" class="alert alert-info" style="display: none;"></div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
-            <div class="col-xl-4 col-lg-5">
-                <div class="card shadow mb-4">
-
-                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                        <h6 class="m-0 font-weight-bold text-primary">HƯỚNG DẪN!</h6>
-                    </div>
-
-                    <div class="card-body overflow-auto" style="height: 363px;">
-
-                        @foreach ($websites as $website)
-                            <div class="block-content" id="{{ $website->code }}Content" style="display: none;">
-                                <div class="form-group">
-                                    <h6 for="freepikLink">HƯỚNG DẪN TẢI <span
-                                            class="website-name">{{ strtoupper($website->code) }}</span>:</h6>
-                                    <p>
-                                        - <span class="highlight">Bước 1:</span> Truy cập <span
-                                            class="website-link">{{ $website->website_link }}</span> và tìm kiếm File cần
-                                        tải<br>
-                                        - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
-                                    </p>
-                                    <blockquote>
-                                        <p class="website-sample">
-                                            {{ $website->sample_link }}
-                                        </p>
-                                    </blockquote>
-                                    - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm Download<br>
-                                    <br>
-                                    <hr>File sẽ được <span class="bold">tự động tải xuống</span>. Nếu
-                                    không bạn hãy bấm vào link bên dưới để tải lại nha!
-                                    <p></p>
-                                </div>
+            <div class="main-content">
+                <!-- Your main content here -->
+                <div class="row">
+                    <div class="col-xl-8 col-lg-7">
+                        <div class="card shadow mb-4" style="height: 416px;">
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">GETLINK HERE!</h6>
                             </div>
-                        @endforeach
+                            <div class="card-body" data-dashlane-rid="d3558ec42fb066ad" data-form-type="">
+
+                                <div class="form-group message-input-container">
+                                    <label for="messageInput">Dán link cần tải vào ô bên dưới và nhấn nút Download:</label>
+                                    <textarea class="form-control message-input" id="messageInput" spellcheck="false" data-dashlane-rid="1518be2f631a0d2d"
+                                        style="height: 114px;" data-form-type=""></textarea>
+                                </div>
+                                <div class="form-group" style="text-align: center;">
+                                    <button class="btn btn-lg btn-outline-info btn-getlink" id="getlink_btn"
+                                        data-dashlane-rid="4f12969a7bd7df33" data-dashlane-label="true" data-form-type="">
+                                        <span id="submit-code-loading"
+                                            class="d-none spinner-border spinner-border-sm spinner"></span>
+                                        <span id="submit-code-text" class="text">DOWNLOAD</span>
+                                    </button>
+                                    <button data-dashlane-rid="7df0e654d6340e33" id="reset_btn"
+                                        class="btn btn-lg btn-outline-warning btn-getlink" data-dashlane-label="true"
+                                        data-form-type="">
+                                        <span class="text">RESET</span>
+                                    </button>
+                                </div>
+
+                                <div class="m-separator m-separator--dashed"></div>
+                                <div id="notification" class="alert alert-info" style="display: none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-5">
+                        <div class="card shadow mb-4">
+
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">HƯỚNG DẪN!</h6>
+                            </div>
+
+                            <div class="card-body overflow-auto" style="height: 363px;">
+
+                                @foreach ($websites as $website)
+                                    <div class="block-content" id="{{ $website->code }}Content" style="display: none;">
+                                        <div class="form-group">
+                                            <h6 for="freepikLink">HƯỚNG DẪN TẢI <span
+                                                    class="website-name">{{ strtoupper($website->code) }}</span>:</h6>
+                                            <p>
+                                                - <span class="highlight">Bước 1:</span> Truy cập <span
+                                                    class="website-link">{{ $website->website_link }}</span> và tìm kiếm
+                                                File cần
+                                                tải<br>
+                                                - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
+                                            </p>
+                                            <blockquote>
+                                                <p class="website-sample">
+                                                    {{ $website->sample_link }}
+                                                </p>
+                                            </blockquote>
+                                            - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm
+                                            Download<br>
+                                            <br>
+                                            <hr>File sẽ được <span class="bold">tự động tải xuống</span>. Nếu
+                                            không bạn hãy bấm vào link bên dưới để tải lại nha!
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="col-lg-2 col-md-12 mt-4 di-md-none" style="text-align:left">
+            <img style="width: 100%;height:70%" src="{{ $settings['banner-home-right'] ?? '' }}" alt="">
         </div>
     </div>
     <div class="modal fade" id="modalResult" aria-modal="true" role="dialog">
