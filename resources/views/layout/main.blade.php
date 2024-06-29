@@ -70,9 +70,9 @@
             top: 7px !important;
         }
 
-        @media (min-width: 768px) {
+        @media (max-width: 1000px) {
             .di-md-none {
-                /* display: none !important; */
+                display: none !important;
             }
         }
     </style>
