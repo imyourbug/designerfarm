@@ -75,14 +75,13 @@ class AdminController extends Controller
     {
         try {
             $data = $request->validate([
-                'email' => 'required|string',
+                'name' => 'required|string',
                 'password' => 'required|string',
             ]);
             if (Auth::attempt([
-                'email'  => $data['email'],
-                'password' => $request->input('password')
+                'name'  => $data['name'],
+                'password' => $data['password']
             ])) {
-                $user = Auth::user();
                 Toastr::success('Đăng nhập thành công', 'Thành công');
 
                 return redirect()->route('admin.index');

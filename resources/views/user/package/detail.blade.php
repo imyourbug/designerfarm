@@ -65,8 +65,7 @@
         var clickedTime = null;
 
         $(document).on('click', '.btn-option-quantity', function() {
-            console.log('click quantity');
-            let thisQuantity = $(this).data('quantity');
+            let thisQuantity = $(this).data('quantity').toString();
 
             $('.btn-option-quantity').css('border', 'none');
             $(this).css('border', '2px solid black');
@@ -121,7 +120,7 @@
         });
 
         $(document).on('click', '.btn-option-time', function() {
-            let thisTime = $(this).data('time');
+            let thisTime = $(this).data('time').toString();
 
             $('.btn-option-time').css('border', 'none');
             $(this).css('border', '2px solid black');
@@ -339,9 +338,13 @@
         <br>
         <br>
         <div class="row">
-            <div class="col-lg-6 col-md-12 col-sm-12">
-                <div class="">
-                    <img src="{{ $package->avatar }}" style="width: 100%;height:100%" alt="{{ $package->avatar }}" />
+            
+            <div class="col-lg-6 col-md-12 col-sm-12" >
+                <div class="image-package" style="text-align:right">
+                    <img src="{{ $package->avatar }}" style="width: 60%;height:60%" alt="{{ $package->avatar }}" />
+                </div>
+                <div class="description-package" style="margin-left:40%">
+                    <p style="">{!! $package->description !!}</p>
                 </div>
             </div>
             <div class="col-lg-6 col-md-12 col-sm-12">
@@ -412,95 +415,65 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="text-center">
+                        Bạn vui lòng CK số tiền <b class="price"></b> bằng cách quét mã QR của 1
+                        trong 2 ngân
+                        hàng sau:
+                    </div>
                     <div class="row">
-                        <div class="col-lg-12 col-sm-12">
-                            <div class="card card-primary card-outline card-outline-tabs">
-                                <div class="card-header p-0 border-bottom-0">
-                                    <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="custom-tabs-four-home-tab" data-toggle="pill"
-                                                href="#custom-tabs-four-home" role="tab"
-                                                aria-controls="custom-tabs-four-home" aria-selected="false">Chuyển
-                                                khoản</a>
-                                        </li>
-                                    </ul>
+                        <div class="col-lg-6 col-sm-12 col-md-12">
+                            <br>
+                            <div class="clear text-center">
+                                <div style="margin: 10px 0px 10px 0px">
+                                    <img style="width: 150px;height:150px"
+                                        src="{{ $settings['qr-checkout-1'] }}">
                                 </div>
-                                <div class="card-body">
-                                    <div class="tab-content" id="custom-tabs-four-tabContent">
-                                        <div class="tab-pane fade active show" id="custom-tabs-four-home" role="tabpanel"
-                                            aria-labelledby="custom-tabs-four-home-tab">
-                                            <div class="text-center">
-                                                Bạn vui lòng CK số tiền <b class="price"></b> bằng cách quét mã QR của 1
-                                                trong 2 ngân
-                                                hàng sau:
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6 col-sm-12 col-md-12">
-                                                    <br>
-                                                    <div class="clear text-center">
-                                                        <div style="margin: 10px 0px 10px 0px">
-                                                            <img style="width: 350px;height:350px"
-                                                                src="{{ $settings['qr-checkout-1'] }}">
-                                                        </div>
-                                                        <div>
-                                                            <strong
-                                                                class="green">{{ $settings['qr-bank-name-1'] }}</strong><br>
-                                                            {{ $settings['qr-account-1'] }}<br>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 col-sm-12 col-md-12">
-                                                    <br>
-                                                    <div class="clear text-center">
-                                                        <div style="margin: 10px 0px 10px 0px">
-                                                            <img style="width: 350px;height:350px"
-                                                                src="{{ $settings['qr-checkout-2'] }}">
-                                                        </div>
-                                                        <div>
-                                                            <strong
-                                                                class="green">{{ $settings['qr-bank-name-2'] }}</strong><br>
-                                                            {{ $settings['qr-account-2'] }}<br>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-12">
-                                                <br>
-                                                <br>
-                                                <div class="text-center">
-                                                    <strong style="line-height: 30px;">Nội dung CK bắt buộc là: <span
-                                                            class="orange"
-                                                            style="font-size: 30px; line-height: 23px;"><span
-                                                                class="content-transaction" id="content"></span></span></strong><br>
-                                                    <em>(Trong đó <strong class="content-transaction"></strong> để
-                                                        xác định tài
-                                                        khoản của bạn, Hệ thống sẽ đăng ký gói vào tài khoản này cho
-                                                        bạn)</em>
-                                                </div>
-                                                <br>
-                                            </div>
-                                            <div class="col-xs-12">
-                                                <div class="bg-pop">
-                                                    <ul class="introduce-list">
-                                                        <li>Phải nhập chính xác nội dung CK mà hệ thống đã hiển thị sẵn cho
-                                                            bạn, để được ĐĂNG KÝ TỰ ĐỘNG.</li>
-                                                        <li>Sau khi chuyển khoản thành công, nhấn vào nút Hoàn thành.</li>
-                                                        <li>Trường hợp sau vài phút mà bạn không nhận được gói vui lòng gọi
-                                                            tới số hotline <a class="bold"
-                                                                href="tel:{{ $settings['hotline'] }}"
-                                                                title="Click gọi ngay!">{{ $settings['hotline'] }}</a>.
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel"
-                                            aria-labelledby="custom-tabs-four-profile-tab">
-
-                                        </div>
-                                    </div>
+                                <div>
+                                    <strong
+                                        class="green">{{ $settings['qr-bank-name-1'] }}</strong><br>
+                                    {{ $settings['qr-account-1'] }}<br>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-12 col-md-12">
+                            <br>
+                            <div class="clear text-center">
+                                <div style="margin: 10px 0px 10px 0px">
+                                    <img style="width: 150px;height:150px"
+                                        src="{{ $settings['qr-checkout-2'] }}">
+                                </div>
+                                <div>
+                                    <strong
+                                        class="green">{{ $settings['qr-bank-name-2'] }}</strong><br>
+                                    {{ $settings['qr-account-2'] }}<br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 mt-4">
+                        <div class="text-center">
+                            <strong style="line-height: 30px;">Nội dung CK bắt buộc là: <span
+                                    class="orange"
+                                    style="font-size: 30px; line-height: 23px;"><span
+                                        class="content-transaction" id="content"></span></span></strong><br>
+                            <em>(Trong đó <strong class="content-transaction"></strong> để
+                                xác định tài
+                                khoản của bạn, Hệ thống sẽ đăng ký gói vào tài khoản này cho
+                                bạn)</em>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 mt-4">
+                        <div class="bg-pop">
+                            <ul class="introduce-list">
+                                <li>Phải nhập chính xác nội dung CK mà hệ thống đã hiển thị sẵn cho
+                                    bạn, để được ĐĂNG KÝ TỰ ĐỘNG.</li>
+                                <li>Sau khi chuyển khoản thành công, nhấn vào nút Hoàn thành.</li>
+                                <li>Trường hợp sau vài phút mà bạn không nhận được gói vui lòng gọi
+                                    tới số hotline <a class="bold"
+                                        href="tel:{{ $settings['hotline'] }}"
+                                        title="Click gọi ngay!">{{ $settings['hotline'] }}</a>.
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>

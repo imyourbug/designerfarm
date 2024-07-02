@@ -38,6 +38,7 @@ class AccountController extends Controller
                 throw new Exception('Tài khoản đã có người đăng ký!');
             }
             DB::beginTransaction();
+            $data['password'] = Hash::make($data['password']);
             User::create($data);
 
             Toastr::success('Tạo tài khoản thành công', 'Thành công');

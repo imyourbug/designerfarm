@@ -1,8 +1,11 @@
 @extends('admin.main')
 @push('styles')
+    <script src="/js/ckeditor/ckeditor.js"></script>
 @endpush
 @push('scripts')
     <script>
+        CKEDITOR.replace('description');
+
         $(document).on('change', '#upload', function() {
             const form = new FormData();
             form.append("file", $(this)[0].files[0]);
@@ -96,7 +99,8 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-sm-12 select-website-id" style="display: {{$package->type == 0 ? 'none' : 'block'}}">
+                                <div class="col-lg-6 col-sm-12 select-website-id"
+                                    style="display: {{ $package->type == 0 ? 'none' : 'block' }}">
                                     <div class="form-group">
                                         <label for="menu">Website <span class="required">(*)</span></label>
                                         <select name="website_id" id="website_id" class="form-control">

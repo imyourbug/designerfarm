@@ -2,7 +2,15 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <title>{{ $title }}</title>
+    <meta name="description" content="Trang hỗ trợ getlink freepik, tải ảnh freepik, tải video freepik, tải hình freepik premium, download freepik file giá tốt nhất thế giới">
+    <link rel="icon" href="/storage/upload/2024-06-30/07-38-36downloading.png">
+    <title>TẢI FILE FREEPIK GIÁ RẺ - {{ $title }}</title>
+    <meta property="og:description" content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
+    <meta property="og:title" content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
+    <meta name="keywords" content="getlink shuterstock, getlink pikbest, getlink pngtree, getlink freepik, leech link pikbest, leechlink freepik, get item from pikbest, get item from pngtree, get item from freepik, download item pikbest, download item freepik, get item premium pikbest, get item premium freepik, get item premium lovepik">
+    <meta name="description" content="Trang getlink shutterstock miễn phí, getlink elements envato, getlink freepik hoàn toàn tự động và tiết kiệm chi phí!">
+    <meta itemprop="name" content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
+    <meta itemprop="description" content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -20,7 +28,7 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="/js/dist/css/adminlte.min.css">
     <!-- ajax -->
-    <link rel="stylesheet" href="https://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
     <!-- select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
@@ -31,6 +39,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script> --}}
+    {{-- Jquery --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <style>
         .toast-success {
@@ -74,6 +83,12 @@
             .di-md-none {
                 display: none !important;
             }
+            .description-package {
+                margin-left: 0px !important;
+            }
+            .image-package {
+                text-align: left !important;
+            }
         }
     </style>
     @stack('styles')
@@ -96,7 +111,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <h3>Quý khách đã mua gói tải thành công</h3>
+                    <h3>Bạn đã mua gói thành công!</h3>
                     <p>Nhấn vào đây để xem các gói đã đăng ký <a href="{{ route('members.index') }}">click</a></p>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -178,7 +193,7 @@
                 url: "/api/auth/login",
                 success: function(response) {
                     if (response.status == 0) {
-                        toastr.success(response.message, "Thông báo");
+                        // toastr.success(response.message, "Thông báo");
                         closeModal('modalLogin');
                         localStorage.setItem('user', JSON.stringify(response.user));
                         localStorage.setItem('members', JSON.stringify(response.members));

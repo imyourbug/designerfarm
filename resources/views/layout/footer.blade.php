@@ -1,7 +1,7 @@
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <span style="color: rgb(196, 1, 26);font-weight: 700;"><a href="https://t.me/DownloadFileSupport">Channel
+            <span style="color: rgb(196, 1, 26);font-weight: 700;"><a target="__blank" href="https://t.me/DownloadFileSupport">Channel
                     Hỗ trợ telegram</a></span><br><br>
             <span>Copyright © Premium Download Services </span>
         </div>

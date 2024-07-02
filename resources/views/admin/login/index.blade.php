@@ -38,8 +38,8 @@
                 <div class="card-body login-card-body">
                     <form action="{{ route('admin.checkLogin') }}" method="POST">
                         <div class="input-group mb-3">
-                            <input name="email" type="email" value="{{ old('email') }}" class="form-control"
-                                placeholder="Nhập email">
+                            <input name="name" type="name" value="{{ old('name') }}" class="form-control"
+                                placeholder="Nhập tài khoản">
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-envelope"></span>

@@ -6,15 +6,17 @@
             </a>
         </li>
         {{-- <li class="nav-item d-none d-sm-inline-block">
-            <a href="/" class="nav-link logo-text ml-2">DESIGNER FARM</a>
+            <a href="/" class="nav-link logo-text ml-2">FILE GIÁ RẺ</a>
         </li> --}}
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('packages.index') }}" class="nav-link logo-text ml-2">Gói tải</a>
+            <a href="{{ route('packages.index') }}" class="nav-link logo-text ml-2">
+                <i class="fa-solid fa-cube"></i> MUA GÓI
+            </a>
         </li>
     </ul>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown block-login">
-            <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+            <a class="nav-link btn btn-primary" data-toggle="dropdown" href="#" aria-expanded="false" style="color: white">
                 <i class="fa-solid fa-user"></i>
                 <span class="txt-user-name">Tài khoản</span>
             </a>
@@ -29,8 +31,8 @@
             </div>
         </li>
         <li class="nav-item dropdown block-account">
-            <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
-                <span>Các gói</span>
+            <a class="nav-link btn btn-success" data-toggle="dropdown" href="#" aria-expanded="false" style="color: white">
+                <span>THÔNG TIN GÓI</span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
                 <table class="block-package">
@@ -38,7 +40,7 @@
             </div>
         </li>
         <li class="nav-item dropdown block-account">
-            <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+            <a class="nav-link btn btn-primary ml-2" data-toggle="dropdown" href="#" aria-expanded="false" style="color: white">
                 <span class="txt-user-name"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">

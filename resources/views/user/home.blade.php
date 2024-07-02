@@ -522,7 +522,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-2 col-md-12 mt-4 di-md-none" style="text-align:right">
-            <img style="width: 100%;height:70%" src="{{ $settings['banner-home-left'] ?? '' }}" alt="">
+            <img style="width: 90%;height:70%" src="{{ $settings['banner-home-left'] ?? '' }}" alt="">
         </div>
         <div class="col-lg-8 col-md-12 col-sm-12">
             <div class="container">
@@ -616,7 +616,7 @@
             </div>
         </div>
         <div class="col-lg-2 col-md-12 mt-4 di-md-none" style="text-align:left">
-            <img style="width: 100%;height:70%" src="{{ $settings['banner-home-right'] ?? '' }}" alt="">
+            <img style="width: 90%;height:70%" src="{{ $settings['banner-home-right'] ?? '' }}" alt="">
         </div>
     </div>
     <div class="modal fade" id="modalResult" aria-modal="true" role="dialog">
