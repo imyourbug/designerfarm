@@ -21,7 +21,7 @@ class UploadController extends Controller
                 'file' =>  'max:500000',
             ]);
             $file_name = time() . $request->file('file')->getClientOriginalName();
-            $pathFull = 'upload/';
+            $pathFull = 'upload';
             $request->file('file')->storeAs(
                 'public/' . $pathFull,
                 $file_name
