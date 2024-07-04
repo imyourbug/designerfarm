@@ -1,11 +1,12 @@
 @extends('admin.main')
 @push('styles')
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css">
+    <script src="/js/ckeditor/ckeditor.js"></script>
 @endpush
 @push('scripts')
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
     <script>
+        CKEDITOR.replace('popup-text');
+
         $(document).on('change', '#upload', function() {
             const form = new FormData();
             form.append("file", $(this)[0].files[0]);
@@ -28,6 +29,8 @@
             });
         });
     </script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
 @endpush
 @section('content')
     <div class="row">
@@ -49,8 +52,14 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div class="form-group">
                                         <label for="menu">{{ $item->name }}</label>
-                                        <input type="text" class="form-control" name="{{ $item->key }}"
-                                            value="{{ $item->value ?? '' }}" placeholder="Nhập giá trị">
+                                        @if ($item->key == 'popup-text')
+                                            <textarea class="form-control" placeholder="Nhập mô tả" name="{{ $item->key }}" id="{{ $item->key }}"
+                                                cols="30" rows="5">{{ old($item->key) ?? ($item->value ?? '') }}</textarea>
+                                        @else
+                                            <input type="text" id="{{ $item->key }}" class="form-control"
+                                                name="{{ $item->key }}" value="{{ $item->value ?? '' }}"
+                                                placeholder="Nhập giá trị" />
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach

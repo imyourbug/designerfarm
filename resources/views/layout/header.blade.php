@@ -13,6 +13,11 @@
                 <i class="fa-solid fa-cube"></i> MUA GÓI
             </a>
         </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a target="__blank" href="https://help.filegiare.net" class="nav-link logo-text ml-2">
+                <i class="fa-solid fa-book"></i> HƯỚNG DẪN CHUNG
+            </a>
+        </li>
     </ul>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown block-login">
