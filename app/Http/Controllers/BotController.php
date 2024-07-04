@@ -214,7 +214,7 @@ class BotController extends Controller
                 // artlist
             case $typeWeb == GlobalConstant::WEB_ARTLIST;
                 // get id
-                $id =  preg_replace(['/#.*/', '/https:\/\/artlist.io\//'], '', $url);
+                $id = preg_replace(['/#.*/', '/https:\/\/artlist.io\//'], '', $url);
                 // set result
                 switch (true) {
                     case $typeDownload === GlobalConstant::DOWNLOAD_LICENSE:
@@ -238,7 +238,7 @@ class BotController extends Controller
                 // yayimages
             case $typeWeb == GlobalConstant::WEB_YAYIMAGE;
                 // get id
-                $id =  preg_replace(['/#.*/', '/https:\/\/yayimages.com\//'], '', $url);
+                $id = preg_replace(['/#.*/', '/https:\/\/yayimages.com\//'], '', $url);
                 // set result
                 $typeDownload = $typeDownload == GlobalConstant::DOWNLOAD_VIDEO ? 'Video' : '';
                 $result = "$id|taifile|tai{$typeDownload}Yayimage";
@@ -249,7 +249,7 @@ class BotController extends Controller
                 $url = explode('/', $url);
                 $url = array_filter($url);
                 // get id
-                $id =  preg_replace('/#.*/', '', end($url) ?? '');
+                $id = preg_replace('/#.*/', '', end($url) ?? '');
                 // set result
                 $result = "$id|taifile|taiCreativefabrica";
                 break;
@@ -259,7 +259,7 @@ class BotController extends Controller
                 $url = explode('/', $url);
                 $url = array_filter($url);
                 // get id
-                $id =  preg_replace('/#.*/', '', end($url) ?? '');
+                $id = preg_replace('/#.*/', '', end($url) ?? '');
                 // set result
                 $result = "$id|taifile|taiSlidesgo";
                 break;
@@ -295,11 +295,8 @@ class BotController extends Controller
                 break;
                 // flaticon
             case $typeWeb == GlobalConstant::WEB_FLATICON:
-                // pattern
-                $pattern = '/(_\d+)/';
-                preg_match($pattern, $url, $matches);
                 // get id
-                $id = str_replace(['_', '/'], '', $matches[0] ?? '');
+                $id = preg_replace(['/#.*/', '/https:\/\/www.flaticon.com\//'], '', $url);
                 // set result
                 $result = "$id|taifile|taiFlaticon";
                 break;
@@ -335,9 +332,8 @@ class BotController extends Controller
                 break;
                 // motion
             case $typeWeb == GlobalConstant::WEB_MOTION:
-                $tmpArr = explode('-', $url);
                 // get id
-                $id = str_replace(['_', '/'], '', $tmpArr[count($tmpArr) - 1] ?? '');
+                $id = preg_replace(['/#.*/', '/https:\/\/motionarray.com\//'], '', $url);
                 // set result
                 $typeDownload = $typeDownload == GlobalConstant::DOWNLOAD_LICENSE ? 'getlicense' : 'taifile';
                 $result = "$id|$typeDownload|taifileMotion";
