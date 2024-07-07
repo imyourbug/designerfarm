@@ -130,7 +130,7 @@
             $('.tag').each(function(i) {
                 let url = $(this).data('url');
                 $(this).text(url.replace('%s', id));
-                $(this).prop('href', url.split(' ').join('-').replace('%s', id));
+                $(this).prop('href', `#${url.split(' ').join('-').replace('%s', id)}`);
             });
             website = id;
 

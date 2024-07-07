@@ -68,7 +68,7 @@
                                     watermark</a></li>
                             <li><a href="#-tải-ảnh-%s" class="tag" data-url="tải ảnh %s"> tải ảnh </a></li>
                             <li><a href="#-tải-ảnh-%s-miễn-phí" class="tag" data-url="tải ảnh %s miễn phí"> tải
-                                    ảnh %s miễn phí</a></li>
+                                    ảnh miễn phí</a></li>
                             <li><a href="#-download-free-%s" class="tag" data-url="download free %s"> download
                                     free </a></li>
                             <li><a href="#-get-link-%s-free" class="tag" data-url="get link %s free"> get link
@@ -156,8 +156,7 @@
                             <li><a href="#-leech-%s" class="tag" data-url="leech %s"> leech </a></li>
                             <li><a href="#-cách-download-miễn-phí-trên-%s" class="tag" data-url="cách download miễn phí trên %s"> cách download miễn phí trên
                                     </a></li>
-                            <li><a href="#-mua-ảnh-%s-giá-rẻ" class="tag" data-url="mua ảnh %s giá rẻ"> mua ảnh %s
-                                    giá rẻ</a></li>
+                            <li><a href="#-mua-ảnh-%s-giá-rẻ" class="tag" data-url="mua ảnh %s giá rẻ"> mua ảnh giá rẻ</a></li>
                             <li><a href="#-get-link-vector-%s" class="tag" data-url="get link vector %s"> get link
                                     vector </a></li>
                             <li><a href="#-cách-mua-hình-trên-%s" class="tag" data-url="cách mua hình trên %s">
