@@ -86,9 +86,7 @@ class WebsiteController extends Controller
                         'website_id' => $data['code']
                     ]);
             }
-            $website->update([
-                'code' => $data['code']
-            ]);
+            $website->update($data);
             DB::commit();
 
             Toastr::success('Cập nhật thành công', 'Thành công');
