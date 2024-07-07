@@ -86,6 +86,8 @@
             'Creativefabrica',
             'Yayimage',
             'Slidesgo',
+            'Adobestock',
+            'Iconscout',
         ];
 
         $(document).on('click', '#reset_btn', function() {
@@ -104,7 +106,18 @@
                 return;
             }
             let id = $(this).data('id');
+            // set tag
+            $('.tag').each(function(i) {
+                if ($(this).text().includes('%s')) {
+                    $(this).text($(this).text().toString().replace('%s', id));
+                    $(this).prop('href', $(this).prop('href').toString().replace('%s', id));
+                } else {
+                    $(this).text($(this).text().toString().replace(website, id));
+                    $(this).prop('href', $(this).prop('href').toString().replace(website, id));
+                }
+            });
             website = id;
+
             $('.option-website').removeClass('active');
             $(this).addClass('active');
             //
@@ -158,9 +171,6 @@
                     case 'Envato':
                         urlPattern = /envato\.com\/.*/;
                         break;
-                    case 'AdobeStock':
-                        urlPattern = /stock\.adobe\.com\/.*/;
-                        break;
                     case 'Pikbest':
                         urlPattern = /pikbest\.com\/.*/;
                         break;
@@ -197,6 +207,12 @@
                     case 'Artlist':
                         urlPattern = /artlist\.io\/.*/;
                         break;
+                    case 'Adobestock':
+                        urlPattern = /stock\.adobe\.com\/.*/;
+                        break;
+                    case 'Iconscout':
+                        urlPattern = /iconscout\.com\/.*/;
+                        break;
                     default:
                         showNotification('Website không hợp lệ.', 'alert-warning');
                         return;
@@ -216,7 +232,7 @@
                             return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning');
                         }
                         if (!/\/vector-art\//.test(link)) {
-                            return showNotification('Không tải được file không hỗ trợ!', 'alert-warning');
+                            return showNotification('Không tải được do file không hỗ trợ!', 'alert-warning');
                         }
                         break;
                     case 'Storyblocks':
@@ -225,7 +241,7 @@
                             return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning');
                         }
                         if (!/\/video\/|\/audio\/|\/images\//.test(link)) {
-                            return showNotification('Không tải được file không hỗ trợ!', 'alert-warning');
+                            return showNotification('Không tải được do file không hỗ trợ!', 'alert-warning');
                         }
                         break;
                     case 'Pikbest':
@@ -240,26 +256,26 @@
                             return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning');
                         }
                         if (/\/pack|stickers-pack/.test(link)) {
-                            return showNotification('Không tải được file không hỗ trợ', 'alert-warning');
+                            return showNotification('Không tải được do file không hỗ trợ', 'alert-warning');
                         }
                         break;
-                    case 'AdobeStock':
-                        var idFilePatternOption1 = /asset_id=(\d+)/g; // Option 1
-                        var idFilePatternOption2 = /\/(\d+)(?:\?|$)/; // Option 2
+                        // case 'AdobeStock':
+                        //     var idFilePatternOption1 = /asset_id=(\d+)/g; // Option 1
+                        //     var idFilePatternOption2 = /\/(\d+)(?:\?|$)/; // Option 2
 
-                        var matchOption1 = idFilePatternOption1.exec(link);
-                        var matchOption2 = idFilePatternOption2.exec(link);
+                        //     var matchOption1 = idFilePatternOption1.exec(link);
+                        //     var matchOption2 = idFilePatternOption2.exec(link);
 
-                        if (matchOption1 !== null) {
-                            idFile = matchOption1[1];
-                        } else if (matchOption2 !== null) {
-                            idFile = matchOption2[1];
-                        } else {
-                            showNotification('Không tìm thấy idFile trong link. Vui lòng kiểm tra lại.',
-                                'alert-warning');
-                            return;
-                        }
-                        break;
+                        //     if (matchOption1 !== null) {
+                        //         idFile = matchOption1[1];
+                        //     } else if (matchOption2 !== null) {
+                        //         idFile = matchOption2[1];
+                        //     } else {
+                        //         showNotification('Không tìm thấy idFile trong link. Vui lòng kiểm tra lại.',
+                        //             'alert-warning');
+                        //         return;
+                        //     }
+                        //     break;
                     case 'Freepik':
                         if (link.length == 0 || link.indexOf(
                                 'https://www.freepik.com/') == -1) {
@@ -335,7 +351,24 @@
                                 .join(','),
                                 'alert-warning');
                         }
-
+                        break;
+                    case 'Adobestock':
+                        if (link.length == 0 || link.indexOf(
+                                'https://stock.adobe.com/') == -1) {
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
+                        }
+                        if (/vn\/search|vn\/video/.test(link)) {
+                            return showNotification('Không tải được do file không hỗ trợ', 'alert-warning');
+                        }
+                        break;
+                    case 'Iconscout':
+                        if (link.length == 0 || link.indexOf(
+                                'https://iconscout.com/') == -1) {
+                            return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
+                        }
+                        if (/-pack\//.test(link)) {
+                            return showNotification('Không tải được do file không hỗ trợ', 'alert-warning');
+                        }
                         break;
                     default:
                         // Điều chỉnh cách lấy idFile cho các website khác ở đây

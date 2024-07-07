@@ -2,15 +2,22 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta name="description" content="Trang hỗ trợ getlink freepik, tải ảnh freepik, tải video freepik, tải hình freepik premium, download freepik file giá tốt nhất thế giới">
+    <meta name="description"
+        content="Trang hỗ trợ getlink freepik, tải ảnh freepik, tải video freepik, tải hình freepik premium, download freepik file giá tốt nhất thế giới">
     <link rel="icon" href="/storage/upload/2024-06-30/07-38-36downloading.png">
     <title>TẢI FILE FREEPIK GIÁ RẺ - {{ $title }}</title>
-    <meta property="og:description" content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
-    <meta property="og:title" content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
-    <meta name="keywords" content="getlink shuterstock, getlink pikbest, getlink pngtree, getlink freepik, leech link pikbest, leechlink freepik, get item from pikbest, get item from pngtree, get item from freepik, download item pikbest, download item freepik, get item premium pikbest, get item premium freepik, get item premium lovepik">
-    <meta name="description" content="Trang getlink shutterstock miễn phí, getlink elements envato, getlink freepik hoàn toàn tự động và tiết kiệm chi phí!">
-    <meta itemprop="name" content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
-    <meta itemprop="description" content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
+    <meta property="og:description"
+        content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
+    <meta property="og:title"
+        content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
+    <meta name="keywords"
+        content="getlink shuterstock, getlink pikbest, getlink pngtree, getlink freepik, leech link pikbest, leechlink freepik, get item from pikbest, get item from pngtree, get item from freepik, download item pikbest, download item freepik, get item premium pikbest, get item premium freepik, get item premium lovepik">
+    <meta name="description"
+        content="Trang getlink shutterstock miễn phí, getlink elements envato, getlink freepik hoàn toàn tự động và tiết kiệm chi phí!">
+    <meta itemprop="name"
+        content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
+    <meta itemprop="description"
+        content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -83,9 +90,11 @@
             .di-md-none {
                 display: none !important;
             }
+
             .description-package {
                 margin-left: 0px !important;
             }
+
             .image-package {
                 text-align: left !important;
             }
@@ -143,6 +152,12 @@
         var user = null;
 
         $(document).ready(function() {
+            // set tag
+            $('.tag').each(function(i) {
+                $(this).text($(this).text().toString().replace('%s', ''));
+                // $(this).prop('href', $(this).prop('href').toString().replace('%s', ''));
+            });
+            //
             user = JSON.parse(localStorage.getItem('user'));
             members = JSON.parse(localStorage.getItem('members'));
             if (user) {
@@ -193,7 +208,7 @@
                 url: "/api/auth/login",
                 success: function(response) {
                     if (response.status == 0) {
-                        // toastr.success(response.message, "Thông báo");
+                        toastr.success(response.message, "Thông báo");
                         closeModal('modalLogin');
                         localStorage.setItem('user', JSON.stringify(response.user));
                         localStorage.setItem('members', JSON.stringify(response.members));

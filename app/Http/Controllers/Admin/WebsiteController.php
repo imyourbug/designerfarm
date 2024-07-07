@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Constant\GlobalConstant;
 use App\Http\Controllers\Controller;
+use App\Models\Member;
+use App\Models\Request as ModelsRequest;
 use App\Models\Website;
 use Exception;
 use Illuminate\Http\Request;
@@ -60,6 +62,7 @@ class WebsiteController extends Controller
         try {
             $data = $request->validate([
                 'id' => 'required|string',
+                'code' => 'required|string',
                 'status' => 'required|in:' . GlobalConstant::STATUS_ACTIVE . ',' . GlobalConstant::STATUS_INACTIVE,
                 'name' => 'required|string',
                 'image' => 'nullable|string',
@@ -70,11 +73,27 @@ class WebsiteController extends Controller
             ]);
 
             unset($data['id']);
-            Website::firstWhere('id', $request->id)
-                ->update($data);
+            $website = Website::firstWhere('id', $request->id);
+
+            DB::beginTransaction();
+            if (strlen($data['code']) && $data['code'] !== $website->code) {
+                ModelsRequest::where('website_id', $website->code)
+                    ->update([
+                        'website_id' => $data['code']
+                    ]);
+                Member::where('website_id', $website->code)
+                    ->update([
+                        'website_id' => $data['code']
+                    ]);
+            }
+            $website->update([
+                'code' => $data['code']
+            ]);
+            DB::commit();
 
             Toastr::success('Cập nhật thành công', 'Thành công');
         } catch (Throwable $e) {
+            DB::rollBack();
             Toastr::error($e->getMessage(), 'Lỗi');
         }
 

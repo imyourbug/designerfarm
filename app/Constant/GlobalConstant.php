@@ -60,6 +60,8 @@ class GlobalConstant
     public const WEB_YAYIMAGE = 'Yayimage';
     public const WEB_SLIDESGO = 'Slidesgo';
     public const WEB_ARTLIST = 'Artlist';
+    public const WEB_ADOBE = 'Adobestock';
+    public const WEB_ICONSCOUT = 'Iconscout';
     public const WEB_ALL = 'ALL';
 
     public const WEB_TYPE = [
@@ -76,6 +78,8 @@ class GlobalConstant
         self::WEB_YAYIMAGE,
         self::WEB_SLIDESGO,
         self::WEB_ARTLIST,
+        self::WEB_ADOBE,
+        self::WEB_ICONSCOUT,
         self::WEB_ALL,
     ];
 

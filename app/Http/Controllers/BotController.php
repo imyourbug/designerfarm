@@ -341,7 +341,7 @@ class BotController extends Controller
                 // lovepik
             case $typeWeb == GlobalConstant::WEB_LOVEPIK:
                 // pattern
-                $pattern = '/(image-|video-)\d+/';
+                $pattern = '/(image-|video-)(\d+)*[0-9]{4,}/';
                 preg_match($pattern, $url, $matches);
                 $tmpArr = explode('-', $matches[0] ?? '');
                 // get id
@@ -349,6 +349,25 @@ class BotController extends Controller
                 $id = str_replace(['_', '/'], '', $tmpArr[1] ?? '');
                 // set result
                 $result = "$id|taifile|tai$typeFile" . "Lovepik";
+                break;
+                // adobe
+            case $typeWeb == GlobalConstant::WEB_ADOBE:
+                // pattern
+                $pattern = '/(-|\/|=)(\d+)*[0-9]{4,}/';
+                preg_match($pattern, $url, $matches);
+                // get id
+                $id = str_replace(['=', '/', '-'], '', $matches[0] ?? '');
+                // set result
+                $result = "$id|taifile|taiAdobestock";
+                break;
+            case $typeWeb == GlobalConstant::WEB_ICONSCOUT:
+                // get last element
+                $url = explode('/', $url);
+                $url = array_filter($url);
+                // get id
+                $id = preg_replace('/#.*/', '', end($url) ?? '');
+                // set result
+                $result = "$id|taifile|taiIconscount";
                 break;
             default:
                 break;
