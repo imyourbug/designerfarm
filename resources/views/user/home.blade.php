@@ -98,6 +98,26 @@
             website = '';
         });
 
+        function convertToSlug(text) {
+            // Convert to lowercase
+            text = text.toLowerCase();
+
+            // Remove accents and diacritics
+            text = text.replace(/[\u0300-\u036f]/g, "");
+
+            // Alphanumeric characters, underscore, hyphen
+            text = text.replace(/[^a-z0-9_\-]/g, "-");
+
+            // Multiple hyphens to single hyphen
+            text = text.replace(/-+/g, "-");
+
+            // Remove leading/trailing hyphens
+            text = text.replace(/^-|-$/g, "");
+
+            return text;
+        }
+
+
         $(document).on('click', '.option-website', function() {
             event.preventDefault();
             let status = $(this).data('status');
@@ -108,13 +128,9 @@
             let id = $(this).data('id');
             // set tag
             $('.tag').each(function(i) {
-                if ($(this).text().includes('%s')) {
-                    $(this).text($(this).text().toString().replace('%s', id));
-                    $(this).prop('href', $(this).prop('href').toString().replace('%s', id));
-                } else {
-                    $(this).text($(this).text().toString().replace(website, id));
-                    $(this).prop('href', $(this).prop('href').toString().replace(website, id));
-                }
+                let url = $(this).data('url');
+                $(this).text(url.replace('%s', id));
+                $(this).prop('href', url.split(' ').join('-').replace('%s', id));
             });
             website = id;
 
@@ -232,7 +248,8 @@
                             return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning');
                         }
                         if (!/\/vector-art\//.test(link)) {
-                            return showNotification('Không tải được do file không hỗ trợ!', 'alert-warning');
+                            return showNotification('Không tải được do file không hỗ trợ!',
+                                'alert-warning');
                         }
                         break;
                     case 'Storyblocks':
@@ -241,7 +258,8 @@
                             return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning');
                         }
                         if (!/\/video\/|\/audio\/|\/images\//.test(link)) {
-                            return showNotification('Không tải được do file không hỗ trợ!', 'alert-warning');
+                            return showNotification('Không tải được do file không hỗ trợ!',
+                                'alert-warning');
                         }
                         break;
                     case 'Pikbest':

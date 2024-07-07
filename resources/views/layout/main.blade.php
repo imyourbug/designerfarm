@@ -153,10 +153,9 @@
 
         $(document).ready(function() {
             // set tag
-            $('.tag').each(function(i) {
-                $(this).text($(this).text().toString().replace('%s', ''));
-                // $(this).prop('href', $(this).prop('href').toString().replace('%s', ''));
-            });
+            // $('.tag').each(function(i) {
+            //     $(this).text($(this).text().toString().replace('%s', ''));
+            // });
             //
             user = JSON.parse(localStorage.getItem('user'));
             members = JSON.parse(localStorage.getItem('members'));
