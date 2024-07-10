@@ -85,12 +85,16 @@ class RequestController extends Controller
             switch (true) {
                 case $data['status'] == GlobalConstant::STATUS_ACCEPTED:
                     // create or update memeber
-                    $member = Member::where('user_id', $requestModel->user_id)
+                    $member = Member::with(['packageDetail.package'])
+                        ->where('user_id', $requestModel->user_id)
                         ->when(strlen($data['website_id']), function ($q) use ($data, $requestModel) {
                             return $q->where('website_id', $data['website_id'])
                                 ->where('packagedetail_id', $requestModel->packagedetail_id);
-                        }, function ($q) use ($requestModel) {
-                            return $q->where('packagedetail_id', $requestModel->packagedetail_id);
+                        }, function ($q1) {
+                            return $q1->where(function ($q2) {
+                                return $q2->where('website_id', '')
+                                    ->orWhereNull('website_id');
+                            });
                         })
                         ->first();
                     if ($member) {
@@ -112,6 +116,13 @@ class RequestController extends Controller
 
                                 $expired_at = now()->addMonths($requestModel->expire);
                                 $expire = $this->getNumberOfMonths($expired_at, now());
+                                // dd([
+                                //     'packagedetail_id' => $requestModel->packagedetail_id,
+                                //     'expire' => $expire,
+                                //     'expired_at' => $expired_at,
+                                //     'downloaded_number_file' => $downloaded_number_file,
+                                //     'number_file' => $requestModel->packageDetail->number_file,
+                                // ]);
 
                                 $member->update(
                                     [

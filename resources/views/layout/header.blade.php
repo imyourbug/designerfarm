@@ -40,7 +40,7 @@
                 <span>THÔNG TIN GÓI</span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
-                <table class="block-package">
+                <table class="block-package" style="width: max-content;">
                 </table>
             </div>
         </li>
