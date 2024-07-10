@@ -89,6 +89,8 @@ class RequestController extends Controller
                         ->when(strlen($data['website_id']), function ($q) use ($data, $requestModel) {
                             return $q->where('website_id', $data['website_id'])
                                 ->where('packagedetail_id', $requestModel->packagedetail_id);
+                        }, function ($q) use ($requestModel) {
+                            return $q->where('packagedetail_id', $requestModel->packagedetail_id);
                         })
                         ->first();
                     if ($member) {
