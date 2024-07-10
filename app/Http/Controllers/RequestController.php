@@ -116,13 +116,6 @@ class RequestController extends Controller
 
                                 $expired_at = now()->addMonths($requestModel->expire);
                                 $expire = $this->getNumberOfMonths($expired_at, now());
-                                // dd([
-                                //     'packagedetail_id' => $requestModel->packagedetail_id,
-                                //     'expire' => $expire,
-                                //     'expired_at' => $expired_at,
-                                //     'downloaded_number_file' => $downloaded_number_file,
-                                //     'number_file' => $requestModel->packageDetail->number_file,
-                                // ]);
 
                                 $member->update(
                                     [
