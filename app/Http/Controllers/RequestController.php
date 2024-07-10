@@ -49,7 +49,7 @@ class RequestController extends Controller
                 $ua['name'] = 'desginerfarm';
                 $users[$key] = (object)$ua;
             }
-            // Mail::to($users)->send(new RequestChargeMail($data['user_id']));
+            Mail::to($users)->send(new RequestChargeMail($data['user_id']));
 
             return response()->json([
                 'status' => 0,
@@ -85,10 +85,16 @@ class RequestController extends Controller
             switch (true) {
                 case $data['status'] == GlobalConstant::STATUS_ACCEPTED:
                     // create or update memeber
-                    $member = Member::where('user_id', $requestModel->user_id)
+                    $member = Member::with(['packageDetail.package'])
+                        ->where('user_id', $requestModel->user_id)
                         ->when(strlen($data['website_id']), function ($q) use ($data, $requestModel) {
                             return $q->where('website_id', $data['website_id'])
                                 ->where('packagedetail_id', $requestModel->packagedetail_id);
+                        }, function ($q1) {
+                            return $q1->where(function ($q2) {
+                                return $q2->where('website_id', '')
+                                    ->orWhereNull('website_id');
+                            });
                         })
                         ->first();
                     if ($member) {

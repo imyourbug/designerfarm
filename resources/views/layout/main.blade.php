@@ -48,6 +48,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script> --}}
     {{-- Jquery --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7QQMHW0ZC"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-N7QQMHW0ZC');
+    </script>
     <style>
         .toast-success {
             background-color: rgb(49, 171, 81) !important;
@@ -153,10 +162,9 @@
 
         $(document).ready(function() {
             // set tag
-            $('.tag').each(function(i) {
-                $(this).text($(this).text().toString().replace('%s', ''));
-                // $(this).prop('href', $(this).prop('href').toString().replace('%s', ''));
-            });
+            // $('.tag').each(function(i) {
+            //     $(this).text($(this).text().toString().replace('%s', ''));
+            // });
             //
             user = JSON.parse(localStorage.getItem('user'));
             members = JSON.parse(localStorage.getItem('members'));

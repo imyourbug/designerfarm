@@ -48,14 +48,15 @@
         <br>
         <br>
         @foreach ($packageTypes as $type => $packages)
-            <h3>{{ $type == 0 ? 'Theo số lượt tải' : 'Theo thời gian' }}</h3>
+            <h3 style="text-align: center;">{{ $type == 0 ? 'Theo số lượt tải' : 'Theo thời gian' }}</h3>
+            <hr style="width: 30%;">
             <div class="row">
                 @foreach ($packages as $package)
                     @if ($package->details->count())
                         <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                             <div class="row">
                                 <div class="col-lg-6 col-md-12 col-sm-12">
-                                    <img style="width: 100%;height:100%" alt="image" src="{{ $package->avatar }}" />
+                                    <img style="width: 100%;height: 100%;" alt="image" src="{{ $package->avatar }}" />
                                 </div>
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="item-box-blog-body">

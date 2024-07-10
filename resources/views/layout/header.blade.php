@@ -2,7 +2,7 @@
     <ul class="navbar-nav" style="font-weight: bold;height:100%;align-items:center">
         <li class="nav-item" style="height:100%;">
             <a class="nav-link" data-widget="pushmenu" href="/" role="button">
-                <img style="width: 100%;height:60px" src="{{ $settings['logo'] ?? '' }}" alt="">
+                <img style="max-width: 270px;height:60px" src="{{ $settings['logo'] ?? '' }}" alt="">
             </a>
         </li>
         {{-- <li class="nav-item d-none d-sm-inline-block">
@@ -40,7 +40,7 @@
                 <span>THÔNG TIN GÓI</span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
-                <table class="block-package">
+                <table class="block-package" style="width: max-content;">
                 </table>
             </div>
         </li>
