@@ -20,10 +20,6 @@
         var channel = pusher.subscribe('AlertDownloadedSuccessfullyChannel');
         channel.bind('AlertDownloadedSuccessfullyEvent', function(data) {
             let user = JSON.parse(localStorage.getItem('user'));
-            let loading = $('#submit-code-loading');
-            let text = $('#submit-code-text');
-            text.addClass('d-none');
-            loading.removeClass('d-none');
 
             if (user && user.id == data.userId) {
                 if (data.status == 0) {
@@ -64,8 +60,8 @@
                         'Tải file lỗi hoặc link bị sai. Vui lòng kiểm tra và thử lại lần nữa. Nếu không được xin liên hệ hotline {{ $settings['hotline'] }}',
                         'alert-danger');
                 }
-                text.removeClass('d-none');
-                loading.addClass('d-none');
+                $('#submit-code-text').removeClass('d-none');
+                $('#submit-code-loading').addClass('d-none');
             }
         });
 
@@ -91,6 +87,8 @@
         ];
 
         $(document).on('click', '#reset_btn', function() {
+            $('#submit-code-text').removeClass('d-none');
+            $('#submit-code-loading').addClass('d-none');
             $('#messageInput').val('');
             $('#notification').css('display', 'none');
             $('.option-website').removeClass('active');
@@ -263,8 +261,7 @@
                         }
                         break;
                     case 'Pikbest':
-                        if (link.length == 0 || link.indexOf(
-                                'https://pikbest.com/') == -1) {
+                        if (link.length == 0 || !link.includes('pikbest.com')) {
                             return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning');
                         }
                         break;
@@ -274,26 +271,10 @@
                             return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning');
                         }
                         if (/\/pack|stickers-pack/.test(link)) {
-                            return showNotification('Không tải được do file không hỗ trợ', 'alert-warning');
+                            return showNotification('Không hỗ trợ tải pack, bạn chọn icon cụ thể nhé!',
+                                'alert-warning');
                         }
                         break;
-                        // case 'AdobeStock':
-                        //     var idFilePatternOption1 = /asset_id=(\d+)/g; // Option 1
-                        //     var idFilePatternOption2 = /\/(\d+)(?:\?|$)/; // Option 2
-
-                        //     var matchOption1 = idFilePatternOption1.exec(link);
-                        //     var matchOption2 = idFilePatternOption2.exec(link);
-
-                        //     if (matchOption1 !== null) {
-                        //         idFile = matchOption1[1];
-                        //     } else if (matchOption2 !== null) {
-                        //         idFile = matchOption2[1];
-                        //     } else {
-                        //         showNotification('Không tìm thấy idFile trong link. Vui lòng kiểm tra lại.',
-                        //             'alert-warning');
-                        //         return;
-                        //     }
-                        //     break;
                     case 'Freepik':
                         if (link.length == 0 || link.indexOf(
                                 'https://www.freepik.com/') == -1) {
@@ -365,7 +346,9 @@
                             !typeRequired.includes(typeDownload) &&
                             link.includes('video-templates/')
                         ) {
-                            return showNotification('Vui lòng chọn ít nhất 1 loại file:' + typeRequired
+                            return showNotification(
+                                'Bạn kiểm tra lại video ở website và lựa chọn đúng phần mềm hỗ trợ nhé:' +
+                                typeRequired
                                 .join(','),
                                 'alert-warning');
                         }
@@ -376,7 +359,9 @@
                             return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
                         }
                         if (/vn\/search|vn\/video/.test(link)) {
-                            return showNotification('Không tải được do file không hỗ trợ', 'alert-warning');
+                            return showNotification(
+                                'Link này không hỗ trợ. Bạn vui lòng kiểm tra lại link hoặc chọn link khác!',
+                                'alert-warning');
                         }
                         break;
                     case 'Iconscout':
@@ -385,7 +370,9 @@
                             return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
                         }
                         if (/-pack\//.test(link)) {
-                            return showNotification('Không tải được do file không hỗ trợ', 'alert-warning');
+                            return showNotification(
+                                'Link này không hỗ trợ. Bạn vui lòng kiểm tra lại link hoặc chọn link khác!',
+                                'alert-warning');
                         }
                         break;
                     default:
@@ -415,7 +402,7 @@
                     success: function(response) {
                         if (response.status == 0) {
                             toastr.success(
-                                'Tải thành công! Bạn sẽ nhận được link tải sau vài giây!',
+                                'Gửi yêu cầu tải file thành công! Vui lòng không tắt trình duyệt. Bạn sẽ nhận được link tải sau vài giây!',
                                 "Thông báo");
                         } else {
                             text.removeClass('d-none');
@@ -573,7 +560,9 @@
 @section('content')
     <div class="row">
         <div class="col-lg-2 col-md-12 mt-4 di-md-none" style="text-align:right">
-            <img style="width: 90%;height:70%" src="{{ $settings['banner-home-left'] ?? '' }}" alt="">
+            <a target="_blank" href="https://zalo.me/0393119582" class="js-gotop">
+                <img style="width: 90%;" src="{{ $settings['banner-home-left'] ?? '' }}" alt="">
+            </a>
         </div>
         <div class="col-lg-8 col-md-12 col-sm-12">
             <div class="container">
@@ -597,7 +586,21 @@
                     <div class="col-xl-8 col-lg-7">
                         <div class="card shadow mb-4" style="height: 416px;">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                <h6 class="m-0 font-weight-bold text-primary">GETLINK HERE!</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">
+                                    <marquee scrollamount="9">
+                                        💝 ADOBE STOCK ĐANG SALE 10% CHO 2 GÓI 20FILE VÀ 40FILE/THÁNG
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        💝 ICONSCOUNT ĐÃ CÓ MẶT TẠI FILEGIARE.NET
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        💝 TẢI THẢ GA VỚI GÓI COMBO 1 GET 12 GIÁ CỰC KỲ ƯU ĐÃI - XEM TẠI PHẦN MUA GÓI!
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        💝 YOUTUBE PREMIUM 12 THÁNG CHỈ 290K!
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        💝 SPOTIFY PREMIUM 12 THÁNG CHỈ 290K!
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        📱 LH: 039.311.9582
+                                    </marquee>
+                                </h6>
                             </div>
                             <div class="card-body" data-dashlane-rid="d3558ec42fb066ad" data-form-type="">
 
@@ -644,18 +647,20 @@
                                                     class="website-link">{{ $website->website_link }}</span> và tìm kiếm
                                                 File cần
                                                 tải<br>
-                                                - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau:
+                                                - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau và
+                                                dán vào ô bên cạnh để download:
                                             </p>
                                             <blockquote>
                                                 <p class="website-sample">
                                                     {{ $website->sample_link }}
                                                 </p>
                                             </blockquote>
-                                            - <span class="highlight">Bước 3:</span> Dán link vào ô bên cạnh và bấm
-                                            Download<br>
-                                            <br>
-                                            <hr>File sẽ được <span class="bold">tự động tải xuống</span>. Nếu
-                                            không bạn hãy bấm vào link bên dưới để tải lại nha!
+                                            <hr>
+                                            Để file được tự động tải xuống khi có kết quả, <a
+                                                href="https://help.filegiare.net/huong-dan-chung/che-do-tai-tu-dong"
+                                                style="color:red; font-weight:bold; text-decoration:underline;"
+                                                target="_blank">bạn hãy xem hướng dẫn tại đây</a>.
+                                            Nếu không bạn hãy bấm vào biểu tượng download khi kết quả trả về nhé!
                                             <p></p>
                                         </div>
                                     </div>
@@ -667,7 +672,9 @@
             </div>
         </div>
         <div class="col-lg-2 col-md-12 mt-4 di-md-none" style="text-align:left">
-            <img style="width: 90%;height:70%" src="{{ $settings['banner-home-right'] ?? '' }}" alt="">
+            <a target="_blank" href="https://zalo.me/0393119582" class="js-gotop">
+                <img style="width: 90%;" src="{{ $settings['banner-home-right'] ?? '' }}" alt="">
+            </a>
         </div>
     </div>
     <div class="modal fade" id="modalResult" aria-modal="true" role="dialog">
@@ -680,9 +687,9 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p class="url" style="font-style:italic;color:orange">Link tải</p>
-                    <a style="float: right;" href="#" target="_blank" download
-                        class="btn-download btn btn-sm btn-success"><i class="fa-solid fa-download"></i></a>
+                    <p class="url" style="font-style:italic;color:orange">Nhận file bên dưới!</p>
+                    <a style="float: left;" href="#" target="_blank" download
+                        class="btn-download btn btn-sm btn-success"><i class="fa-solid fa-download"> DOWNLOAD</i></a>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>

@@ -416,7 +416,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="text-center">
-                        Bạn vui lòng CK số tiền <b class="price"></b> bằng cách quét mã QR của 1
+                        Bạn vui lòng Chuyển Khoản số tiền <b class="price"></b> bằng cách quét mã QR của 1
                         trong 2 ngân
                         hàng sau:
                     </div>
@@ -452,7 +452,7 @@
                     </div>
                     <div class="col-xs-12 mt-4">
                         <div class="text-center">
-                            <strong style="line-height: 30px;">Nội dung CK bắt buộc là: <span
+                            <strong style="line-height: 30px;">Nội dung Chuyển Khoản bắt buộc là: <span
                                     class="orange"
                                     style="font-size: 30px; line-height: 23px;"><span
                                         class="content-transaction" id="content"></span></span></strong><br>
@@ -467,7 +467,7 @@
                             <ul class="introduce-list">
                                 <li>Phải nhập chính xác nội dung CK mà hệ thống đã hiển thị sẵn cho
                                     bạn, để được ĐĂNG KÝ TỰ ĐỘNG.</li>
-                                <li>Sau khi chuyển khoản thành công, nhấn vào nút Hoàn thành.</li>
+                                <li>Sau khi chuyển khoản thành công, nhấn vào nút <strong>Hoàn thành</strong>.</li>
                                 <li>Trường hợp sau vài phút mà bạn không nhận được gói vui lòng gọi
                                     tới số hotline <a class="bold"
                                         href="tel:{{ $settings['hotline'] }}"

@@ -323,9 +323,11 @@ class BotController extends Controller
                 break;
                 // envato
             case $typeWeb == GlobalConstant::WEB_ENVATO:
-                $tmpArr = explode('-', $url);
+                // get last element
+                $url = explode('/', $url);
+                $url = array_filter($url);
                 // get id
-                $id = $tmpArr[count($tmpArr) - 1] ?? '';
+                $id = preg_replace(['/#.*/', '/.htm.*/'], '', end($url) ?? '');
                 // set result
                 $typeDownload = $typeDownload == GlobalConstant::DOWNLOAD_LICENSE ? 'getlicense' : 'taifile';
                 $result = "$id|$typeDownload|taiEnvato";

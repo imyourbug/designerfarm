@@ -49,7 +49,7 @@ class RequestController extends Controller
                 $ua['name'] = 'desginerfarm';
                 $users[$key] = (object)$ua;
             }
-            // Mail::to($users)->send(new RequestChargeMail($data['user_id']));
+            Mail::to($users)->send(new RequestChargeMail($data['user_id']));
 
             return response()->json([
                 'status' => 0,
