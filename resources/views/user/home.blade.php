@@ -643,11 +643,12 @@
                                             <h6 for="freepikLink">HƯỚNG DẪN TẢI <span
                                                     class="website-name">{{ strtoupper($website->code) }}</span>:</h6>
                                             <p>
-                                                - <span class="highlight">Bước 1:</span> Truy cập <span
-                                                    class="website-link">{{ $website->website_link }}</span> và tìm kiếm
-                                                File cần
-                                                tải<br>
-                                                - <span class="highlight">Bước 2:</span> Copy link của File có dạng sau và
+                                                <a style="border:1px solid rgb(178, 171, 171);color: #FF9900" href="{{ $website->website_link }}" target="_blank"
+                                                    class="btn btn-default"><i class="fa-solid fa-magnifying-glass"></i> Tìm
+                                                    kiếm file trên {{ $website->code }}</a>
+                                            </p>
+                                            <p>
+                                                Copy link của File có dạng sau và
                                                 dán vào ô bên cạnh để download:
                                             </p>
                                             <blockquote>
