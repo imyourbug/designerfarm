@@ -180,11 +180,11 @@
             $.ajax({
                 type: "POST",
                 data: {
-                    tel_or_email: $('#tel_or_email').val(),
-                    password: $('#password').val(),
-                    old_password: $('#old_password').val(),
+                    name: $('#tel_or_email').val(),
+                    new_password: $('#password').val(),
+                    password: $('#old_password').val(),
                 },
-                url: "/api/user/change_password",
+                url: "/api/auth/changePassword",
                 success: function(response) {
                     if (response.status == 0) {
                         toastr.success(response.message, "Thông báo");
