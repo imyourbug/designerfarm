@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
+    #orders
+    Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
+        Route::post('/create', 'OrderController@create')->name('create');
+        Route::get('/{orderId}/capture', 'OrderController@capture')->name('capture');
+    });
+
     Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'as' => 'auth.'], function () {
         Route::post('/login', 'AuthController@login')->name('login');
         Route::post('/register', 'AuthController@register')->name('register');
