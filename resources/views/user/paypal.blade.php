@@ -11,11 +11,11 @@
     <script
         src="https://www.paypal.com/sdk/js?client-id=BAABsb0LoxLQGDu3Mknv28LgVHGW5F9Ahi5daa0T2QueRTdnXPu5nSeHiku7QajO_sOLynTD8A6OWahUZA&components=hosted-buttons&disable-funding=venmo&currency=USD">
     </script>
-    <div id="paypal-container-R8BHKRNW3R5LW"></div>
+    <div id="paypal-container-48LXAJ3KLSVKQ"></div>
     <script>
         paypal.HostedButtons({
-            hostedButtonId: "R8BHKRNW3R5LW",
-        }).render("#paypal-container-R8BHKRNW3R5LW")
+            hostedButtonId: "48LXAJ3KLSVKQ",
+        }).render("#paypal-container-48LXAJ3KLSVKQ")
     </script>
 </body>
 
