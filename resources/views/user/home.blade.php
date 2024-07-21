@@ -30,7 +30,7 @@
                     $('.btn-open-modal-result').click();
                     // set url download
                     $('.btn-download').prop('href', url);
-                    window.open(`${url}`, '_blank').focus();
+                    window.open(`${url}`, '_blank');
                     // reset
                     $('#reset_btn').click();
                     // sync available numberfile

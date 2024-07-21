@@ -10,13 +10,28 @@ use App\Models\Request as ModelsRequest;
 use App\Models\Setting;
 use Carbon\Carbon;
 use DateTime;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Throwable;
 
 class RequestController extends Controller
 {
+    public $botKey;
+    public $groupTelegramId;
+
+    public function __construct()
+    {
+        $settings = Setting::orderByDesc('key')
+            ->pluck('value', 'key')
+            ->toArray();
+
+        $this->botKey = $settings['tele-bot-id'];
+        $this->groupTelegramId = $settings['tele-group-id'];
+    }
+
     public function index()
     {
         return view('user.request.index', [
@@ -39,6 +54,20 @@ class RequestController extends Controller
             $data['status'] = GlobalConstant::STATUS_PENDING;
             ModelsRequest::create($data);
 
+            // Send message to tele
+            $dataSend = [
+                'chat_id' => $this->groupTelegramId,
+                'text' => 'Total:' . number_format((int) $data['total'], 0) . ' VND | Transaction code: ' .  $data['content'],
+            ];
+            $client = new Client();
+            try {
+                $client->post("https://api.telegram.org/bot$this->botKey/sendMessage", [
+                    'json' => $dataSend
+                ]);
+            } catch (Throwable $e) {
+                Log::debug('Error send message to tele: ' . $e->getMessage(), [$e]);
+            }
+
             // send mail
             $strEmail = Setting::firstWhere('key', GlobalConstant::KEY_EMAIL_NOTIFICATION)->value ?? '';
             $emails = explode(',', $strEmail);
@@ -49,7 +78,12 @@ class RequestController extends Controller
                 $ua['name'] = 'desginerfarm';
                 $users[$key] = (object)$ua;
             }
-            Mail::to($users)->send(new RequestChargeMail($data['user_id']));
+
+            try {
+                Mail::to($users)->send(new RequestChargeMail($data['user_id']));
+            } catch (Throwable $e) {
+                Log::debug('Error send mail: ' . $e->getMessage(), [$e]);
+            }
 
             return response()->json([
                 'status' => 0,
@@ -116,13 +150,6 @@ class RequestController extends Controller
 
                                 $expired_at = now()->addMonths($requestModel->expire);
                                 $expire = $this->getNumberOfMonths($expired_at, now());
-                                // dd([
-                                //     'packagedetail_id' => $requestModel->packagedetail_id,
-                                //     'expire' => $expire,
-                                //     'expired_at' => $expired_at,
-                                //     'downloaded_number_file' => $downloaded_number_file,
-                                //     'number_file' => $requestModel->packageDetail->number_file,
-                                // ]);
 
                                 $member->update(
                                     [

@@ -6,7 +6,6 @@ use App\Constant\GlobalConstant;
 use App\Events\AlertDownloadedSuccessfullyEvent;
 use App\Models\DownloadHistory;
 use App\Models\Member;
-use App\Models\Package;
 use App\Models\Setting;
 use App\Models\Website;
 use Exception;
