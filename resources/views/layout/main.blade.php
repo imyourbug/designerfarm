@@ -4,14 +4,14 @@
 <head>
     <meta name="description"
         content="Trang hỗ trợ getlink freepik, tải ảnh freepik, tải video freepik, tải hình freepik premium, download freepik file giá tốt nhất thế giới">
-    <link rel="icon" href="/storage/upload/2024-06-30/07-38-36downloading.png">
-    <title>TẢI FILE FREEPIK GIÁ RẺ - {{ $title }}</title>
+    <link rel="icon" href="/storage/upload/1721448025logo filegiare.png">
+    <title>Download File Freepik giá cực rẻ</title>
     <meta property="og:description"
         content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
     <meta property="og:title"
         content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
     <meta name="keywords"
-        content="getlink shuterstock, getlink pikbest, getlink pngtree, getlink freepik, leech link pikbest, leechlink freepik, get item from pikbest, get item from pngtree, get item from freepik, download item pikbest, download item freepik, get item premium pikbest, get item premium freepik, get item premium lovepik">
+        content="tai file freepik, tai file envato, tai file motion array, tai file artlist, tai file adobe stock getlink pikbest, getlink pngtree, getlink freepik, leech link pikbest, leechlink freepik, get item from pikbest, get item from pngtree, get item from freepik, download item pikbest, download item freepik, get item premium pikbest, get item premium freepik, get item premium lovepik">
     <meta name="description"
         content="Trang getlink shutterstock miễn phí, getlink elements envato, getlink freepik hoàn toàn tự động và tiết kiệm chi phí!">
     <meta itemprop="name"
@@ -26,7 +26,7 @@
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <link rel="stylesheet" href="https://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+    <!--<link rel="stylesheet" href="https://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">-->
     <link rel="stylesheet" href="/js/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="/js/plugins/daterangepicker/daterangepicker.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
@@ -34,13 +34,12 @@
     <link rel="stylesheet" href="/js/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/js/dist/css/adminlte.min.css">
-    <!-- ajax -->
-    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
     <!-- select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
     <link href="/css/style.css" rel="stylesheet" type="text/css">
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/css/toastr.css" rel="stylesheet">
     {{-- bootstrap --}}
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
@@ -152,7 +151,7 @@
     <input type="hidden" id="btn-open-modal-alert-charged-successfully" data-toggle="modal"
         data-target="#modalAlertChargedSuccessfully" />
     <div class="Toastify"></div>
-    <script src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="/js/toastr.js"></script>
     {!! Toastr::message() !!}
     {{-- select2 --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>

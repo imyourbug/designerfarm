@@ -30,7 +30,7 @@ class RequestChargeMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address(env('MAIL_FROM_ADDRESS', 'noreply@gmail.com'), 'Designer Farm'),
+            from: new Address(env('MAIL_FROM_ADDRESS', 'noreply@gmail.com'), 'File Giá Rẻ'),
             subject: 'Yêu cầu nạp tiền',
         );
     }

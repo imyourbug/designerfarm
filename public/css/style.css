@@ -351,9 +351,15 @@ body {
     }
 
     .option div.active {
-        background-color: #007bff;
-        color: #fff;
-        border-color: #007bff;
+    background: linear-gradient(to right, #898989, #828180);
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.19);
+    transform: translateZ(0); /* Đảm bảo phần tử có hiệu ứng 3D */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng chuyển đổi mượt mà */
+    }
+    .option div.active:hover {
+        transform: translateZ(10px); /* Tăng chiều sâu khi hover */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 12px 40px rgba(0, 0, 0, 0.19);
     }
 
     .option div img {

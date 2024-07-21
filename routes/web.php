@@ -38,15 +38,6 @@ Route::get('/migrate', function () {
 Route::group(['namespace' => 'App\Http\Controllers'], function () {
     Route::get('/', 'HomeController@index')->name('home');
 
-    #paypals
-    Route::group(['prefix' => 'paypals', 'as' => 'paypals.'], function () {
-        Route::get('/', 'PayPalController@index')->name('index');
-        Route::get('createTransaction', 'PayPalController@createTransaction')->name('createTransaction');
-        Route::get('processTransaction', 'PayPalController@processTransaction')->name('processTransaction');
-        Route::get('successTransaction', 'PayPalController@successTransaction')->name('successTransaction');
-        Route::get('cancelTransaction', 'PayPalController@cancelTransaction')->name('cancelTransaction');
-    });
-
     #packages
     Route::group(['prefix' => 'packages', 'as' => 'packages.'], function () {
         Route::get('/', 'PackageController@index')->name('index');
