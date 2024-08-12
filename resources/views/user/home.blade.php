@@ -298,8 +298,7 @@
                         }
                         break;
                     case 'Lovepik':
-                        if (link.length == 0 || link.indexOf(
-                                'https://lovepik.com/') == -1) {
+                        if (link.length == 0 || !link.includes('lovepik.com')) {
                             return showNotification(`Vui lòng nhập link ${website}`, 'alert-warning')
                         }
                         break;
@@ -560,7 +559,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-2 col-md-12 mt-4 di-md-none" style="text-align:right">
-            <a target="_blank" href="https://zalo.me/0393119582" class="js-gotop">
+            <a target="_blank" href="{{ $settings['link-zalo'] ?? '' }}" class="js-gotop">
                 <img style="width: 90%;" src="{{ $settings['banner-home-left'] ?? '' }}" alt="">
             </a>
         </div>
@@ -590,7 +589,7 @@
                                     <marquee scrollamount="9">
                                         💝 ADOBE STOCK ĐANG SALE 10% CHO 2 GÓI 20FILE VÀ 40FILE/THÁNG
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        💝 ICONSCOUNT ĐÃ CÓ MẶT TẠI FILEGIARE.NET
+                                        💝 ICONSCOUNT ĐÃ CÓ MẶT TẠI DOWNHINH.COM
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         💝 TẢI THẢ GA VỚI GÓI COMBO 1 GET 12 GIÁ CỰC KỲ ƯU ĐÃI - XEM TẠI PHẦN MUA GÓI!
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -598,7 +597,7 @@
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         💝 SPOTIFY PREMIUM 12 THÁNG CHỈ 290K!
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        📱 LH: 039.311.9582
+                                        📱 LH: 0333.022.892
                                     </marquee>
                                 </h6>
                             </div>
@@ -673,7 +672,7 @@
             </div>
         </div>
         <div class="col-lg-2 col-md-12 mt-4 di-md-none" style="text-align:left">
-            <a target="_blank" href="https://zalo.me/0393119582" class="js-gotop">
+            <a target="_blank" href="{{ $settings['link-zalo'] ?? '' }}" class="js-gotop">
                 <img style="width: 90%;" src="{{ $settings['banner-home-right'] ?? '' }}" alt="">
             </a>
         </div>

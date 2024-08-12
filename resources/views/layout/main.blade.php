@@ -4,8 +4,13 @@
 <head>
     <meta name="description"
         content="Trang hỗ trợ getlink freepik, tải ảnh freepik, tải video freepik, tải hình freepik premium, download freepik file giá tốt nhất thế giới">
-    <link rel="icon" href="/storage/upload/1721448025logo filegiare.png">
-    <title>Download File Freepik giá cực rẻ</title>
+    <link rel="icon" href="/storage/upload/1721579410icon logo downhinh.png">
+    <title>Get file freepik giá siêu rẻ</title>
+    <meta property="og:locale" content="vi_VN">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:site_name" content="DOWNHINH - WEBSITE TẢI FILE TỰ ĐỘNG">
+    <meta property="og:image" content="https://downhinh.com/storage/upload/1721579410icon logo downhinh.png">
     <meta property="og:description"
         content="Trang tải hình ảnh, vector từ freepik, elements envato giá rẻ nhất thế giới, hoàn toàn tự động, phục vụ 24/24">
     <meta property="og:title"
@@ -48,13 +53,13 @@
     {{-- Jquery --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N7QQMHW0ZC"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTZLZK6PDT"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
     
-      gtag('config', 'G-N7QQMHW0ZC');
+      gtag('config', 'G-FTZLZK6PDT');
     </script>
     <style>
         .toast-success {

@@ -2,7 +2,12 @@
     <ul class="navbar-nav" style="font-weight: bold;height:100%;align-items:center">
         <li class="nav-item" style="height:100%;">
             <a class="nav-link" data-widget="pushmenu" href="/" role="button">
-                <img style="max-width: 270px;height:60px; filter: grayscale(100%)" src="{{ $settings['logo'] ?? '' }}" alt="">
+                <img style="max-width: 270px;height:60px;" src="{{ $settings['logo'] ?? '' }}" alt="">
+            </a>
+        </li>
+        <li class="nav-item" style="height:100%;">
+            <a class="nav-link" data-widget="pushmenu" href="/" role="button">
+                <img style="max-width: 270px;height:60px;" src="/storage/upload/1721579601logo downhinh freepik.png" alt="">
             </a>
         </li>
         {{-- <li class="nav-item d-none d-sm-inline-block">

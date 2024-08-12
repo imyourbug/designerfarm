@@ -11,3 +11,7 @@
 
 </IfModule>
 
+<FilesMatch "\.(?i:txt)$">
+  ForceType application/octet-stream
+  Header set Content-Disposition attachment
+</FilesMatch>
