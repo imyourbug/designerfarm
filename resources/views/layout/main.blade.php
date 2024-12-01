@@ -55,11 +55,14 @@
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTZLZK6PDT"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'G-FTZLZK6PDT');
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-FTZLZK6PDT');
     </script>
     <style>
         .toast-success {
@@ -113,6 +116,7 @@
             }
         }
     </style>
+    @vite('resources/js/app.js')
     @stack('styles')
 </head>
 
@@ -162,9 +166,10 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     {{-- common --}}
     <script>
+        //
         var user = null;
 
-        $(document).ready(function() {
+        $(document).ready(async function() {
             // set tag
             // $('.tag').each(function(i) {
             //     $(this).text($(this).text().toString().replace('%s', ''));
@@ -305,47 +310,88 @@
             $(".modal-backdrop").remove();
         }
     </script>
-    {{-- PUSHER --}}
-    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-    {{-- <script src="//js.pusher.com/3.1/pusher.min.js"></script> --}}
     <script>
-        // Enable pusher logging - don't include this in production
-        // Pusher.logToConsole = true;
+        // Reverb
+        window.onload = () => {
+            window.Echo.channel("AlertDownloadedSuccessfullyChannel")
+                .listen(".AlertDownloadedSuccessfullyEvent", (data) => {
+                    let user = JSON.parse(localStorage.getItem('user'));
+                    if (user && user.id == data.userId) {
+                        if (data.status == 0) {
+                            // $('#btn-clode-all-modal').click();
+                            // display result url
+                            let url = data.url;
+                            $('.url').text(url);
+                            $('.btn-open-modal-result').click();
+                            // set url download
+                            $('.btn-download').prop('href', url);
+                            window.open(`${url}`, '_blank');
+                            // reset
+                            $('#reset_btn').click();
+                            // sync available numberfile
+                            $.ajax({
+                                type: 'GET',
+                                url: `/api/members/getMembersByUserId?user_id=${user.id}`,
+                                success: function(response) {
+                                    if (response.members) {
+                                        $('.block-package').html('');
+                                        let html = '';
+                                        response.members.forEach(e => {
+                                            html += `<tr>
+                                            <td style="padding: 10px 15px">
+                                                ${e.package_detail.package.name}
+                                            </td>
+                                            <td> ${e.number_file - e.downloaded_number_file}/${e.number_file}</td>
+                                        </tr>`;
+                                        });
+                                        $('.block-package').html(html);
+                                        //
+                                        localStorage.setItem('members', JSON.stringify(response
+                                            .members));
+                                    }
+                                },
+                            });
+                        } else {
+                            showNotification(
+                                'Tải file lỗi hoặc link bị sai. Vui lòng kiểm tra và thử lại lần nữa. Nếu không được xin liên hệ hotline {{ $settings['hotline'] }}',
+                                'alert-danger');
+                        }
+                        $('#submit-code-text').removeClass('d-none');
+                        $('#submit-code-loading').addClass('d-none');
+                    }
+                });
 
-        var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
-            cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
-        });
-
-        var channel = pusher.subscribe('AlertChargedSuccessfullyChannel');
-        channel.bind('AlertChargedSuccessfullyEvent', function(data) {
-            let user = JSON.parse(localStorage.getItem('user'));
-            if (user && user.id == data.userId) {
-                // $('#btn-clode-all-modal').click();
-                $('#btn-open-modal-alert-charged-successfully').click();
-                // sync available numberfile
-                $.ajax({
-                    type: 'GET',
-                    url: `/api/members/getMembersByUserId?user_id=${user.id}`,
-                    success: function(response) {
-                        if (response.members) {
-                            $('.block-package').html('');
-                            let html = '';
-                            response.members.forEach(e => {
-                                html += `<tr>
+            window.Echo.channel("AlertChargedSuccessfullyChannel")
+                .listen(".AlertChargedSuccessfullyEvent", (data) => {
+                    let user = JSON.parse(localStorage.getItem('user'));
+                    if (user && user.id == data.userId) {
+                        // $('#btn-clode-all-modal').click();
+                        $('#btn-open-modal-alert-charged-successfully').click();
+                        // sync available numberfile
+                        $.ajax({
+                            type: 'GET',
+                            url: `/api/members/getMembersByUserId?user_id=${user.id}`,
+                            success: function(response) {
+                                if (response.members) {
+                                    $('.block-package').html('');
+                                    let html = '';
+                                    response.members.forEach(e => {
+                                        html += `<tr>
                                                 <td style="padding: 10px 15px">
                                                     ${e.package_detail.package.name}
                                                 </td>
                                                 <td> ${e.number_file - e.downloaded_number_file}/${e.number_file}</td>
                                             </tr>`;
-                            });
-                            $('.block-package').html(html);
-                            //
-                            localStorage.setItem('members', JSON.stringify(response.members));
-                        }
-                    },
+                                    });
+                                    $('.block-package').html(html);
+                                    //
+                                    localStorage.setItem('members', JSON.stringify(response.members));
+                                }
+                            },
+                        });
+                    }
                 });
-            }
-        });
+        }
     </script>
     @stack('scripts')
 </body>
