@@ -85,6 +85,14 @@ Route::group([
             Route::get('/', 'ReportController@index')->name('index');
         });
 
+        #keys
+        Route::group(['prefix' => 'keys', 'as' => 'keys.'], function () {
+            Route::get('/', 'KeyController@index')->name('index');
+            Route::post('/create', 'KeyController@store')->name('store');
+            Route::get('/update/{id}', 'KeyController@show')->name('show');
+            Route::post('/update', 'KeyController@update')->name('update');
+        });
+
         #settings
         Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
             Route::get('/', 'SettingController@index')->name('index');

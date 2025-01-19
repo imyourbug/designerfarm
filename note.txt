@@ -1,4 +1,0 @@
-composer config -g -- disable-tls false
-
-extension_dir = "ext"
-

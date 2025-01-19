@@ -1,10 +1,5 @@
 @extends('layout.main')
 @push('styles')
-    {{-- <script src="https://cdn.jsdelivr.net/npm/pusher-js@7.2.0/dist/web/pusher.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.13.0/dist/echo.iife.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2.1.1/dist/socket.io.js"></script>
-    <script src="https://github.com/glitterlip/echoexample/blob/master/public/js/echocompiled.js"></script> --}}
 @endpush
 @push('scripts')
     <script src="/js/popper.min.js"></script>
@@ -18,7 +13,60 @@
                 .show();
         }
 
+        var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
+            cluster: '{{ env('PUSHER_APP_CLUSTER') }}'
+        });
+
+        var channel = pusher.subscribe('AlertDownloadedSuccessfullyChannel');
+        channel.bind('AlertDownloadedSuccessfullyEvent', function(data) {
+            let user = JSON.parse(localStorage.getItem('user'));
+
+            if (user && user.id == data.userId) {
+                if (data.status == 0) {
+                    // $('#btn-clode-all-modal').click();
+                    // display result url
+                    let url = data.url;
+                    $('.url').text(url);
+                    $('.btn-open-modal-result').click();
+                    // set url download
+                    $('.btn-download').prop('href', url);
+                    window.open(`${url}`, '_blank');
+                    // reset
+                    $('#reset_btn').click();
+                    // sync available numberfile
+                    $.ajax({
+                        type: 'GET',
+                        url: `/api/members/getMembersByUserId?user_id=${user.id}`,
+                        success: function(response) {
+                            if (response.members) {
+                                $('.block-package').html('');
+                                let html = '';
+                                response.members.forEach(e => {
+                                    html += `<tr>
+                                                <td style="padding: 10px 15px">
+                                                    ${e.package_detail.package.name}
+                                                </td>
+                                                <td> ${e.number_file - e.downloaded_number_file}/${e.number_file}</td>
+                                            </tr>`;
+                                });
+                                $('.block-package').html(html);
+                                //
+                                localStorage.setItem('members', JSON.stringify(response.members));
+                            }
+                        },
+                    });
+                } else {
+                    showNotification(
+                        'Tải file lỗi hoặc link bị sai. Vui lòng kiểm tra và thử lại lần nữa. Nếu không được xin liên hệ hotline {{ $settings['hotline'] }}',
+                        'alert-danger');
+                }
+                $('#submit-code-text').removeClass('d-none');
+                $('#submit-code-loading').addClass('d-none');
+            }
+        });
+
         var website = '';
+
         var WEB_TYPE = [
             'Freepik',
             'Envato',
@@ -92,6 +140,7 @@
         });
 
         $(document).ready(function() {
+            // default
             // $('#Freepik').click();
             $('.btn-open-modal-notification').click();
             //
@@ -593,8 +642,7 @@
                                             <h6 for="freepikLink">HƯỚNG DẪN TẢI <span
                                                     class="website-name">{{ strtoupper($website->code) }}</span>:</h6>
                                             <p>
-                                                <a style="border:1px solid rgb(178, 171, 171);color: #FF9900"
-                                                    href="{{ $website->website_link }}" target="_blank"
+                                                <a style="border:1px solid rgb(178, 171, 171);color: #FF9900" href="{{ $website->website_link }}" target="_blank"
                                                     class="btn btn-default"><i class="fa-solid fa-magnifying-glass"></i> Tìm
                                                     kiếm file trên {{ $website->code }}</a>
                                             </p>

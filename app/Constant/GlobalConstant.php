@@ -97,4 +97,6 @@ class GlobalConstant
     public const IS_NOT_DOWNLOAD_BY_RETAIL = 0;
 
     public const KEY_EMAIL_NOTIFICATION = 'email-receive-notification';
+
+    public const PUSHER_KEY = 'pusher-key';
 }

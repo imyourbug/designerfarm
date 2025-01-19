@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Constant\GlobalConstant;
 use App\Http\Controllers\Controller;
+use App\Models\Key;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Throwable;
@@ -24,6 +26,21 @@ class SettingController extends Controller
                 'value' => $value['value'],
                 'name' => $value['name'],
             ]);
+            // 
+            if ($value['key'] === GlobalConstant::PUSHER_KEY) {
+                $keys = explode(',', $value['value']);
+                $dataInsert = [];
+                foreach ($keys as $key) {
+                    $dataInsert[] = [
+                        'value' => $key,
+                        'type' => GlobalConstant::PUSHER_KEY,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+                Key::truncate();
+                Key::insert($dataInsert);
+            }
         }
 
         return response()->json([

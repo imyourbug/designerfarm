@@ -45,6 +45,16 @@ Route::group(['namespace' => 'App\Http\Controllers'], function () {
     #upload
     Route::post('/upload', 'UploadController@upload')->name('upload');
 
+    #keys
+    Route::group(['prefix' => 'keys', 'as' => 'keys.'], function () {
+        Route::post('/changeKey', 'KeyController@changeKey')->name('changeKey');
+        Route::delete('/{id}/destroy', 'KeyController@destroy')->name('destroy');
+        Route::post('/create', 'KeyController@store')->name('store');
+        Route::get('/getAll', 'KeyController@getAll')->name('getAll');
+        Route::get('/getKeyById', 'KeyController@getKeyById')->name('getKeyById');
+        Route::post('/deleteAll', 'KeyController@deleteAll')->name('deleteAll');
+    });
+
     #accounts
     Route::group(['prefix' => 'accounts', 'as' => 'accounts.'], function () {
         Route::delete('/{id}/destroy', 'AccountController@destroy')->name('destroy');

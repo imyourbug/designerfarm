@@ -113,6 +113,17 @@
                             </a>
                         </li>
                         <li
+                            class="nav-item {{ in_array(request()->route()->getName(), ['admin.keys.index', 'admin.keys.create'])
+                                ? 'menu-is-opening menu-open'
+                                : '' }}">
+                            <a href="{{ route('admin.keys.index') }}" class="nav-link">
+                                <i class="nav-icon fa-solid fa-key"></i>
+                                <p>
+                                    Key
+                                </p>
+                            </a>
+                        </li>
+                        <li
                             class="nav-item {{ in_array(request()->route()->getName(), ['admin.reports.index'])
                                 ? 'menu-is-opening menu-open'
                                 : '' }}">
